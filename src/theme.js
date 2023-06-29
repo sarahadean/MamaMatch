@@ -5,14 +5,14 @@ const theme = createTheme({
   palette: {
     type: 'light',
     primary: {
-      main: '#61dafb',
-      light: '#61dafb',
-      dark: '#21a1c4',
+      main: '#B66551',
+      light: '#C48373',
+      dark: '#7F4638',
     },
     secondary: {
-      main: '#b5ecfb',
-      light: '#61dafb',
-      dark: '#21a1c4',
+      main: '#3393CD',
+      light: '#5BA8D7',
+      dark: '#23668F',
     },
     error: {
       main: red.A400,
