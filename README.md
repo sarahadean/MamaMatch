@@ -10,7 +10,8 @@ https://www.figma.com/file/MbtQ6o1dWaNJ3pyvm4vRBV/MomFriendFinder?type=whiteboar
 
 ## Schema:
 https://dbdiagram.io/d/64a2f12702bd1c4a5e6ce584
-<iframe width="560" height="315" src='https://dbdiagram.io/embed/64a2f12702bd1c4a5e6ce584'> </iframe>
+[MomFriender.pdf](https://github.com/sarahadean/capstone/files/11943419/MomFriender.pdf)
+
 
 ## API Routes:
 | Route              | Method | Body                                                                                                                                                               | Response                                                                                                                                                                            | Explanation                                        |
