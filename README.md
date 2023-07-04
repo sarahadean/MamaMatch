@@ -33,3 +33,14 @@ https://dbdiagram.io/d/64a2f12702bd1c4a5e6ce584
 ## Component Tree:
 
 ## Client-side Routes:
+
+| Route          | Component       | Description                                                                                                             |
+|----------------|-----------------|-------------------------------------------------------------------------------------------------------------------------|
+| /welcome       | WelcomePage.js  | Welcome page for users to signup or login                                                                               |
+| /signup        | SignupForm.js   | Contains form to signup and gain access to app                                                                          |
+| /login         | LoginForm.js    | Login page                                                                                                              |
+| /home          | Home.js         | Shows list of potential friend matches for user to view, filter                                                         |
+| /interested    | PendingList.js  | Shows list of users who are interested in being user's friend (User has not matched with them yet) - filtered by status |
+| /friends       | FriendsList.js  | Shows list of user's friends they have been matched with - filtered by status                                           |
+| /messages      | MessagesList.js | Shows list of all conversations user has with other users/friends                                                       |
+| /messages/user | Conversation.js | Shows conversation between user and another user                                                                        |
