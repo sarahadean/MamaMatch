@@ -17,7 +17,7 @@
 ## Wireframe:
 https://www.figma.com/file/MbtQ6o1dWaNJ3pyvm4vRBV/MomFriendFinder?type=whiteboard&node-id=0%3A1&t=4OYjARU12DIrnJ0k-1
 
-![image](https://github.com/sarahadean/capstone/assets/128323898/860909a4-9b53-4e62-8b57-69208bb0649e)
+<image src="https://github.com/sarahadean/capstone/assets/128323898/860909a4-9b53-4e62-8b57-69208bb0649e" width="300">
 ![image](https://github.com/sarahadean/capstone/assets/128323898/cbe668a0-eef4-4e32-8193-897146abdf97)
 ![image](https://github.com/sarahadean/capstone/assets/128323898/0c377b6c-a502-4f3a-9cd2-11fd53fa580e)
 ![image](https://github.com/sarahadean/capstone/assets/128323898/c2426630-181f-432a-85ca-cbc02ecd0194)
