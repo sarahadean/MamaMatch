@@ -18,6 +18,10 @@ Tech Stack:
 
 [![My Skills](https://skillicons.dev/icons?i=js,py,flask,react,vite)](https://skillicons.dev)
 
+## Schema:
+https://dbdiagram.io/d/64a2f12702bd1c4a5e6ce584
+<image src="https://github.com/sarahadean/capstone/assets/128323898/bda8eb47-af33-4a0a-b8ec-8b1103aeabd2" width="600">
+
 ## Wireframe:
 https://www.figma.com/file/MbtQ6o1dWaNJ3pyvm4vRBV/MomFriendFinder?type=whiteboard&node-id=0%3A1&t=4OYjARU12DIrnJ0k-1
 
@@ -32,9 +36,7 @@ https://www.figma.com/file/MbtQ6o1dWaNJ3pyvm4vRBV/MomFriendFinder?type=whiteboar
 <image src="https://github.com/sarahadean/capstone/assets/128323898/67556049-7096-42a0-a3e3-08ee536d3b8d" width="300">
 <image src="https://github.com/sarahadean/capstone/assets/128323898/664b5f13-60e6-49a4-b8d9-4682c209d4f8" width="300">
 
-## Schema:
-https://dbdiagram.io/d/64a2f12702bd1c4a5e6ce584
-![MomFriender](https://github.com/sarahadean/capstone/assets/128323898/bda8eb47-af33-4a0a-b8ec-8b1103aeabd2)
+
 
 ## API Routes:
 
