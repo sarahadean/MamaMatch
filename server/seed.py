@@ -1,13 +1,15 @@
 from random import randint, choice as rc, randrange
-from models import db, User, MomCategory, Interest
+from models import db, User, Category_Mom, Interest
 
 # Remote library imports
 from faker import Faker
 
 # Local imports
 from app import app
+app.app_context()
 
 fake = Faker()
+
 
 print("Seeding Users...")
 user_profiles = []
@@ -27,17 +29,18 @@ def create_users(x):
         mom_life=rc(momlifeoptions),
         interests=rc(interests_list),
         ))
+db.session.add_all(user_profiles)
 
 print("Seeding mom options...")
 momlifeoptions = [
-    MomCategory(type="Pregnant"),
-    MomCategory(type="New mom"),
-    MomCategory(type="Have toddlers"),
-    MomCategory(type="Have teenagers"),
-    MomCategory(type="Planning for a family"),
-    MomCategory(type="Empty nester"),
-    MomCategory(type="Adoption journey"),
-    MomCategory(type="Fertility journey")
+    Category_Mom(type="Pregnant"),
+    Category_Mom(type="New mom"),
+    Category_Mom(type="Have toddlers"),
+    Category_Mom(type="Have teenagers"),
+    Category_Mom(type="Planning for a family"),
+    Category_Mom(type="Empty nester"),
+    Category_Mom(type="Adoption journey"),
+    Category_Mom(type="Fertility journey")
 ]
 
 db.session.add(momlifeoptions)
@@ -60,13 +63,14 @@ interests_list = [
     Interest(activity="Staying in")
 ]
 db.session.add_all(interests_list)
-db.session.add_all(user_profiles)
+
 db.session.commit()
 
 if __name__ == '__main__':
     with app.app_context():
         print("Clearing db...")
         User.query.delete()
+        db.session.commit()
         user_profiles(20)
     
     print("Done Seeding!")

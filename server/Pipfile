@@ -13,7 +13,10 @@ flask-restful = "*"
 flask-cors = "*"
 sqlalchemy = "*"
 honcho = "*"
+gunicorn = "*"
+flask-session ="*"
 flask-bcrypt ="*"
+alembic = "*"
 
 [dev-packages]
 
