@@ -34,7 +34,8 @@ https://www.figma.com/file/MbtQ6o1dWaNJ3pyvm4vRBV/MomFriendFinder?type=whiteboar
 
 ## Schema:
 https://dbdiagram.io/d/64a2f12702bd1c4a5e6ce584
-![Screenshot 2023-07-03 at 8 31 24 PM](https://github.com/sarahadean/capstone/assets/128323898/a913cbcc-7922-4d49-8995-290d60d6f529)
+![MomFriender](https://github.com/sarahadean/capstone/assets/128323898/bda8eb47-af33-4a0a-b8ec-8b1103aeabd2)
+
 ## API Routes:
 
 | Route              | Method | Body         | Response                 | Explanation                                        |
