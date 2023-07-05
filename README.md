@@ -23,10 +23,7 @@ https://www.figma.com/file/MbtQ6o1dWaNJ3pyvm4vRBV/MomFriendFinder?type=whiteboar
 ![image](https://github.com/sarahadean/capstone/assets/128323898/c2426630-181f-432a-85ca-cbc02ecd0194)
 ![image](https://github.com/sarahadean/capstone/assets/128323898/19d23af3-9946-4156-8deb-661c6b5fc335)
 ![image](https://github.com/sarahadean/capstone/assets/128323898/a4e7a231-d989-43b2-85f4-cac2aa11e35c)
-![image](https://github.com/sarahadean/capstone/assets/128323898/2c48b78e-8bb9-4d2b-87fc-6287ffa18b93)
-![image](https://github.com/sarahadean/capstone/assets/128323898/ee60d0d0-ba89-4904-8819-46e524f36940)
-![image](https://github.com/sarahadean/capstone/assets/128323898/4b1e8501-d969-4751-b75e-2a2c11c4f89b)
-![image](https://github.com/sarahadean/capstone/assets/128323898/2dcb790a-255d-4792-8441-2aa4e541fe97)
+
 
 
 
