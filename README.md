@@ -43,10 +43,10 @@ https://dbdiagram.io/d/64a2f12702bd1c4a5e6ce584
 | /users             | GET    | none         | [{User schema}], 200     | Displays all users                                 |
 | /users/id          | PATCH  | form or json | {User schema},200        | Allows user to update/change their  information    |
 |                    | DELETE | none         | {}, 204                  | Allows user to delete their profile                |
-| /friendship_status | GET    | none         |                          | Displays friends with 'matched' status             |
-|                    | PATCH  | form or json |                          | Changes friends status from 'pending' to 'matched' |
+| /friendship_status | GET    | none         | [{friendship_status schema}], 200 | Displays friends with 'matched' status             |
+|                    | PATCH  | form or json | {friendship_status schema} | Changes friends status from 'pending' to 'matched' |
 |                    | DELETE | none         |                          | Deletes friend                                     |
-| /friendship        | POST   | form or json |                          |                                                    |
+| /friendship        | POST   | form or json | {friendship_status schema} | Connection to new user                           |
 | /messages/id       | GET    | none         | [{Messages schema}], 200 | Retrieves all of user's messages                   |
 |                    | DELETE | none         | {}, 204                  |                                                    |
 | /messages/user     | GET    | none         | [{Messages schema}], 200 | Retrieves messages for specific recipient user     |
