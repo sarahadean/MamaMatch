@@ -30,9 +30,14 @@ class Category_Mom(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user = db.relationship('User', back_populates='mom_life')
+
+    def __repr__(self):
+        return f'{self.type}'
+
+
 
 class Interest(db.Model):
     __tablename__ = "interests"
@@ -40,3 +45,6 @@ class Interest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     activity = db.Column(db.String, unique=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    def __repr__(self):
+        return f'{self.activity}'
