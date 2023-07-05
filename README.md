@@ -1,7 +1,17 @@
-# MamaMatch
-Find your Village
+# MamaMatch - Find your Village
 
 ## User Stories:
+- Find potential mom-friends in your area
+- Interact with user profiles to find out if you are a mom-match!
+- Message new friends
+
+## Features
+- Upon opening app, user will be greeted with welcome screen where they can either Signup or Login.
+- User can customize profile with their own interests and update their profile later
+- User can search through profiles of other users and select either 'thumbs up' or 'thumbs down'
+- User can view list of potential friends who have positively interacted with user's profile but have not 'matched'
+- User can view list of 'matches' (friend's list) as well as delete friend. 
+- User can send messages to friends. 
 
 
 ## Wireframe:
