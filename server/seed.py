@@ -1,5 +1,5 @@
 from random import randint, choice as rc, randrange
-from models import db, User, Category_Mom, Interest
+from models import db, User, Category_Mom, Interest, Friendship, Message
 
 # Remote library imports
 from faker import Faker
@@ -33,7 +33,7 @@ if __name__ == '__main__':
             Category_Mom(type="Fertility journey")
         ]
         db.session.add_all(momlifeoptions)
-        # print(momlifeoptions)
+        print(momlifeoptions)
 
         print("Seeding interests list...")
         interests_list = [
@@ -72,7 +72,25 @@ if __name__ == '__main__':
                 # interests=rc(interests_list),
                 )
             user_profiles.append(user)
-            db.session.add_all(user_profiles)
+        db.session.add_all(user_profiles)
+
+        friends = []
+        for i in range(20):
+            status = ["Pending","Matched", "Blocked"]
+            user = rc(user_profiles[id])
+            print(user)
+            recipient = rc(user_profiles[id])
+            print(recipient)
+            new_friendship = Friendship(
+                status=rc(status),
+                user_id=user,
+                recipient_id=recipient
+            )
+            friends.append(new_friendship)
+        
+        db.session.add_all(friends)
+
+
 
         db.session.commit()
         

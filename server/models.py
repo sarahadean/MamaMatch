@@ -23,7 +23,38 @@ class User(db.Model, SerializerMixin):
 
     #relationships
     mom_life = db.relationship('Category_Mom', back_populates='user')
-    # messages = db.relationship('Message', back_populates='')
+    interests = db.relationship('Interest', back_populates='user')
+    message_list = db.relationship('Message', back_populates='user')
+
+    #friendship relationships:
+    friends_requested = db.relationship('Friendship', foreign_keys='Friendship.requesting_user_id', backref='receiving_user_id')
+    requests_received = db.relationship('Friendship', foreign_keys='Friendship.receiving_user_id', backref='requesting_user_id')
+
+    #
+    pending_friend = association_proxy('friends_requested', 'receiving_user_id')
+    aspiring_friend = association_proxy('requests_received', 'requesting_user_id')
+    # friends_list = db.relationship('Friendship', back_populates='friend')
+
+
+class Friendship(db.Model):
+    __tablename__= "friendships"
+
+    requesting_user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    receiving_user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    status = db.Column(db.String)
+    # requesting_user = db.Column(db.Integer, db.ForeignKey('User.id'))
+    # receiving_user = db.Column(db.Integer, db.ForeignKey("User.id"))
+
+
+
+class Message(db.Model):
+    __tablename__ = "messages"
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship('User', back_populates="message_list")
+    
 
 class Category_Mom(db.Model):
     __tablename__ = "category_moms"
@@ -37,14 +68,19 @@ class Category_Mom(db.Model):
     def __repr__(self):
         return f'{self.type}'
 
-
-
 class Interest(db.Model):
     __tablename__ = "interests"
 
     id = db.Column(db.Integer, primary_key=True)
-    activity = db.Column(db.String, unique=True)
+    activity = db.Column(db.String)
+
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship('User', back_populates='interests')
 
     def __repr__(self):
         return f'{self.activity}'
+    
+
+ 
+
+
