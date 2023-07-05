@@ -34,6 +34,8 @@ https://dbdiagram.io/d/64a2f12702bd1c4a5e6ce584
 
 ## Component Tree:
 
+![Screenshot 2023-07-04 at 9 30 09 PM](https://github.com/sarahadean/capstone/assets/128323898/b1ca9aef-b354-403a-bdee-a18c1034d419)
+
 ## Client-side Routes:
 
 | Route          | Component       | Description                                                                                                             |
