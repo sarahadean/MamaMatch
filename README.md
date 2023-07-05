@@ -11,7 +11,10 @@
 - User can search through profiles of other users and select either 'thumbs up' or 'thumbs down'
 - User can view list of potential friends who have positively interacted with user's profile but have not 'matched'
 - User can view list of 'matches' (friend's list) as well as delete friend. 
-- User can send messages to friends. 
+- User can send messages to friends.
+
+Tech Stack:
+
 
 
 ## Wireframe:
@@ -68,3 +71,8 @@ https://dbdiagram.io/d/64a2f12702bd1c4a5e6ce584
 | /friends       | FriendsList.js  | Shows list of user's friends they have been matched with - filtered by status                                           |
 | /messages      | MessagesList.js | Shows list of all conversations user has with other users/friends                                                       |
 | /messages/user | Conversation.js | Shows conversation between user and another user                                                                        |
+
+## Trello Board
+![Screenshot 2023-07-04 at 10 26 47 PM](https://github.com/sarahadean/capstone/assets/128323898/fcb6b404-43e4-455c-ae48-5f11f3384993)
+
+
