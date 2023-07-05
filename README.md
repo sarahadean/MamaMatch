@@ -15,6 +15,7 @@
 - User can send messages to friends.
 
 Tech Stack:
+
 [![My Skills](https://skillicons.dev/icons?i=js,py,flask,react,vite)](https://skillicons.dev)
 
 ## Wireframe:
