@@ -46,7 +46,7 @@ https://www.figma.com/file/MbtQ6o1dWaNJ3pyvm4vRBV/MomFriendFinder?type=whiteboar
 |--------------------|--------|--------------|--------------------------|----------------------------------------------------|
 | /signup            | POST   | form or json |  [{user schema}], 200    | Creates a new user when  they signup.              |
 | /login             | POST   | form or json | {User schema}, 200       | Logs user into app.                                |
-| /users             | GET    | none         | [{User schema}], 200     | Displays all users                                 |
+| /users             | GET    | none         | [{User schema}], 200     | Displays all users + "mom life" and "interests" tables |
 | /users/id          | PATCH  | form or json | {User schema},200        | Allows user to update/change their  information    |
 |                    | DELETE | none         | {}, 204                  | Allows user to delete their profile                |
 | /friendship_status | GET    | none         | [{friendship_status schema}], 200 | Displays friends with 'matched' status             |
