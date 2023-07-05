@@ -6,8 +6,81 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from config import db, bcrypt
 
-db = SQLAlchemy() 
-metadata = MetaData(naming_convention={
-    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-})
-db = SQLAlchemy(metadata=metadata)
+class User(db.Model, SerializerMixin):
+    __tablename__ = "users"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    username = db.Column(db.String)
+    password = db.Column(db.String)
+    email = db.Column(db.String)
+    phone_number = db.Column(db.String)
+    dob = db.Column(db.String) #<------change data-type to date later?
+    # gender = db.Column(db.String)
+    profile_image = db.Column(db.String)
+    location = db.Column(db.String)
+    about = db.Column(db.String)
+
+    #relationships
+    mom_life = db.relationship('Category_Mom', back_populates='user')
+    interests = db.relationship('Interest', back_populates='user')
+    message_list = db.relationship('Message', back_populates='user')
+
+    #friendship relationships:
+    friends_requested = db.relationship('Friendship', foreign_keys='Friendship.requesting_user_id', backref='receiving_user_id')
+    requests_received = db.relationship('Friendship', foreign_keys='Friendship.receiving_user_id', backref='requesting_user_id')
+
+    #
+    pending_friend = association_proxy('friends_requested', 'receiving_user_id')
+    aspiring_friend = association_proxy('requests_received', 'requesting_user_id')
+    # friends_list = db.relationship('Friendship', back_populates='friend')
+
+
+class Friendship(db.Model):
+    __tablename__= "friendships"
+
+    requesting_user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    receiving_user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    status = db.Column(db.String)
+    # requesting_user = db.Column(db.Integer, db.ForeignKey('User.id'))
+    # receiving_user = db.Column(db.Integer, db.ForeignKey("User.id"))
+
+
+
+class Message(db.Model):
+    __tablename__ = "messages"
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship('User', back_populates="message_list")
+    
+
+class Category_Mom(db.Model):
+    __tablename__ = "category_moms"
+
+    id = db.Column(db.Integer, primary_key=True)
+    type = db.Column(db.String)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship('User', back_populates='mom_life')
+
+    def __repr__(self):
+        return f'{self.type}'
+
+class Interest(db.Model):
+    __tablename__ = "interests"
+
+    id = db.Column(db.Integer, primary_key=True)
+    activity = db.Column(db.String)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship('User', back_populates='interests')
+
+    def __repr__(self):
+        return f'{self.activity}'
+    
+
+ 
+
+
