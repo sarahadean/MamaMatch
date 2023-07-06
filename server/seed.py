@@ -10,19 +10,19 @@ from app import app
 fake = Faker()
 if __name__ == '__main__':
     with app.app_context():
-        # print("Clearing db...")
-        # User.query.delete()
+        print("Clearing db...")
+        User.query.delete()
         # Category_Mom.query.delete()
         # Interest.query.delete()
     
 
-        # profile_images = [
-        #     "https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        #     "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        #     "https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        #     "https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=400",
-        #     "https://images.pexels.com/photos/718978/pexels-photo-718978.jpeg?auto=compress&cs=tinysrgb&w=400"
-        # ]
+        profile_images = [
+            "https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+            "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+            "https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+            "https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=400",
+            "https://images.pexels.com/photos/718978/pexels-photo-718978.jpeg?auto=compress&cs=tinysrgb&w=400"
+        ]
 
         # print("Seeding mom options...")
         # momlifeoptions = [
@@ -58,46 +58,45 @@ if __name__ == '__main__':
         # ]
         # db.session.add_all(interests_list)
 
-        # print("Seeding Users...")
-        # user_profiles = []
-        # for i in range(20):
-        #     category=randrange(10)
-        #     interest=randrange(14)
-        #     user = User(
-        #         name=fake.name(),
-        #         username=fake.text(8),
-        #         password=fake.password(),
-        #         email=fake.unique.email(),
-        #         phone_number=fake.phone_number(),
-        #         dob=fake.date(),
-        #         # gender=rc(genders)
-        #         profile_image=rc(profile_images),
-        #         location=fake.city(),
-        #         about=fake.sentence(10),
-        #         category_mom_id=category,
-        #         interest_id=interest
-        #         )
-        #     user_profiles.append(user)
-        # db.session.add_all(user_profiles)
+        print("Seeding Users...")
+        user_profiles = []
+        for i in range(50):
+            category=randrange(1, 9)
+            interest=randrange(1, 15)
+            user = User(
+                name=fake.name(),
+                username=fake.text(8),
+                password=fake.password(),
+                email=fake.unique.email(),
+                phone_number=fake.phone_number(),
+                dob=fake.date(),
+                # gender=rc(genders)
+                profile_image=rc(profile_images),
+                location=fake.city(),
+                about=fake.sentence(10),
+                category_mom_id=category,
+                interest_id=interest
+                )
+            user_profiles.append(user)
+        db.session.add_all(user_profiles)
 
         fs1 = Friendship(receiving_user_id=1, requesting_user_id=2)
         db.session.add(fs1)
 
-        # friends = []
-        # for i in range(20):
-        #     status = ["Pending","Confirmed", "Blocked"]
-        #     user = rc(user_profiles[id])
-        #     print(user)
-        #     recipient = rc(user_profiles[id])
-        #     print(recipient)
-        #     new_friendship = Friendship(
-        #         status=rc(status),
-        #         requesting_user_id=user,
-        #         receiving_user_id=recipient
-        #     )
-        #     friends.append(new_friendship)
+        friends = []
+        for i in range(50):
+            user = randrange(1, 51)
+            recipient = randrange(1, 51)
+            if user == recipient:
+                recipient = randrange(1, 51)
+            else:
+                new_friendship = Friendship(
+                    requesting_user_id=user,
+                    receiving_user_id=recipient
+                )
+                friends.append(new_friendship)
         
-        # db.session.add_all(friends)
+        db.session.add_all(friends)
 
         db.session.commit()
         

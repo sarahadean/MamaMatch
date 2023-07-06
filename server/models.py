@@ -11,7 +11,9 @@ class Friendship(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     requesting_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     receiving_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    # status = db.Column(db.String)
+    
+    #Relationship - Friendship has ONE Friendship status. Thru FriendshipStatus, Friendship has many messages
+    friendship_status = db.relationship('FriendshipStatus', back_populates='friendship')
 
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
@@ -46,14 +48,28 @@ class User(db.Model, SerializerMixin):
     pending_friend = association_proxy('friends_requested', 'receiving_user')
     aspiring_friend = association_proxy('requests_received', 'requesting_user')
 
+
+class FriendshipStatus(db.Model):
+    __tablename__ = "friendshipstatuses"
     
+    id = db.Column(db.Integer, primary_key=True)
+    friendship_id = db.Column(db.Integer, db.ForeignKey('friendships.id'))
+    message_id = db.Column(db.Integer, db.ForeignKey('messages.id'))
+    status = db.Column(db.String)
+
+    #RELATIONSHIP - Friendship status has many friendships and many messages
+    message = db.relationship('Message', back_populates='friendship_status')
+    friendship = db.relationship('Friendship', back_populates='friendship_status')
 
 class Message(db.Model):
     __tablename__ = "messages"
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String)
+    
+    #RELATIONSHIP
+    friendship_status = db.relationship('FriendshipStatus', back_populates='message')
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    # user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     # user = db.relationship('User', back_populates="message_list")
     
 
@@ -67,10 +83,10 @@ class Category_Mom(db.Model):
     def __repr__(self):
         return f'{self.type}'
 
-class Category(db.Model):
-    __tablename__ = "categories"
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
+# class Category(db.Model):
+#     __tablename__ = "categories"
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String)
 
 class Interest(db.Model):
     __tablename__ = "interests"
