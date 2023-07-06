@@ -1,5 +1,5 @@
 from random import randint, choice as rc, randrange
-from models import db, User, Category_Mom, Interest, Friendship, Message
+from models import db, User, Category_Mom, Interest
 
 # Remote library imports
 from faker import Faker
@@ -12,7 +12,10 @@ if __name__ == '__main__':
     with app.app_context():
         print("Clearing db...")
         User.query.delete()
+        Category_Mom.query.delete()
+        Interest.query.delete()
     
+
         profile_images = [
             "https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
             "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
@@ -35,6 +38,7 @@ if __name__ == '__main__':
         db.session.add_all(momlifeoptions)
         print(momlifeoptions)
 
+        #create list of activity for each category
         print("Seeding interests list...")
         interests_list = [
             Interest(activity="Fitness"),
@@ -57,6 +61,8 @@ if __name__ == '__main__':
         print("Seeding Users...")
         user_profiles = []
         for i in range(20):
+            category=randrange(10)
+            interest=randrange(14)
             user = User(
                 name=fake.name(),
                 username=fake.text(8),
@@ -68,27 +74,29 @@ if __name__ == '__main__':
                 profile_image=rc(profile_images),
                 location=fake.city(),
                 about=fake.sentence(10),
-                # mom_life=rc(momlifeoptions),
-                # interests=rc(interests_list),
+                category_mom_id=category,
+                interest_id=interest
                 )
             user_profiles.append(user)
         db.session.add_all(user_profiles)
 
-        friends = []
-        for i in range(20):
-            status = ["Pending","Matched", "Blocked"]
-            user = rc(user_profiles[id])
-            print(user)
-            recipient = rc(user_profiles[id])
-            print(recipient)
-            new_friendship = Friendship(
-                status=rc(status),
-                user_id=user,
-                recipient_id=recipient
-            )
-            friends.append(new_friendship)
+        # fs1 = Friendship(receiving_user_id=1, requesting_user_id=2, status="Confirmed")
+        # db.session.add(fs1)
+        # friends = []
+        # for i in range(20):
+        #     status = ["Pending","Confirmed", "Blocked"]
+        #     user = rc(user_profiles[id])
+        #     print(user)
+        #     recipient = rc(user_profiles[id])
+        #     print(recipient)
+        #     new_friendship = Friendship(
+        #         status=rc(status),
+        #         requesting_user_id=user,
+        #         receiving_user_id=recipient
+        #     )
+        #     friends.append(new_friendship)
         
-        db.session.add_all(friends)
+        # db.session.add_all(friends)
 
 
 
