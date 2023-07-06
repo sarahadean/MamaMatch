@@ -6,6 +6,13 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from config import db, bcrypt
 
+class Friendship(db.Model):
+    __tablename__= "friendships"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    requesting_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    receiving_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    # status = db.Column(db.String)
+
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
 
@@ -20,32 +27,26 @@ class User(db.Model, SerializerMixin):
     profile_image = db.Column(db.String)
     location = db.Column(db.String)
     about = db.Column(db.String)
+    created_at = db.Column(db.DateTime, server_default = db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate = db.func.now())
+    category_mom_id = db.Column(db.Integer, db.ForeignKey('category_moms.id'))
+    interest_id = db.Column(db.Integer, db.ForeignKey('interests.id'))
 
     #relationships
-    mom_life = db.relationship('Category_Mom', back_populates='user')
-    interests = db.relationship('Interest', back_populates='user')
-    message_list = db.relationship('Message', back_populates='user')
+    mom_life = db.relationship('Category_Mom', backref='users')
+    interests = db.relationship('Interest', backref='users')
+    # message_list = db.relationship('Message', back_populates='user')
+
 
     #friendship relationships:
-    friends_requested = db.relationship('Friendship', foreign_keys='Friendship.requesting_user_id', backref='receiving_user_id')
-    requests_received = db.relationship('Friendship', foreign_keys='Friendship.receiving_user_id', backref='requesting_user_id')
+    friends_requested = db.relationship('Friendship', foreign_keys=[Friendship.requesting_user_id], backref='receiving_user')
+    requests_received = db.relationship('Friendship', foreign_keys=[Friendship.receiving_user_id], backref='requesting_user')
 
-    #
-    pending_friend = association_proxy('friends_requested', 'receiving_user_id')
-    aspiring_friend = association_proxy('requests_received', 'requesting_user_id')
-    # friends_list = db.relationship('Friendship', back_populates='friend')
+    #association proxies
+    pending_friend = association_proxy('friends_requested', 'receiving_user')
+    aspiring_friend = association_proxy('requests_received', 'requesting_user')
 
-
-class Friendship(db.Model):
-    __tablename__= "friendships"
-
-    requesting_user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    receiving_user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    status = db.Column(db.String)
-    # requesting_user = db.Column(db.Integer, db.ForeignKey('User.id'))
-    # receiving_user = db.Column(db.Integer, db.ForeignKey("User.id"))
-
-
+    
 
 class Message(db.Model):
     __tablename__ = "messages"
@@ -53,7 +54,7 @@ class Message(db.Model):
     content = db.Column(db.String)
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    user = db.relationship('User', back_populates="message_list")
+    # user = db.relationship('User', back_populates="message_list")
     
 
 class Category_Mom(db.Model):
@@ -62,11 +63,14 @@ class Category_Mom(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    user = db.relationship('User', back_populates='mom_life')
 
     def __repr__(self):
         return f'{self.type}'
+
+class Category(db.Model):
+    __tablename__ = "categories"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
 
 class Interest(db.Model):
     __tablename__ = "interests"
@@ -74,11 +78,16 @@ class Interest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     activity = db.Column(db.String)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    user = db.relationship('User', back_populates='interests')
-
+    # user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    # user = db.relationship('User', back_populates='interests')
     def __repr__(self):
         return f'{self.activity}'
+    
+# class Selection(db.Model):
+#     __tablename__ = "selections"
+
+#     id = db.Column(db.Integer, primary_key=True)
+
     
 
  
