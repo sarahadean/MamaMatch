@@ -1,5 +1,5 @@
 from random import randint, choice as rc, randrange
-from models import db, User, Category_Mom, Interest, Friendship
+from models import db, User, Category_Mom, Interest, FriendshipStatus, Message
 
 # Remote library imports
 from faker import Faker
@@ -60,9 +60,9 @@ if __name__ == '__main__':
 
         # print("Seeding Users...")
         # user_profiles = []
-        # for i in range(20):
-        #     category=randrange(10)
-        #     interest=randrange(14)
+        # for i in range(50):
+        #     category=randrange(1, 9)
+        #     interest=randrange(1, 15)
         #     user = User(
         #         name=fake.name(),
         #         username=fake.text(8),
@@ -80,25 +80,47 @@ if __name__ == '__main__':
         #     user_profiles.append(user)
         # db.session.add_all(user_profiles)
 
-        fs1 = Friendship(receiving_user_id=1, requesting_user_id=2)
-        db.session.add(fs1)
+        # fs1 = Friendship(receiving_user_id=1, requesting_user_id=2)
+        # db.session.add(fs1)
 
         # friends = []
-        # for i in range(20):
-        #     status = ["Pending","Confirmed", "Blocked"]
-        #     user = rc(user_profiles[id])
-        #     print(user)
-        #     recipient = rc(user_profiles[id])
-        #     print(recipient)
-        #     new_friendship = Friendship(
-        #         status=rc(status),
-        #         requesting_user_id=user,
-        #         receiving_user_id=recipient
-        #     )
-        #     friends.append(new_friendship)
+        # for i in range(50):
+        #     user = randrange(1, 51)
+        #     recipient = randrange(1, 51)
+        #     if user == recipient:
+        #         recipient = randrange(1, 51)
+        #     else:
+        #         new_friendship = Friendship(
+        #             requesting_user_id=user,
+        #             receiving_user_id=recipient
+        #         )
+        #         friends.append(new_friendship)
         
         # db.session.add_all(friends)
 
+        statuses = ['PENDING ACCEPTANCE', 'CONFIRMED', 'BLOCKED']
+
+        
+       
+        fake_messages = []
+        for i in range(300):
+            random_sentence_length = randint(1,10)
+            new_message = Message(content=fake.sentence(random_sentence_length))
+            fake_messages.append(new_message) 
+            db.session.add_all(fake_messages)
+        
+        
+        friendship_statuses_list = []
+        for i in range(50):
+            friendship=randint(1,51)
+            message=randint(1,301)
+            friendship_statuses_list.append(FriendshipStatus(
+                friendship_id=friendship,
+                message_id=message,
+                status=rc(statuses)
+            ))
+        
+        db.session.add_all(friendship_statuses_list)
         db.session.commit()
         
 
