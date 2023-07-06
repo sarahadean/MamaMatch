@@ -16,7 +16,7 @@ class Friendship(db.Model, SerializerMixin):
     friendship_status = db.relationship('FriendshipStatus', back_populates='friendship')
 
     #Serialize rules
-    serialize_rules = ('-friendship_status.friendship','-requesting_user_id', '-receiving_user_id')
+    serialize_rules = ('-friendship_status',)
 
 
 class User(db.Model, SerializerMixin):
@@ -50,14 +50,29 @@ class User(db.Model, SerializerMixin):
     pending_friend = association_proxy('friends_requested', 'receiving_user')
     aspiring_friend = association_proxy('requests_received', 'requesting_user')
 
-    #serialize rules
+    #serialize rules to avoid max recursion
     serialize_rules = (
-        '-friends_requested',
-        '-requests_received',
-        '-mom_life', 
-        '-interests')
-
-
+        '-friends_requested.receiving_user.friends_requested',
+        '-requests_received.requesting_user.requests_received'
+        '-mom_life.users',
+        '-interests.users')
+    
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'username' : self.username,
+            'password' : self.password,
+            'email' : self.email,
+            'phone_number': self.phone_number,
+            'dob': self.dob,
+            'profile_image': self.profile_image, 
+            'location': self.location,
+            'about' : self.about,
+            'mom_life':self.mom_life,
+            'interests':self.interests
+        }
 
 class FriendshipStatus(db.Model, SerializerMixin):
     __tablename__ = "friendshipstatuses"
@@ -73,7 +88,6 @@ class FriendshipStatus(db.Model, SerializerMixin):
 
     #Serializer Rules
     serialize_rule = ('-message.friendship_status', '-friendship.friendship_status')
-
 
 
 class Message(db.Model, SerializerMixin):
@@ -94,6 +108,13 @@ class Category_Mom(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String)
 
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'type': self.type
+        }
+
     def __repr__(self):
         return f'{self.type}'
 
@@ -102,6 +123,14 @@ class Interest(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     activity = db.Column(db.String)
+
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'activity': self.activity
+        }
+
 
     def __repr__(self):
         return f'{self.activity}'

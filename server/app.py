@@ -11,25 +11,32 @@ import traceback
 migrate = Migrate(app, db)
 api = Api(app)
 
+# class Category_Moms(Resource):
+#     def get(self):
+#         moms = [mom.serialize for mom in Category_Mom.query.all()]
+#         return make_response(moms, 200)
+# api.add_resource(Category_Moms, '/category_moms') 
+
+
+###------------User and User ID Routes ------------### 
 class Users(Resource):
     def get(self):
         try:
-            all_users = [user.to_dict() for user in User.query.all()]
+            all_users = [user.serialize for user in User.query.all()]
             return make_response(all_users, 200)
         except Exception as e:
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
     
-api.add_resource(Users, '/users')
 
 class UsersId(Resource):
-    def get(id):
+    def get(self, id):
         user = User.query.filter_by(id=id).to_dict()
         if user:
             return make_response(user, 200)
         return {"User not found"}, 404
     
-    def patch(id):
+    def patch(self, id):
         data = request.get_json()
         user = User.query.filter_by(id=id)
         if user:
@@ -44,7 +51,7 @@ class UsersId(Resource):
                 return {"Validation error"}, 400
         return {"User not found"}, 404
     
-    def delete(id):
+    def delete(self, id):
         user = User.query.filter_by(id=id)
         if user:
             user.session.delete()
@@ -53,13 +60,31 @@ class UsersId(Resource):
         return {"User not found"}, 404
     
 api.add_resource(UsersId, '/users/<int:id>')
+api.add_resource(Users, '/users')
 
-# class Category_Moms(Resource):
-#     def get():
-#         moms = [mom.to_dict() for mom in Category_Mom.query.all()]
-#         return make_response(moms, 200)
 
-# api.add_resource(Category_Moms, '/moms')
+#####-------FRIENDSHIPS----------####
+class Friendships(Resource):
+    def get(self):
+        try:
+            all_friendships = [friends.to_dict() for friends in Friendships.query.all()]
+            return make_response(all_friendships, 200)
+        except Exception as e:
+            traceback.print_exc()
+            return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
+
+
+class FriendshipStatuses(Resource):
+    def get(self):
+        pass
+
+class FriendshipsById(Resource):
+    def get(self, id):
+        pass
+
+api.add_resource(Friendships, '/friendships')
+api.add_resource(FriendshipStatuses, '/friendshipstatuses')
+api.add_resource(FriendshipsById, '/friendships/<int:id>')
 
 if __name__ == '__main__':
     app.run(port=5555)
