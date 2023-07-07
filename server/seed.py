@@ -1,5 +1,5 @@
 from random import randint, choice as rc, randrange
-from models import db, User, Category_Mom, Interest, FriendshipStatus, Message
+from models import db, User, Category_Mom, Interest, Friendship, Message
 
 # Remote library imports
 from faker import Faker
@@ -10,7 +10,7 @@ from app import app
 fake = Faker()
 if __name__ == '__main__':
     with app.app_context():
-        # print("Clearing db...")
+        print("Clearing db...")
         # User.query.delete()
         # Category_Mom.query.delete()
         # Interest.query.delete()
@@ -82,45 +82,46 @@ if __name__ == '__main__':
 
         # fs1 = Friendship(receiving_user_id=1, requesting_user_id=2)
         # db.session.add(fs1)
-
-        # friends = []
-        # for i in range(50):
-        #     user = randrange(1, 51)
-        #     recipient = randrange(1, 51)
-        #     if user == recipient:
-        #         recipient = randrange(1, 51)
-        #     else:
-        #         new_friendship = Friendship(
-        #             requesting_user_id=user,
-        #             receiving_user_id=recipient
-        #         )
-        #         friends.append(new_friendship)
-        
-        # db.session.add_all(friends)
-
-        statuses = ['PENDING ACCEPTANCE', 'CONFIRMED', 'BLOCKED']
-
-        
-       
+        Message.query.delete()
         fake_messages = []
         for i in range(300):
+            friendship=randint(1,51)
             random_sentence_length = randint(1,10)
-            new_message = Message(content=fake.sentence(random_sentence_length))
+            new_message = Message(content=fake.sentence(random_sentence_length), friendship_id=friendship)
             fake_messages.append(new_message) 
             db.session.add_all(fake_messages)
-        
-        
-        friendship_statuses_list = []
+
+        Friendship.query.delete()
+        statuses = ['PENDING ACCEPTANCE', 'CONFIRMED', 'BLOCKED']
+        friends = []
         for i in range(50):
-            friendship=randint(1,51)
+            user = randrange(1, 51)
+            recipient = randrange(1, 51)
             message=randint(1,301)
-            friendship_statuses_list.append(FriendshipStatus(
-                friendship_id=friendship,
-                message_id=message,
-                status=rc(statuses)
-            ))
+            if user == recipient:
+                recipient = randrange(1, 51)
+            else:
+                new_friendship = Friendship(
+                    requesting_user_id=user,
+                    receiving_user_id=recipient,
+                    status=rc(statuses),
+                )
+
+                friends.append(new_friendship)
         
-        db.session.add_all(friendship_statuses_list)
+        db.session.add_all(friends)
+
+        # friendship_statuses_list = []
+        # for i in range(50):
+        #     friendship=randint(1,51)
+        #     message=randint(1,301)
+        #     friendship_statuses_list.append(FriendshipStatus(
+        #         friendship_id=friendship,
+        #         message_id=message,
+        #         status=rc(statuses)
+        #     ))
+        
+        # db.session.add_all(friendship_statuses_list)
         db.session.commit()
         
 
