@@ -21,7 +21,7 @@ Tech Stack:
 ## Schema:
 https://dbdiagram.io/d/64a2f12702bd1c4a5e6ce584
 
-<image src="https://github.com/sarahadean/capstone/assets/128323898/0e1b90bb-ba43-4bf1-b4e4-da74e48ccba4" width="600">
+<image src="https://github.com/sarahadean/capstone/assets/128323898/d11cb429-e33c-4b5c-b22e-ccec7c9751f2" width="600">
 
 
 ## Wireframe:
