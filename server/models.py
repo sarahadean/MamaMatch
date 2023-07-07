@@ -11,15 +11,11 @@ class Friendship(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     requesting_user_id = db.Column(db.Integer, db.ForeignKey('users.id') )
     receiving_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    status = db.Column(db.String)
     
-    #Relationship - Friendship has ONE Friendship status. Thru FriendshipStatus, Friendship has many messages
-
-
-    
-    friendship_status = db.relationship('FriendshipStatus', back_populates='friendship', cascade="all, delete-orphan"  )
-
-    #Serialize rules
-    # serialize_rules = ('-friendship_status',)
+    #Relationship - Friendship has many messages. Messages has ONE friendship
+    message = db.relationship('Message', back_populates='friendship')
+    # friendship_status = db.relationship('FriendshipStatus', back_populates='friendship', cascade="all, delete-orphan"  )
 
     @property
     def serialize(self):
@@ -53,25 +49,13 @@ class User(db.Model, SerializerMixin):
     mom_life = db.relationship('Category_Mom', backref='users')
     interests = db.relationship('Interest', backref='users')
 
-
     #friendship relationships:
-    # added == id to foreign_keys portion
     friends_requested = db.relationship('Friendship', foreign_keys=[Friendship.requesting_user_id],  backref='receiving_user')
     requests_received = db.relationship('Friendship', foreign_keys=[Friendship.receiving_user_id], backref='requesting_user')
-
-    # friends_requested = db.relationship('Friendship', foreign_keys=[Friendship.requesting_user_id], backref='receiving_user')
-    # requests_received = db.relationship('Friendship', foreign_keys=[Friendship.receiving_user_id], backref='requesting_user')
 
     #association proxies
     pending_friend = association_proxy('friends_requested', 'receiving_user')
     aspiring_friend = association_proxy('requests_received', 'requesting_user')
-
-    #serialize rules to avoid max recursion
-    # serialize_rules = (
-    #     '-friends_requested.receiving_user.friends_requested',
-    #     '-requests_received.requesting_user.requests_received',
-    #     '-mom_life.users',
-    #     '-interests.users')
     
     @property
     def serialize(self):
@@ -95,32 +79,23 @@ class User(db.Model, SerializerMixin):
     def friend(self, user):
         pass
 
-class FriendshipStatus(db.Model, SerializerMixin):
-    __tablename__ = "friendshipstatuses"
-    
-    id = db.Column(db.Integer, primary_key=True)
-    friendship_id = db.Column(db.Integer, db.ForeignKey('friendships.id'))
-    message_id = db.Column(db.Integer, db.ForeignKey('messages.id'))
-    status = db.Column(db.String)
-
-    #RELATIONSHIP - Friendship status has many friendships and many messages
-    message = db.relationship('Message', back_populates='friendship_status')
-    friendship = db.relationship('Friendship', back_populates='friendship_status')
-
-    #Serializer Rules
-    serialize_rule = ('-message.friendship_status', '-friendship.friendship_status')
+# class FriendshipStatus(db.Model, SerializerMixin):
+#     __tablename__ = "friendshipstatuses"
+#     id = db.Column(db.Integer, primary_key=True)
+#     #RELATIONSHIP - Friendship status has many friendships and many messages
+#     #Serializer Rules
+#     serialize_rule = ('-message.friendship_status', '-friendship.friendship_status')
 
 
 class Message(db.Model, SerializerMixin):
     __tablename__ = "messages"
     id = db.Column(db.Integer, primary_key=True)
+    friendship_id = db.Column(db.Integer, db.ForeignKey('friendships.id'))
     content = db.Column(db.String)
-    
-    #RELATIONSHIP
-    friendship_status = db.relationship('FriendshipStatus', back_populates='message', cascade="all, delete-orphan" )
 
-    #Serialize Rules
-    serialize_rules=('-friendship_status.message',)
+    #RELATIONSHIP
+    friendship = db.relationship('Friendship', back_populates='message')
+    # friendship_status = db.relationship('FriendshipStatus', back_populates='message', cascade="all, delete-orphan" )
     
 
 class Category_Mom(db.Model):
@@ -151,7 +126,6 @@ class Interest(db.Model):
             'id': self.id,
             'activity': self.activity
         }
-
 
     def __repr__(self):
         return f'{self.activity}'

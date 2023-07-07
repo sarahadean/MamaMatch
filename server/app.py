@@ -4,7 +4,7 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from flask_bcrypt import Bcrypt
-from models import db, User, Category_Mom, Interest, Friendship, FriendshipStatus
+from models import db, User, Category_Mom, Interest, Friendship
 from config import db, app, api
 import traceback
 
