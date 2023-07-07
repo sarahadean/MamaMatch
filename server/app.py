@@ -53,9 +53,9 @@ class Users(Resource):
 #             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
     
 class UsersId(Resource):
-    def get(self, id):
+    def get(self, username):
         try: 
-            user_info = User.query.filter_by(id=id).first().serialize
+            user_info = User.query.filter_by(username=username).first().serialize
             if user_info:
                 return make_response(user_info, 200)
             return {"User not found"}, 404
@@ -63,10 +63,10 @@ class UsersId(Resource):
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
     
-    def patch(self, id):
+    def patch(self, username):
         data = request.get_json()
         try: 
-            user_info = User.query.filter_by(id=id).first()
+            user_info = User.query.filter_by(username=username).first()
             if user_info:
                 #if attr is mom_life or interested - 
                 for attr in data:
@@ -82,9 +82,9 @@ class UsersId(Resource):
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
     
-    def delete(self, id):
+    def delete(self, username):
         try: 
-            user = User.query.filter_by(id=id).first()
+            user = User.query.filter_by(username=username).first()
             if user:
                 db.session.delete(user)
                 db.session.commit()
@@ -94,34 +94,31 @@ class UsersId(Resource):
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
         
-api.add_resource(UsersId, '/users/<int:id>')
-api.add_resource(Users, '/users')
-
 
 #####-------FRIENDSHIPS----------####
 # query_user_role = User.query.join(roles_users).join(Role).
 # filter((roles_users.c.user_id == User.id) & (roles_users.c.role_id == Role.id)).all()
-class Friendships(Resource):
-    def get(self):
-        # query_friendships = User.query.join(Friendship).all()
+class UserFriendships(Resource):
+    def get(self, username):
+        user = User.query.filter_by(username=username).first()
+        if not user:
+            return {"User not found"}, 404
         try:
-            all_friendships = [friends.serialize for friends in Friendship.query.all()]
-            return make_response(all_friendships, 200)
+            all_friendships = Friendship.query.filter(
+                (Friendship.receiving_user_id == user.id) |
+                (Friendship.requesting_user_id == user.id)
+            ).all()
+            serialized_friends = [friend.serialize for friend in all_friendships]
+            return make_response(serialized_friends, 200)
         except Exception as e:
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
+        
 
-class FriendshipStatuses(Resource):
-    def get(self):
-        pass
 
-class FriendshipsById(Resource):
-    def get(self, id):
-        pass
-
-api.add_resource(Friendships, '/friendships')
-api.add_resource(FriendshipStatuses, '/friendshipstatuses')
-api.add_resource(FriendshipsById, '/friendships/<int:id>')
+api.add_resource(UserFriendships, '/users/<string:username>/friendships')
+api.add_resource(UsersId, '/users/<string:username>')
+api.add_resource(Users, '/users')
 
 if __name__ == '__main__':
     app.run(port=5555)

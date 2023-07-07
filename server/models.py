@@ -14,15 +14,16 @@ class Friendship(db.Model, SerializerMixin):
     status = db.Column(db.String)
     
     #Relationship - Friendship has many messages. Messages has ONE friendship
-    message = db.relationship('Message', back_populates='friendship')
+    message = db.relationship('Message', backref='friendships')
     # friendship_status = db.relationship('FriendshipStatus', back_populates='friendship', cascade="all, delete-orphan"  )
 
     @property
     def serialize(self):
         return {
             "id":self.id,
-            "requesting_user_id":self.requesting_user_id,
-            "receiving_user_id":self.receiving_user_id
+            "requesting_user":self.requesting_user_id,
+            "receiving_user":self.receiving_user_id,
+            "status":self.status,
         }
 
 
@@ -94,9 +95,15 @@ class Message(db.Model, SerializerMixin):
     content = db.Column(db.String)
 
     #RELATIONSHIP
-    friendship = db.relationship('Friendship', back_populates='message')
+    # friendship = db.relationship('Friendship', back_populates='message')
     # friendship_status = db.relationship('FriendshipStatus', back_populates='message', cascade="all, delete-orphan" )
     
+    @property
+    def serialize(self):
+        return {
+            "friendship_id":self.friendship_id,
+            "content":self.content
+        }
 
 class Category_Mom(db.Model):
     __tablename__ = "category_moms"
