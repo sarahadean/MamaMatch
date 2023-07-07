@@ -87,9 +87,9 @@ class User(db.Model, SerializerMixin):
             'location': self.location,
             'about' : self.about,
             'mom_life':self.mom_life.type,
-            'interests':self.interests.activity
-            # 'friends_requested':self.friends_requested.requests_received,
-            # 'requests_received':self.requesting_user
+            'interests':self.interests.activity,
+            # 'friends_requested':self.friends_requested,
+            # 'requests_received':self.requests_received
         }
     
     def friend(self, user):

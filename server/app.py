@@ -11,11 +11,7 @@ import traceback
 migrate = Migrate(app, db)
 api = Api(app)
 
-# class Category_Moms(Resource):
-#     def get(self):
-#         moms = [mom.serialize for mom in Category_Mom.query.all()]
-#         return make_response(moms, 200)
-# api.add_resource(Category_Moms, '/category_moms') 
+
 
 
 ###------------User and User ID Routes ------------### 
@@ -103,15 +99,17 @@ api.add_resource(Users, '/users')
 
 
 #####-------FRIENDSHIPS----------####
+# query_user_role = User.query.join(roles_users).join(Role).
+# filter((roles_users.c.user_id == User.id) & (roles_users.c.role_id == Role.id)).all()
 class Friendships(Resource):
     def get(self):
+        # query_friendships = User.query.join(Friendship).all()
         try:
-            all_friendships = [friends.to_dict() for friends in Friendships.query.all()]
+            all_friendships = [friends.serialize for friends in Friendship.query.all()]
             return make_response(all_friendships, 200)
         except Exception as e:
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
-
 
 class FriendshipStatuses(Resource):
     def get(self):
