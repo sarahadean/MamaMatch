@@ -22,8 +22,25 @@ api = Api(app)
 class Users(Resource):
     def get(self):
         try:
-            all_users = [user.serialize for user in User.query.all()]
-            return make_response(all_users, 200)
+            all_users = User.query.all()
+            user_list = []
+            for user in all_users:
+                user_info = {
+                    'id': user.id,
+                    'name': user.name,
+                    'username' : user.username,
+                    'password' : user.password,
+                    'email' : user.email,
+                    'phone_number': user.phone_number,
+                    'dob': user.dob,
+                    'profile_image': user.profile_image, 
+                    'location': user.location,
+                    'about' : user.about,
+                    'mom_life':user.mom_life.type,
+                    'interests':user.interests.activity
+                }
+                user_list.append(user_info)
+            return make_response(user_list, 200)
         except Exception as e:
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
