@@ -4,7 +4,7 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from flask_bcrypt import Bcrypt
-from models import db, User, Category_Mom, Interest
+from models import db, User, Category_Mom, Interest, Friendship, FriendshipStatus
 from config import db, app, api
 import traceback
 
@@ -19,72 +19,71 @@ api = Api(app)
 
 
 ###------------User and User ID Routes ------------### 
+
 class Users(Resource):
     def get(self):
-        try:
-            all_users = User.query.all()
-            user_list = []
-            for user in all_users:
-                user_info = {
-                    'id': user.id,
-                    'name': user.name,
-                    'username' : user.username,
-                    # 'password' : user.password,
-                    'email' : user.email,
-                    'phone_number': user.phone_number,
-                    'dob': user.dob,
-                    'profile_image': user.profile_image, 
-                    'location': user.location,
-                    'about' : user.about,
-                    'mom_life':user.mom_life.type,
-                    'interests':user.interests.activity
-                }
-                user_list.append(user_info)
-            return make_response(user_list, 200)
+        try: 
+            all_users = [user.serialize for user in User.query.all()]
+            return make_response(all_users, 200)
+        except Exception as e:
+            traceback.print_exc()
+            return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
+        
+
+# class Users(Resource):
+#     def get(self):
+#         try:
+#             all_users = User.query.all()
+#             user_list = []
+#             for user in all_users:
+#                 user_info = {
+#                     'id': user.id,
+#                     'name': user.name,
+#                     'username' : user.username,
+#                     # 'password' : user.password,
+#                     'email' : user.email,
+#                     'phone_number': user.phone_number,
+#                     'dob': user.dob,
+#                     'profile_image': user.profile_image, 
+#                     'location': user.location,
+#                     'about' : user.about,
+#                     'mom_life':user.mom_life.type,
+#                     'interests':user.interests.activity
+#                 }
+#                 user_list.append(user_info)
+#             return make_response(user_list, 200)
+#         except Exception as e:
+#             traceback.print_exc()
+#             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
+    
+class UsersId(Resource):
+    def get(self, id):
+        try: 
+            user_info = User.query.filter_by(id=id).first().serialize
+            if user_info:
+                return make_response(user_info, 200)
+            return {"User not found"}, 404
         except Exception as e:
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
     
-
-class UsersId(Resource):
-    def get(self, id):
-        try: 
-            user = User.query.filter_by(id=id).first()
-            if user:
-                user_info = {
-                    'id': user.id,
-                    'name': user.name,
-                    'username' : user.username,
-                    'password' : user.password,
-                    'email' : user.email,
-                    'phone_number': user.phone_number,
-                    'dob': user.dob,
-                    'profile_image': user.profile_image, 
-                    'location': user.location,
-                    'about' : user.about,
-                    'mom_life':user.mom_life.type,
-                    'interests':user.interests.activity,
-                    # 'friends_requested':user.friends_requested.receiving_user,
-                    # 'requests_received':user.requests_received.requesting_user
-                }
-            return make_response(user_info, 200)
-        except:
-            return {"User not found"}, 404
-    
     def patch(self, id):
         data = request.get_json()
-        user = User.query.filter_by(id=id)
-        if user:
-            try:
-                for attr in user:
-                    setattr(user, attr, data.get(attr))
-                
-                db.session.add(user)
-                db.session.commit()
-                return make_response(user.to_dict(), 200)
-            except:
-                return {"Validation error"}, 400
-        return {"User not found"}, 404
+        try: 
+            user_info = User.query.filter_by(id=id).first().serialize
+            if user_info:
+                #if attr is mom_life or interested - 
+                for attr in user_info:
+                    setattr(user_info, attr, data.get(attr))
+                    db.session.add(user_info)
+                    db.session.commit()
+                    return make_response(user_info, 200)
+                else:
+                    return {"Validation error"}, 400
+            return {"User not found"}, 404
+        except Exception as e:
+            traceback.print_exc()
+            return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
     
     def delete(self, id):
         user = User.query.filter_by(id=id)

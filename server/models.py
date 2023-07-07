@@ -16,7 +16,15 @@ class Friendship(db.Model, SerializerMixin):
     friendship_status = db.relationship('FriendshipStatus', back_populates='friendship', cascade="all, delete-orphan"  )
 
     #Serialize rules
-    serialize_rules = ('-friendship_status',)
+    # serialize_rules = ('-friendship_status',)
+
+    @property
+    def serialize(self):
+        return {
+            "id":self.id,
+            "requesting_user_id":self.requesting_user_id,
+            "receiving_user_id":self.receiving_user_id
+        }
 
 
 class User(db.Model, SerializerMixin):
@@ -51,28 +59,33 @@ class User(db.Model, SerializerMixin):
     aspiring_friend = association_proxy('requests_received', 'requesting_user')
 
     #serialize rules to avoid max recursion
-    serialize_rules = (
-        '-friends_requested.receiving_user.friends_requested',
-        '-requests_received.requesting_user.requests_received',
-        '-mom_life.users',
-        '-interests.users')
+    # serialize_rules = (
+    #     '-friends_requested.receiving_user.friends_requested',
+    #     '-requests_received.requesting_user.requests_received',
+    #     '-mom_life.users',
+    #     '-interests.users')
     
-    # @property
-    # def serialize(self):
-    #     return {
-    #         'id': self.id,
-    #         'name': self.name,
-    #         'username' : self.username,
-    #         'password' : self.password,
-    #         'email' : self.email,
-    #         'phone_number': self.phone_number,
-    #         'dob': self.dob,
-    #         'profile_image': self.profile_image, 
-    #         'location': self.location,
-    #         'about' : self.about,
-    #         'mom_life':self.mom_life,
-    #         'interests':self.interests
-    #     }
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'username' : self.username,
+            'password' : self.password,
+            'email' : self.email,
+            'phone_number': self.phone_number,
+            'dob': self.dob,
+            'profile_image': self.profile_image, 
+            'location': self.location,
+            'about' : self.about,
+            'mom_life':self.mom_life.type,
+            'interests':self.interests.activity,
+            # 'friends_requested':self.friends_requested[Friendship.receiving_user_id],
+            # 'requests_received':self.requests_received[Friendship.requesting_user_id]
+        }
+    
+    def friend(self, user):
+        pass
 
 class FriendshipStatus(db.Model, SerializerMixin):
     __tablename__ = "friendshipstatuses"
