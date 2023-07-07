@@ -29,7 +29,7 @@ class Users(Resource):
                     'id': user.id,
                     'name': user.name,
                     'username' : user.username,
-                    'password' : user.password,
+                    # 'password' : user.password,
                     'email' : user.email,
                     'phone_number': user.phone_number,
                     'dob': user.dob,
@@ -48,10 +48,28 @@ class Users(Resource):
 
 class UsersId(Resource):
     def get(self, id):
-        user = User.query.filter_by(id=id).to_dict()
-        if user:
-            return make_response(user, 200)
-        return {"User not found"}, 404
+        try: 
+            user = User.query.filter_by(id=id).first()
+            if user:
+                user_info = {
+                    'id': user.id,
+                    'name': user.name,
+                    'username' : user.username,
+                    'password' : user.password,
+                    'email' : user.email,
+                    'phone_number': user.phone_number,
+                    'dob': user.dob,
+                    'profile_image': user.profile_image, 
+                    'location': user.location,
+                    'about' : user.about,
+                    'mom_life':user.mom_life.type,
+                    'interests':user.interests.activity,
+                    # 'friends_requested':user.friends_requested.receiving_user,
+                    # 'requests_received':user.requests_received.requesting_user
+                }
+            return make_response(user_info, 200)
+        except:
+            return {"User not found"}, 404
     
     def patch(self, id):
         data = request.get_json()

@@ -9,11 +9,11 @@ from config import db, bcrypt
 class Friendship(db.Model, SerializerMixin):
     __tablename__= "friendships"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    requesting_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    requesting_user_id = db.Column(db.Integer, db.ForeignKey('users.id') )
     receiving_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     
     #Relationship - Friendship has ONE Friendship status. Thru FriendshipStatus, Friendship has many messages
-    friendship_status = db.relationship('FriendshipStatus', back_populates='friendship')
+    friendship_status = db.relationship('FriendshipStatus', back_populates='friendship', cascade="all, delete-orphan"  )
 
     #Serialize rules
     serialize_rules = ('-friendship_status',)
@@ -53,26 +53,26 @@ class User(db.Model, SerializerMixin):
     #serialize rules to avoid max recursion
     serialize_rules = (
         '-friends_requested.receiving_user.friends_requested',
-        '-requests_received.requesting_user.requests_received'
+        '-requests_received.requesting_user.requests_received',
         '-mom_life.users',
         '-interests.users')
     
-    @property
-    def serialize(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'username' : self.username,
-            'password' : self.password,
-            'email' : self.email,
-            'phone_number': self.phone_number,
-            'dob': self.dob,
-            'profile_image': self.profile_image, 
-            'location': self.location,
-            'about' : self.about,
-            'mom_life':self.mom_life,
-            'interests':self.interests
-        }
+    # @property
+    # def serialize(self):
+    #     return {
+    #         'id': self.id,
+    #         'name': self.name,
+    #         'username' : self.username,
+    #         'password' : self.password,
+    #         'email' : self.email,
+    #         'phone_number': self.phone_number,
+    #         'dob': self.dob,
+    #         'profile_image': self.profile_image, 
+    #         'location': self.location,
+    #         'about' : self.about,
+    #         'mom_life':self.mom_life,
+    #         'interests':self.interests
+    #     }
 
 class FriendshipStatus(db.Model, SerializerMixin):
     __tablename__ = "friendshipstatuses"
@@ -96,7 +96,7 @@ class Message(db.Model, SerializerMixin):
     content = db.Column(db.String)
     
     #RELATIONSHIP
-    friendship_status = db.relationship('FriendshipStatus', back_populates='message')
+    friendship_status = db.relationship('FriendshipStatus', back_populates='message', cascade="all, delete-orphan" )
 
     #Serialize Rules
     serialize_rules=('-friendship_status.message',)
