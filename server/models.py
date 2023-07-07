@@ -6,7 +6,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from config import db, bcrypt
 
-class Friendship(db.Model):
+class Friendship(db.Model, SerializerMixin):
     __tablename__= "friendships"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     requesting_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -14,6 +14,10 @@ class Friendship(db.Model):
     
     #Relationship - Friendship has ONE Friendship status. Thru FriendshipStatus, Friendship has many messages
     friendship_status = db.relationship('FriendshipStatus', back_populates='friendship')
+
+    #Serialize rules
+    serialize_rules = ('-friendship_status',)
+
 
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
@@ -37,8 +41,6 @@ class User(db.Model, SerializerMixin):
     #relationships
     mom_life = db.relationship('Category_Mom', backref='users')
     interests = db.relationship('Interest', backref='users')
-    # message_list = db.relationship('Message', back_populates='user')
-
 
     #friendship relationships:
     friends_requested = db.relationship('Friendship', foreign_keys=[Friendship.requesting_user_id], backref='receiving_user')
@@ -48,8 +50,31 @@ class User(db.Model, SerializerMixin):
     pending_friend = association_proxy('friends_requested', 'receiving_user')
     aspiring_friend = association_proxy('requests_received', 'requesting_user')
 
+    #serialize rules to avoid max recursion
+    serialize_rules = (
+        '-friends_requested.receiving_user.friends_requested',
+        '-requests_received.requesting_user.requests_received'
+        '-mom_life.users',
+        '-interests.users')
+    
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'username' : self.username,
+            'password' : self.password,
+            'email' : self.email,
+            'phone_number': self.phone_number,
+            'dob': self.dob,
+            'profile_image': self.profile_image, 
+            'location': self.location,
+            'about' : self.about,
+            'mom_life':self.mom_life,
+            'interests':self.interests
+        }
 
-class FriendshipStatus(db.Model):
+class FriendshipStatus(db.Model, SerializerMixin):
     __tablename__ = "friendshipstatuses"
     
     id = db.Column(db.Integer, primary_key=True)
@@ -61,7 +86,11 @@ class FriendshipStatus(db.Model):
     message = db.relationship('Message', back_populates='friendship_status')
     friendship = db.relationship('Friendship', back_populates='friendship_status')
 
-class Message(db.Model):
+    #Serializer Rules
+    serialize_rule = ('-message.friendship_status', '-friendship.friendship_status')
+
+
+class Message(db.Model, SerializerMixin):
     __tablename__ = "messages"
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String)
@@ -69,8 +98,8 @@ class Message(db.Model):
     #RELATIONSHIP
     friendship_status = db.relationship('FriendshipStatus', back_populates='message')
 
-    # user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    # user = db.relationship('User', back_populates="message_list")
+    #Serialize Rules
+    serialize_rules=('-friendship_status.message',)
     
 
 class Category_Mom(db.Model):
@@ -79,14 +108,15 @@ class Category_Mom(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String)
 
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'type': self.type
+        }
 
     def __repr__(self):
         return f'{self.type}'
-
-# class Category(db.Model):
-#     __tablename__ = "categories"
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String)
 
 class Interest(db.Model):
     __tablename__ = "interests"
@@ -94,8 +124,14 @@ class Interest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     activity = db.Column(db.String)
 
-    # user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    # user = db.relationship('User', back_populates='interests')
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'activity': self.activity
+        }
+
+
     def __repr__(self):
         return f'{self.activity}'
     
@@ -103,6 +139,8 @@ class Interest(db.Model):
 #     __tablename__ = "selections"
 
 #     id = db.Column(db.Integer, primary_key=True)
+#     interest_id
+#     activity_id
 
     
 
