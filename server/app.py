@@ -70,14 +70,15 @@ class UsersId(Resource):
     def patch(self, id):
         data = request.get_json()
         try: 
-            user_info = User.query.filter_by(id=id).first().serialize
+            user_info = User.query.filter_by(id=id).first()
             if user_info:
                 #if attr is mom_life or interested - 
-                for attr in user_info:
+                for attr in data:
                     setattr(user_info, attr, data.get(attr))
+                    
                     db.session.add(user_info)
                     db.session.commit()
-                    return make_response(user_info, 200)
+                    return make_response(user_info.serialize, 200)
                 else:
                     return {"Validation error"}, 400
             return {"User not found"}, 404
@@ -86,13 +87,17 @@ class UsersId(Resource):
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
     
     def delete(self, id):
-        user = User.query.filter_by(id=id)
-        if user:
-            user.session.delete()
-            user.session.commit()
-            return make_response(user, 204)
-        return {"User not found"}, 404
-    
+        try: 
+            user = User.query.filter_by(id=id).first()
+            if user:
+                db.session.delete(user)
+                db.session.commit()
+                return make_response({}, 204)
+            return {"User not found"}, 404
+        except Exception as e:
+            traceback.print_exc()
+            return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
+        
 api.add_resource(UsersId, '/users/<int:id>')
 api.add_resource(Users, '/users')
 

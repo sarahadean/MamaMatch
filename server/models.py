@@ -13,6 +13,9 @@ class Friendship(db.Model, SerializerMixin):
     receiving_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     
     #Relationship - Friendship has ONE Friendship status. Thru FriendshipStatus, Friendship has many messages
+
+
+    
     friendship_status = db.relationship('FriendshipStatus', back_populates='friendship', cascade="all, delete-orphan"  )
 
     #Serialize rules
@@ -50,9 +53,14 @@ class User(db.Model, SerializerMixin):
     mom_life = db.relationship('Category_Mom', backref='users')
     interests = db.relationship('Interest', backref='users')
 
+
     #friendship relationships:
-    friends_requested = db.relationship('Friendship', foreign_keys=[Friendship.requesting_user_id], backref='receiving_user')
+    # added == id to foreign_keys portion
+    friends_requested = db.relationship('Friendship', foreign_keys=[Friendship.requesting_user_id],  backref='receiving_user')
     requests_received = db.relationship('Friendship', foreign_keys=[Friendship.receiving_user_id], backref='requesting_user')
+
+    # friends_requested = db.relationship('Friendship', foreign_keys=[Friendship.requesting_user_id], backref='receiving_user')
+    # requests_received = db.relationship('Friendship', foreign_keys=[Friendship.receiving_user_id], backref='requesting_user')
 
     #association proxies
     pending_friend = association_proxy('friends_requested', 'receiving_user')
@@ -79,9 +87,9 @@ class User(db.Model, SerializerMixin):
             'location': self.location,
             'about' : self.about,
             'mom_life':self.mom_life.type,
-            'interests':self.interests.activity,
-            # 'friends_requested':self.friends_requested[Friendship.receiving_user_id],
-            # 'requests_received':self.requests_received[Friendship.requesting_user_id]
+            'interests':self.interests.activity
+            # 'friends_requested':self.friends_requested.requests_received,
+            # 'requests_received':self.requesting_user
         }
     
     def friend(self, user):
