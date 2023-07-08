@@ -92,7 +92,7 @@ if __name__ == '__main__':
             db.session.add_all(fake_messages)
 
         Friendship.query.delete()
-        statuses = ['PENDING ACCEPTANCE', 'CONFIRMED', 'BLOCKED']
+        statuses = ['PENDING', 'CONFIRMED', 'BLOCKED']
         friends = []
         for i in range(50):
             user = randrange(1, 51)
