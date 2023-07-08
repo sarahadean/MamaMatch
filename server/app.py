@@ -16,46 +16,47 @@ api = Api(app)
 
 ###------------User and User ID Routes ------------### 
 
-class Users(Resource):
-    def get(self):
+# *****DONE***** - TEST SUCCESSFUL ########
+# Display users that are not already in friendship with current user
+#get all current_user friendships
+#get all users
+#remove users from list that match received_user_id or received_user_id
+class FilteredUsers(Resource):
+    def get(self, id):
         try: 
-            all_users = [user.serialize for user in User.query.all()]
-            return make_response(all_users, 200)
+            user = User.query.filter_by(id=id).first()
+            all_user_friendships = Friendship.query.filter(
+                (Friendship.receiving_user_id == user.id) |
+                (Friendship.requesting_user_id == user.id)
+            ).all()
+            friend_ids = [(friendship.receiving_user_id != user.id | friendship.requesting_user_id != user.id) for friendship in all_user_friendships]
+            # def get_friends_id():
+            #     for friendship in all_user_friendships:
+            #         if friendship.receiving_user_id != user.id:
+            #             friend_ids.append(friendship.receiving_user_id)
+            #         elif friendship.requesting_user_id != user.id:
+            #             friend_ids.append(friendship.requesting_user_id)
+            #         return friend_ids
+            # get_friends_id()
+            
+            filtered_users = [user.serialize for user in User.query.filter(User.id not in friend_ids or User.id != user.id)]
+            return make_response(filtered_users, 200)
         except Exception as e:
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
-        
-
-# class Users(Resource):
-#     def get(self):
-#         try:
-#             all_users = User.query.all()
-#             user_list = []
-#             for user in all_users:
-#                 user_info = {
-#                     'id': user.id,
-#                     'name': user.name,
-#                     'username' : user.username,
-#                     # 'password' : user.password,
-#                     'email' : user.email,
-#                     'phone_number': user.phone_number,
-#                     'dob': user.dob,
-#                     'profile_image': user.profile_image, 
-#                     'location': user.location,
-#                     'about' : user.about,
-#                     'mom_life':user.mom_life.type,
-#                     'interests':user.interests.activity
-#                 }
-#                 user_list.append(user_info)
-#             return make_response(user_list, 200)
-#         except Exception as e:
-#             traceback.print_exc()
-#             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
-    
-class UsersId(Resource):
-    def get(self, username):
+        # try: 
+        #     all_users = [user.serialize for user in User.query.all()]
+        #     return make_response(all_users, 200)
+        # except Exception as e:
+        #     traceback.print_exc()
+        #     return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
+api.add_resource(FilteredUsers, '/filteredusers/<int:id>')          
+# *****DONE****** - GET, PATCH AND DELETE TEST SUCCESSFUL #######
+#This is for user when logged in to update their profile
+class UserById(Resource):
+    def get(self, id):
         try: 
-            user_info = User.query.filter_by(username=username).first().serialize
+            user_info = User.query.filter_by(id=id).first().serialize
             if user_info:
                 return make_response(user_info, 200)
             return {"User not found"}, 404
@@ -63,10 +64,10 @@ class UsersId(Resource):
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
     
-    def patch(self, username):
+    def patch(self, id):
         data = request.get_json()
         try: 
-            user_info = User.query.filter_by(username=username).first()
+            user_info = User.query.filter_by(id=id).first()
             if user_info:
                 #if attr is mom_life or interested - 
                 for attr in data:
@@ -82,9 +83,9 @@ class UsersId(Resource):
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
     
-    def delete(self, username):
+    def delete(self, id):
         try: 
-            user = User.query.filter_by(username=username).first()
+            user = User.query.filter_by(id=id).first()
             if user:
                 db.session.delete(user)
                 db.session.commit()
@@ -94,13 +95,19 @@ class UsersId(Resource):
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
         
+api.add_resource(UserById, '/userbyid/<int:id>')
+     
 
-#####-------FRIENDSHIPS----------####
-# query_user_role = User.query.join(roles_users).join(Role).
-# filter((roles_users.c.user_id == User.id) & (roles_users.c.role_id == Role.id)).all()
+#<------------------------FRIENDSHIP ROUTES----------------------->
+
+# ****in progress
+######## GET TEST SUCCESSFUL ---- POST TEST NEEDED ########
+#Routes to retrieve all friendships for user and create a friendship
+
+
 class UserFriendships(Resource):
-    def get(self, username):
-        user = User.query.filter_by(username=username).first()
+    def get(self, id):
+        user = User.query.filter_by(id=id).first()
         if not user:
             return {"User not found"}, 404
         try:
@@ -114,11 +121,101 @@ class UserFriendships(Resource):
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
         
+###### TEST PENDING LOGIN CREATION ###### 
+    #creating friendship - receiving_user_id or requesting_user_id belongs to user
+    #login should be required so requesting user will always be current user
+    #
+    def post(self, id):
+        data = request.get_json()
+        requester = User.query.filter_by(id=id).first().serialize
+        # friends = [user.serialize for user in User.query.filter_by(id=id, id=friend_id).all()]
+        try: 
+            if requester:
+                new_friendship = Friendship(
+                requesting_user_id = requester.id,
+                receiving_user_id= data.get('receiving_user_id'),
+                status ='PENDING')
+                db.session.add(new_friendship)
+                db.session.commit()
+                return make_response(new_friendship, 201)
+        except Exception as e:
+            traceback.print_exc()
+            return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
+       
+api.add_resource(UserFriendships, '/<int:id>/friendships')
+
+# ****DONE*******
+# RETRIEVE LIST OF FRIENDSHIPS BY STATUS TEST SUCCESSFUL ##########
+# *******>>>status currently includes BOTH requests received AND requests sent<<<<******
+@app.route('/<int:id>/<string:status>')
+def get_confirmed_friends(username, status):
+        user = User.query.filter_by(username=username).first()
+        if not user:
+            return {"User not found"}, 404
+        try:
+            all_friendships = Friendship.query.filter(
+                    ((Friendship.receiving_user_id == user.id) |
+                    (Friendship.requesting_user_id == user.id)) & (Friendship.status == f'{status}')
+                ).all()
+            serialized_friends = [friend.serialize for friend in all_friendships]
+            #GET CONFIRMED or PENDING friends
+            return make_response(serialized_friends, 200)
+        except:
+            return {"Validation error"}, 400
 
 
-api.add_resource(UserFriendships, '/users/<string:username>/friendships')
-api.add_resource(UsersId, '/users/<string:username>')
-api.add_resource(Users, '/users')
+
+###### RETRIEVE ONE FRIENDSHIP:
+# DELETE SUCCESSFUL, 
+# GET SUCCESSFUL but not returning correct response if not exits
+# PATCH TEST pending ########
+#change status of single friendship = PATCH or DELETE
+class FriendshipById(Resource):
+    def get(self, id):
+        #filters by id of friendship
+        try:
+            selected_friendship = Friendship.query.filter_by(id=id).first()
+            if selected_friendship:
+                return make_response(selected_friendship.serialize, 200)  
+            else:
+                return {"Error: Validation error"}, 400           
+        except: 
+            return {"Error: Not found"}, 404
+    
+    def patch(self, friendship_id):
+        data = request.get_json()
+        try:
+            selected_friendship = Friendship.query.filter_by(id=friendship_id).first().serialize
+            if selected_friendship:
+                for attr in data:
+                    setattr(selected_friendship, attr, data.get(attr))
+                db.session.add(selected_friendship)
+                db.session.commit()
+                return make_response(selected_friendship, 200)
+            return{"Friendship not found"}, 404
+        except Exception as e:
+            traceback.print_exc()
+            return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
+    
+    def delete(self, id):
+        try:
+            selected_friendship = Friendship.query.filter_by(id=id).first()
+            if not selected_friendship:
+                return {"Friendship not found"}, 404
+            else:
+                db.session.delete(selected_friendship)
+                db.session.commit()
+                return {}, 204
+        except Exception as e:
+            traceback.print_exc()
+            return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500 
+
+
+api.add_resource(FriendshipById, '/friendship/<int:id>')
+
+
+
+
 
 if __name__ == '__main__':
     app.run(port=5555)
