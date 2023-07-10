@@ -9,13 +9,43 @@ from config import db, app, api
 import traceback
 
 migrate = Migrate(app, db)
+app.secret_key = b"'\xb4\x14f\xfdk\xa8p\xeb\x9d\xf0jmn\x08k"
 api = Api(app)
 
 
+@app.route('/')
+def index():
+    return '<h1>Welcome to MamaMatch</h1>'
 
+
+class Signup(Resource):
+    def post(self):
+        data = request.get_json()
+        try: 
+            new_user = User(
+                name = data['name'],
+                username = data['username'],
+                password = data['password'],
+                email = data['email'],
+                phone_number = data['phone_number'],
+                dob = data['dob'],
+                profile_image = data['profile_image'],
+                location = data['location'],
+                about = data['about'],
+                category_mom_id = data['category_mom_id'],
+                interest_id = data['interest_id']
+            )
+            db.session.add(new_user)
+            db.session.commit()
+            session['user_id'] = new_user.id
+            return make_response(new_user.serialize, 201)
+        except Exception as e:
+            traceback.print_exc()
+            return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
+        
+api.add_resource(Signup, '/signup')
 
 ###------------User and User ID Routes ------------### 
-
 # *****DONE***** - TEST SUCCESSFUL ########
 # Display users that are not already in friendship with current user
 #get all current_user friendships
@@ -26,31 +56,20 @@ class FilteredUsers(Resource):
         try: 
             user = User.query.filter_by(id=id).first()
             all_user_friendships = Friendship.query.filter(
-                (Friendship.receiving_user_id == user.id) |
+                (Friendship.receiving_user_id == user.id),
                 (Friendship.requesting_user_id == user.id)
             ).all()
             friend_ids = [(friendship.receiving_user_id != user.id | friendship.requesting_user_id != user.id) for friendship in all_user_friendships]
-            # def get_friends_id():
-            #     for friendship in all_user_friendships:
-            #         if friendship.receiving_user_id != user.id:
-            #             friend_ids.append(friendship.receiving_user_id)
-            #         elif friendship.requesting_user_id != user.id:
-            #             friend_ids.append(friendship.requesting_user_id)
-            #         return friend_ids
-            # get_friends_id()
             
             filtered_users = [user.serialize for user in User.query.filter(User.id not in friend_ids or User.id != user.id)]
             return make_response(filtered_users, 200)
         except Exception as e:
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
-        # try: 
-        #     all_users = [user.serialize for user in User.query.all()]
-        #     return make_response(all_users, 200)
-        # except Exception as e:
-        #     traceback.print_exc()
-        #     return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
-api.add_resource(FilteredUsers, '/filteredusers/<int:id>')          
+       
+api.add_resource(FilteredUsers, '/filteredusers/<int:id>')     
+
+
 # *****DONE****** - GET, PATCH AND DELETE TEST SUCCESSFUL #######
 #This is for user when logged in to update their profile
 class UserById(Resource):

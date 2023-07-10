@@ -77,8 +77,6 @@ class User(db.Model, SerializerMixin):
             # 'requests_received':self.requests_received
         }
     
-    def friend(self, user):
-        pass
 
 # class FriendshipStatus(db.Model, SerializerMixin):
 #     __tablename__ = "friendshipstatuses"
