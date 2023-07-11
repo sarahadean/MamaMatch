@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Routes, Route } from 'react-router-dom'
 import Welcome from './Welcome'
 import SignupForm from './SignupForm'
 import LoginForm from './LoginForm'
@@ -14,13 +15,12 @@ function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
       <div>
         <NavBar/>
         <Header />
         <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route path="/welcome" element={<Welcome />}/>
+          <Route exact path="/" element={<Welcome />} />
+          <Route path="/home" element={<Home />}/>
           <Route path="/signup" element={<SignupForm />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/interested" element={<PendingList />} />
@@ -29,7 +29,6 @@ function App() {
           <Route path="/conversation" element={<Conversation />} />
         </Routes>
     </div>
-    </>
   )
 }
 
