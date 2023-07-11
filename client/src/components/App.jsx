@@ -29,7 +29,7 @@ function App() {
   }
 
   function authorizeUser(){
-    fetch('/check_session')
+    fetch('/api/check_session')
     .then(response => {
       if (response.ok) {
         response.json().then((user) => setUser(user))

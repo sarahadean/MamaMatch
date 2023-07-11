@@ -3,9 +3,9 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from models import db, User, Category_Mom, Interest, Friendship, Message
-from config import db, app, api, bcrypt, migrate, Resource
+from config import db, app, api
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-
+from flask_restful import Resource
 import traceback
 
 
@@ -52,20 +52,21 @@ api.add_resource(Signup, '/signup')
 
 class Login(Resource):
     def post(self):
-        data = data.get_json()
+        data = request.get_json()
+        
         email = data.get('email')
-        password = data.get('password'
-                            )
+        password = data.get('password')
         user = User.query.filter(User.email == email).first()
 
         if user:
             if user.authenticate(password):
-                login_user(user, remember=True)
-                return {'message': 'Successfully logged-in'}, 200
+                session['user_id'] == user.id
+                return user.to_dict(), 200
+                # return {'message': 'Successfully logged-in'}, 200
 
         return {'error': '401 Unauthorized'}, 401
 
-api.add_resource(Login, '/Login')
+api.add_resource(Login, '/login')
 
 @app.route("/logout", methods=["POST"])
 @login_required
@@ -76,10 +77,18 @@ def logout():
 
 class CheckSession(Resource):
     def get(self):
-        if current_user.is_authenticated:
-            user = current_user.serialize
-            return user, 200
-        return {'error': "401 Unauthorized"}, 401
+        try: 
+            user = User.query.filter_by(
+                id = session.get('user_id')).first()
+            return make_response(user.to_dict(), 200)
+        except Exception as e:
+            traceback.print_exc()
+            return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
+        
+        # if current_user.is_authenticated:
+        #     user = current_user
+        #     return make_response(user.serialize, 200)
+        # return {'error': "401 Unauthorized"}, 401
 
 api.add_resource(CheckSession, '/check_session')
 

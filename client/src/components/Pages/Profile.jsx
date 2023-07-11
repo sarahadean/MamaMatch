@@ -2,7 +2,7 @@ import React from 'react'
 
 function Profile() {
   return (
-    <div>Profile</div>
+    <div>Profile - user will add other contact info and select mom life + interests</div>
   )
 }
 

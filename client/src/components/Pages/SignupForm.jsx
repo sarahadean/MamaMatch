@@ -53,7 +53,7 @@ function SignupForm({user, updateUser}) {
                     res.json().then(user => {
                       console.log(user)
                       updateUser(user)
-                      navigate("/")
+                      navigate("/profile")
                       actions.resetForm()
                     });
 

@@ -7,7 +7,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from config import db, bcrypt
 from flask_login import UserMixin
 
-class Friendship(db.Model, SerializerMixin):
+class Friendship(db.Model, SerializerMixin, UserMixin):
     __tablename__= "friendships"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     created_at = db.Column(db.DateTime, server_default = db.func.now())
@@ -65,6 +65,7 @@ class User(db.Model, SerializerMixin, UserMixin):
     
     @hybrid_property
     def password_hash(self):
+        self._password_hash
         raise Exception('Password hashes may not be viewed.')
 
     @password_hash.setter
@@ -73,9 +74,10 @@ class User(db.Model, SerializerMixin, UserMixin):
             password.encode('utf-8'))
         self._password_hash = password_hash.decode('utf-8')
 
+
     def authenticate(self, password):
         return bcrypt.check_password_hash(
-            self._password, password.encode('utf-8'))
+            self._password_hash, password.encode('utf-8'))
 
     @property
     def serialize(self):
