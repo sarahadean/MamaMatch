@@ -13,10 +13,15 @@ import Header from './Header'
 import Profile from './Pages/Profile'
 
 function App() {
+  //state of all users
+  const [users, setUsers] = useState(null)
+
+  //state of individual user
   const [user, setUser] = useState(null)
 
   useEffect(() => {
     authorizeUser()
+    getFriends()
   }, [])
 
   function updateUser(user){
@@ -34,6 +39,12 @@ function App() {
     })
   }
 
+  function getFriends(){
+    fetch('/user_friendships')
+    .then(response => response.json)
+    .then(data => console.log(data))
+  }
+
   return (
       <div>
         <Header />
@@ -42,7 +53,7 @@ function App() {
           <Route exact path="/" element={<Welcome />} />
           <Route path="/home" element={<Home />}/>
           <Route path="/signup" element={<SignupForm user = {user} updateUser={updateUser}/>} />
-          <Route path="/login" element={<LoginForm />} />
+          <Route path="/login" element={<LoginForm user = {user} updateUser={updateUser}/>} />
           <Route path="/interested" element={<PendingList />} />
           <Route path="/friends" element={<FriendsList />} />
           <Route path="/messages" element={<MessagesList />} />

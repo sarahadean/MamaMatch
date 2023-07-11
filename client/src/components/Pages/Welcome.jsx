@@ -1,5 +1,5 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 function Welcome({user, updateUser}) {
   const navigate = useNavigate();
@@ -8,9 +8,11 @@ function Welcome({user, updateUser}) {
     <div>
       <h1>Welcome to MamaMatch!</h1>
     </div>
-    <div>
-      <button>Sign Up! </button>
-      <button>Login</button>
+    <div className='menu'>
+      {/* <button>Sign Up! </button>
+      <button>Login</button> */}
+      <NavLink className="button" to="/login">Login</NavLink>
+      <NavLink className="button" to="/signup">Signup</NavLink>
     </div>
     </>
     

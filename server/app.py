@@ -30,15 +30,15 @@ class Signup(Resource):
                 username = data['username'],
     
                 email = data['email'],
-                phone_number = data['phone_number'],
-                dob = data['dob'],
-                profile_image = data['profile_image'],
-                location = data['location'],
-                about = data['about'],
-                category_mom_id = data['category_mom_id'],
-                interest_id = data['interest_id']
+                # phone_number = data['phone_number'],
+                # dob = data['dob'],
+                # profile_image = data['profile_image'],
+                # location = data['location'],
+                # about = data['about'],
+                # category_mom_id = data.get('category_mom_id'),
+                # interest_id = data.get('interest_id')
             )
-            new_user.password = data['password']
+            new_user._password_hash = data['password']
             
             db.session.add(new_user)
             db.session.commit()
@@ -159,20 +159,20 @@ api.add_resource(Users, '/users/<int:id>')
 #Creates new friendship
 # Gets all user's friendships (will comment out this later) 
 class UserFriendships(Resource):
-    # def get(self, id):
-    #     user = User.query.filter_by(id=id).first()
-    #     if not user:
-    #         return {"User not found"}, 404
-    #     try:
-    #         all_friendships = Friendship.query.filter(
-    #             (Friendship.receiving_user_id == user.id) |
-    #             (Friendship.requesting_user_id == user.id)
-    #         ).all()
-    #         serialized_friends = [friend.serialize for friend in all_friendships]
-    #         return make_response(serialized_friends, 200)
-    #     except Exception as e:
-    #         traceback.print_exc()
-    #         return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
+    def get(self, id):
+        user = User.query.filter_by(id=id).first()
+        if not user:
+            return {"User not found"}, 404
+        try:
+            all_friendships = Friendship.query.filter(
+                (Friendship.receiving_user_id == user.id) |
+                (Friendship.requesting_user_id == user.id)
+            ).all()
+            serialized_friends = [friend.serialize for friend in all_friendships]
+            return make_response(serialized_friends, 200)
+        except Exception as e:
+            traceback.print_exc()
+            return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
         
     def post(self):
         data = request.get_json()

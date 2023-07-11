@@ -37,7 +37,7 @@ class User(db.Model, SerializerMixin, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     username = db.Column(db.String)
-    _password = db.Column(db.String)
+    _password_hash = db.Column(db.String)
     email = db.Column(db.String)
     phone_number = db.Column(db.String)
     dob = db.Column(db.String) #<------change data-type to date later?
@@ -64,14 +64,14 @@ class User(db.Model, SerializerMixin, UserMixin):
 
     
     @hybrid_property
-    def password(self):
+    def password_hash(self):
         raise Exception('Password hashes may not be viewed.')
 
-    @password.setter
-    def password(self, password):
-        password = bcrypt.generate_password_hash(
+    @password_hash.setter
+    def password_hash(self, password):
+        password_hash = bcrypt.generate_password_hash(
             password.encode('utf-8'))
-        self._password = password.decode('utf-8')
+        self._password_hash = password_hash.decode('utf-8')
 
     def authenticate(self, password):
         return bcrypt.check_password_hash(
@@ -83,15 +83,15 @@ class User(db.Model, SerializerMixin, UserMixin):
             'id': self.id,
             'name': self.name,
             'username' : self.username,
-            'password' : self.password,
+            'password' : self._password_hash,
             'email' : self.email,
             'phone_number': self.phone_number,
             'dob': self.dob,
             'profile_image': self.profile_image, 
             'location': self.location,
             'about' : self.about,
-            'mom_life':self.mom_life.type,
-            'interests':self.interests.activity,
+            # 'mom_life':self.mom_life.type,
+            # 'interests':self.interests.activity,
             # 'friends_requested':self.friends_requested,
             # 'requests_received':self.requests_received
         }

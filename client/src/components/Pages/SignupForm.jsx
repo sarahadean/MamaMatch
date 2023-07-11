@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import {useFormik } from "formik";
+import { useFormik } from "formik";
 import * as yup from "yup";
-import LoginForm from '../LoginForm';
 import {useNavigate} from "react-router-dom"
 
 function SignupForm({user, updateUser}) {
 
-  const [signup, setSignup] = useState(true)
   const [error, setError] = useState(null)
   const navigate = useNavigate()
   const toggleSignup = () => setSignup(prev => !prev);
@@ -15,14 +13,14 @@ function SignupForm({user, updateUser}) {
     name: yup.string().required("*Name is required"),
     username: yup.string().required("*Username is required"),
     email: yup.string().required("*Email is required"),
-    phone_number: yup.string().required("*Phone number is required"),
+    // phone_number: yup.string().required("*Phone number is required"),
     password: yup.string().required("*Password is required"),
-    dob: yup.string().required("*Date of birth is required"),
-    location: yup.string().required("*Location is required"),
-    profile_image: yup.string(),
-    about: yup.string(),
-    mom_life: yup.string(),
-    interests: yup.string()
+    // dob: yup.string().required("*Date of birth is required"),
+    // location: yup.string().required("*Location is required"),
+    // profile_image: yup.string(),
+    // about: yup.string()
+    // mom_life: yup.string(),
+    // interests: yup.string()
   })
 
   const formik = useFormik({
@@ -32,19 +30,19 @@ function SignupForm({user, updateUser}) {
           username: "",
           email: "",
           password: "",
-          phone_number: "",
-          dob: "",
-          location: "",
-          profile_image: "",
-          about: "",
-          mom_life: "",
-          interests: ""
+          // phone_number: "",
+          // dob: "",
+          // location: "",
+          // profile_image: "",
+          // about: "",
+          // mom_life: "",
+          // interests: ""
       },
 
       validationSchema: schema,
   
         onSubmit: (values, actions) => {
-            fetch(signup ? "/signup" : "/login", {
+            fetch("/api/signup", {
                 method: "POST",
                 headers: {
                     "content-type" : "application/json"
@@ -53,15 +51,26 @@ function SignupForm({user, updateUser}) {
             }).then (res => {
                 if(res.ok){
                     res.json().then(user => {
-                      actions.resetForm()
+                      console.log(user)
                       updateUser(user)
-                        navigate("/")
-                    })
+                      navigate("/")
+                      actions.resetForm()
+                    });
 
                 } else{
-                  res.json().then((error) => setError(error.message));
+                  res.json().then(data => {
+                    if (data && data.message) {
+                      setError(data.message);
+                    } else {
+                      setError("An error occurred during signup.");
+                    }
+                  });
                 }
-            })
+              })
+              .catch(error => {
+                setError("An error occurred during signup.");
+                console.error(error);
+              });
           }
         })
 
@@ -121,10 +130,10 @@ function SignupForm({user, updateUser}) {
             ) : ("")}
             </label>
 
-            <label> Phone Number:
+            {/* <label> Phone Number:
             <input 
             type="text" 
-            name="phone number" 
+            name="phone_number" 
             onChange={formik.handleChange}
             value={formik.values.phone_number}
             onBlur={formik.handleBlur}/>
@@ -136,7 +145,7 @@ function SignupForm({user, updateUser}) {
             <label> Date of Birth:
             <input 
             type="text" 
-            name="Date of birth" 
+            name="dob" 
             onChange={formik.handleChange}
             value={formik.values.dob}
             onBlur={formik.handleBlur} />
@@ -148,7 +157,7 @@ function SignupForm({user, updateUser}) {
             <label>Profile Picture:
               <input
               type='text'
-              name='Profile picture'
+              name='profile_image'
               onChange={formik.handleChange}
               value={formik.values.profile_image}
               onBlur={formik.handleBlur}/>
@@ -160,7 +169,8 @@ function SignupForm({user, updateUser}) {
             <label>Location:
               <input
               type='text'
-              name='City, State'
+              name='location'
+              placeholder='City, State'
               onChange={formik.handleChange}
               value={formik.values.location}
               onBlur={formik.handleBlur}/>
@@ -172,19 +182,19 @@ function SignupForm({user, updateUser}) {
             <label>Tell us a little about yourself, mama:
               <input
               type='text'
-              name='About'
+              name='about'
               onChange={formik.handleChange}
               value={formik.values.about}
               onBlur={formik.handleBlur}/>
               {formik.touched.about && formik.errors.about ? (
             <h3>{formik.errors.about}</h3>
             ) : ("")}
-            </label>
+            </label> */}
 
-            <label>Mom life:
+            {/* <label>Mom life:
               <input
-              type='button'
-              name='Pregnant'
+              type='text'
+              name='mom_life'
               onChange={formik.handleChange}
               value={formik.values.mom_life}
               onBlur={formik.handleBlur}/>
@@ -192,6 +202,18 @@ function SignupForm({user, updateUser}) {
             <h3>{formik.errors.mom_life}</h3>
             ) : ("")}
             </label>
+
+            <label>Interests:
+              <input
+              type='text'
+              name='interests'
+              onChange={formik.handleChange}
+              value={formik.values.interests}
+              onBlur={formik.handleBlur}/>
+              {formik.touched.interests && formik.errors.interests ? (
+            <h3>{formik.errors.interests}</h3>
+            ) : ("")}
+            </label> */}
 
             <input type="submit" value="Signup!" />
             
