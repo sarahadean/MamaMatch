@@ -1,17 +1,14 @@
 from flask import Flask, request, jsonify, make_response, abort, session
-from flask_restful import Api, Resource
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from models import db, User, Category_Mom, Interest, Friendship, Message
-from config import db, app, api, bcrypt
+from config import db, app, api, bcrypt, migrate, Resource
 from flask_login import LoginManager
 
 import traceback
 
-migrate = Migrate(app, db)
-app.secret_key = b"'\xb4\x14f\xfdk\xa8p\xeb\x9d\xf0jmn\x08k"
-api = Api(app)
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -31,7 +28,7 @@ class Signup(Resource):
             new_user = User(
                 name = data['name'],
                 username = data['username'],
-                password = data['password'],
+    
                 email = data['email'],
                 phone_number = data['phone_number'],
                 dob = data['dob'],
@@ -41,6 +38,8 @@ class Signup(Resource):
                 category_mom_id = data['category_mom_id'],
                 interest_id = data['interest_id']
             )
+            new_user.password = data['password']
+            
             db.session.add(new_user)
             db.session.commit()
             session['user_id'] = new_user.id

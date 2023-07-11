@@ -5,6 +5,7 @@ from sqlalchemy import MetaData
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from config import db, bcrypt
+from flask_login import UserMixin
 
 class Friendship(db.Model, SerializerMixin):
     __tablename__= "friendships"
@@ -30,13 +31,13 @@ class Friendship(db.Model, SerializerMixin):
         }
 
 
-class User(db.Model, SerializerMixin):
+class User(db.Model, SerializerMixin, UserMixin):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     username = db.Column(db.String)
-    password = db.Column(db.String)
+    _password = db.Column(db.String)
     email = db.Column(db.String)
     phone_number = db.Column(db.String)
     dob = db.Column(db.String) #<------change data-type to date later?
@@ -60,7 +61,22 @@ class User(db.Model, SerializerMixin):
     #association proxies
     pending_friend = association_proxy('friends_requested', 'receiving_user')
     aspiring_friend = association_proxy('requests_received', 'requesting_user')
+
     
+    @hybrid_property
+    def password(self):
+        raise Exception('Password hashes may not be viewed.')
+
+    @password.setter
+    def password(self, password):
+        password = bcrypt.generate_password_hash(
+            password.encode('utf-8'))
+        self._password = password.decode('utf-8')
+
+    def authenticate(self, password):
+        return bcrypt.check_password_hash(
+            self._password, password.encode('utf-8'))
+
     @property
     def serialize(self):
         return {
@@ -80,13 +96,6 @@ class User(db.Model, SerializerMixin):
             # 'requests_received':self.requests_received
         }
     
-
-# class FriendshipStatus(db.Model, SerializerMixin):
-#     __tablename__ = "friendshipstatuses"
-#     id = db.Column(db.Integer, primary_key=True)
-#     #RELATIONSHIP - Friendship status has many friendships and many messages
-#     #Serializer Rules
-#     serialize_rule = ('-message.friendship_status', '-friendship.friendship_status')
 
 
 class Message(db.Model, SerializerMixin):
