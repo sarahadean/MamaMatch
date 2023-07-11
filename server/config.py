@@ -20,10 +20,11 @@ metadata = MetaData(naming_convention={
     "pk": "pk_%(table_name)s",
 })
 
+
+
 db = SQLAlchemy(metadata=metadata)
 migrate = Migrate(app, db)
 db.init_app(app)
-
 bcrypt = Bcrypt(app)
 
 api = Api(app)

@@ -3,20 +3,26 @@ from flask_restful import Api, Resource
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
-from flask_bcrypt import Bcrypt
-from models import db, User, Category_Mom, Interest, Friendship
-from config import db, app, api
+from models import db, User, Category_Mom, Interest, Friendship, Message
+from config import db, app, api, bcrypt
+from flask_login import LoginManager
+
 import traceback
 
 migrate = Migrate(app, db)
 app.secret_key = b"'\xb4\x14f\xfdk\xa8p\xeb\x9d\xf0jmn\x08k"
 api = Api(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 
 @app.route('/')
 def index():
     return '<h1>Welcome to MamaMatch</h1>'
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
 
 class Signup(Resource):
     def post(self):
@@ -45,6 +51,13 @@ class Signup(Resource):
         
 api.add_resource(Signup, '/signup')
 
+class Login(Resource):
+    def post(self):
+        user = User.query.filter(User.username == request.get_json()['username']).first()
+        session['user_id'] = user.id
+        return user.to_dict()
+api.add_resource(Login, '/Login')
+
 # Display users that are not already in friendship with current user
 class FilteredUsers(Resource):
     def get(self, id):
@@ -66,21 +79,20 @@ class FilteredUsers(Resource):
         except Exception as e:
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
-       
-api.add_resource(FilteredUsers, '/filteredusers/<int:id>')     
-
+        
+api.add_resource(FilteredUsers, '/filtered_users/<int:id>')     
 
 #User can update or delete their profile/account
-class UserById(Resource):
-    def get(self, id):
-        try: 
-            user_info = User.query.filter_by(id=id).first()
-            if not user_info:
-                return {"User not found"}, 404
-            return make_response(user_info.serialize, 200)
-        except Exception as e:
-            traceback.print_exc()
-            return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
+class Users(Resource):
+    # def get(self, id):
+    #     try: 
+    #         user_info = User.query.filter_by(id=id).first()
+    #         if not user_info:
+    #             return {"User not found"}, 404
+    #         return make_response(user_info.serialize, 200)
+    #     except Exception as e:
+    #         traceback.print_exc()
+    #         return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
     
     def patch(self, id):
         data = request.get_json()
@@ -113,28 +125,29 @@ class UserById(Resource):
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
         
-api.add_resource(UserById, '/userbyid/<int:id>')
+api.add_resource(Users, '/users/<int:id>')
      
+
 
 #<------------------------FRIENDSHIP ROUTES----------------------->
 
 #Creates new friendship
 # Gets all user's friendships (will comment out this later) 
 class UserFriendships(Resource):
-    def get(self, id):
-        user = User.query.filter_by(id=id).first()
-        if not user:
-            return {"User not found"}, 404
-        try:
-            all_friendships = Friendship.query.filter(
-                (Friendship.receiving_user_id == user.id) |
-                (Friendship.requesting_user_id == user.id)
-            ).all()
-            serialized_friends = [friend.serialize for friend in all_friendships]
-            return make_response(serialized_friends, 200)
-        except Exception as e:
-            traceback.print_exc()
-            return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
+    # def get(self, id):
+    #     user = User.query.filter_by(id=id).first()
+    #     if not user:
+    #         return {"User not found"}, 404
+    #     try:
+    #         all_friendships = Friendship.query.filter(
+    #             (Friendship.receiving_user_id == user.id) |
+    #             (Friendship.requesting_user_id == user.id)
+    #         ).all()
+    #         serialized_friends = [friend.serialize for friend in all_friendships]
+    #         return make_response(serialized_friends, 200)
+    #     except Exception as e:
+    #         traceback.print_exc()
+    #         return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
         
     def post(self):
         data = request.get_json()
@@ -150,7 +163,7 @@ class UserFriendships(Resource):
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
        
-api.add_resource(UserFriendships, '/user_friendships/<int:id>')
+api.add_resource(UserFriendships, '/user_friendships')
 
 #Retrieve's user's PENDING and CONFIRMED status friendships
 @app.route('/user_friendships/<int:id>/<string:status>')
@@ -215,9 +228,36 @@ class FriendshipById(Resource):
 
 api.add_resource(FriendshipById, '/friendship/<int:id>')
 
+#Routes needed:
+# - list of messages for user - GET and POST, DELETE
+# - get's messages for individual friendship
+
+#shows list of messages grouped by friendship for user
+class Messages(Resource):
+    def get(self, id):
+        try: 
+            friendship_messages = [message.serialize for message in Message.query.filter(Message.friendship_id == id).all()]
+            return make_response(friendship_messages, 200)
+        except Exception as e:
+            traceback.print_exc()
+            return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500 
+
+    def post(self):
+        pass
 
 
 
+api.add_resource(Messages, '/messages/<int:id>')
+
+#shows messages for individual friendship
+class FriendshipMessages(Resource):
+    def get(self):
+        pass
+
+    def delete(self):
+        pass
+
+api.add_resource(FriendshipMessages, '/friendshipmessages')
 
 if __name__ == '__main__':
     app.run(port=5555)

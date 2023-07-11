@@ -9,6 +9,8 @@ from config import db, bcrypt
 class Friendship(db.Model, SerializerMixin):
     __tablename__= "friendships"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    created_at = db.Column(db.DateTime, server_default = db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate = db.func.now())
     requesting_user_id = db.Column(db.Integer, db.ForeignKey('users.id') )
     receiving_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     status = db.Column(db.String)
@@ -24,6 +26,7 @@ class Friendship(db.Model, SerializerMixin):
             "requesting_user":self.requesting_user_id,
             "receiving_user":self.receiving_user_id,
             "status":self.status,
+            # "message":self.message.content
         }
 
 
@@ -89,6 +92,8 @@ class User(db.Model, SerializerMixin):
 class Message(db.Model, SerializerMixin):
     __tablename__ = "messages"
     id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, server_default = db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate = db.func.now())
     friendship_id = db.Column(db.Integer, db.ForeignKey('friendships.id'))
     content = db.Column(db.String)
 
@@ -99,6 +104,7 @@ class Message(db.Model, SerializerMixin):
     @property
     def serialize(self):
         return {
+            "id": self.id,
             "friendship_id":self.friendship_id,
             "content":self.content
         }
