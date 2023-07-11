@@ -2,7 +2,8 @@ import React from 'react'
 
 function Home() {
   return (
-    <div>Home</div>
+    <div>Home(this will display the filtered user's route)
+    </div>
   )
 }
 

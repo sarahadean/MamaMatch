@@ -2,7 +2,11 @@ import React from 'react'
 
 function Header() {
   return (
-    <div>Header</div>
+    <div>
+       <h1>
+        MamaMatch (logo here)
+      </h1>
+    </div>
   )
 }
 

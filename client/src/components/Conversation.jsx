@@ -2,7 +2,7 @@ import React from 'react'
 
 function Conversation() {
   return (
-    <div>Conversation</div>
+    <div>Conversation with friend</div>
   )
 }
 

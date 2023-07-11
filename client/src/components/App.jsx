@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
-import Welcome from './Welcome'
-import SignupForm from './SignupForm'
+import Welcome from './Pages/Welcome'
+import SignupForm from './Pages/SignupForm'
 import LoginForm from './LoginForm'
-import PendingList from './PendingList'
-import FriendsList from './FriendsList'
-import MessagesList from './MessagesList'
+import PendingList from './Pages/PendingList'
+import FriendsList from './Pages/FriendsList'
+import MessagesList from './Pages/MessagesList'
 import Conversation from './Conversation'
-import Home from './Home'
+import Home from './Pages/Home'
 import NavBar from './NavBar'
 import Header from './Header'
+import Profile from './Pages/Profile'
 
 function App() {
   const [user, setUser] = useState(null)
@@ -35,8 +36,8 @@ function App() {
 
   return (
       <div>
-        <NavBar/>
         <Header />
+        <NavBar/>
         <Routes>
           <Route exact path="/" element={<Welcome />} />
           <Route path="/home" element={<Home />}/>
@@ -46,6 +47,7 @@ function App() {
           <Route path="/friends" element={<FriendsList />} />
           <Route path="/messages" element={<MessagesList />} />
           <Route path="/conversation" element={<Conversation />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
     </div>
   )
