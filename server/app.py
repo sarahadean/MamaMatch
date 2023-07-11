@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from models import db, User, Category_Mom, Interest, Friendship, Message
 from config import db, app, api, bcrypt, migrate, Resource
-from flask_login import LoginManager
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
 import traceback
 
@@ -52,10 +52,36 @@ api.add_resource(Signup, '/signup')
 
 class Login(Resource):
     def post(self):
-        user = User.query.filter(User.username == request.get_json()['username']).first()
-        session['user_id'] = user.id
-        return user.to_dict()
+        data = data.get_json()
+        email = data.get('email')
+        password = data.get('password'
+                            )
+        user = User.query.filter(User.email == email).first()
+
+        if user:
+            if user.authenticate(password):
+                login_user(user, remember=True)
+                return {'message': 'Successfully logged-in'}, 200
+
+        return {'error': '401 Unauthorized'}, 401
+
 api.add_resource(Login, '/Login')
+
+@app.route("/logout", methods=["POST"])
+@login_required
+def logout():
+    logout_user()
+    return f'Goodbye, Mama! Have a great day!'
+
+
+class CheckSession(Resource):
+    def get(self):
+        if current_user.is_authenticated:
+            user = current_user.serialize
+            return user, 200
+        return {'error': "401 Unauthorized"}, 401
+
+api.add_resource(CheckSession, '/check_session')
 
 # Display users that are not already in friendship with current user
 class FilteredUsers(Resource):

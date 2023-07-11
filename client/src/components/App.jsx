@@ -12,7 +12,26 @@ import NavBar from './NavBar'
 import Header from './Header'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    authorizeUser()
+  }, [])
+
+  function updateUser(user){
+    setUser(user)
+  }
+
+  function authorizeUser(){
+    fetch('/check_session')
+    .then(response => {
+      if (response.ok) {
+        response.json().then((user) => setUser(user))
+      } else {
+        setUser(null)
+      }
+    })
+  }
 
   return (
       <div>
@@ -21,7 +40,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Welcome />} />
           <Route path="/home" element={<Home />}/>
-          <Route path="/signup" element={<SignupForm />} />
+          <Route path="/signup" element={<SignupForm user = {user} updateUser={updateUser}/>} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/interested" element={<PendingList />} />
           <Route path="/friends" element={<FriendsList />} />
