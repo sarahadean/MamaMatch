@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import UserContext from './UserContext';
 
-function Welcome({user, updateUser}) {
+function Welcome() {
   const navigate = useNavigate();
+  const { user, setUser } = useContext(UserContext);
+
+  if (user) {
+    navigate('/home')
+  }
+
   return (
     <>
     <div>

@@ -1,10 +1,15 @@
 import React, { useEffect, useState, useContext} from 'react'
 import UserContext from './UserContext'
 import UserCard from '../UserCard';
+import { Formik, Field, ErrorMessage } from "formik";
 
 function Home() {
   const { user, setUser } = useContext(UserContext);
-  const [friends, setFriends] = useState([])
+  const [potentialFriends, setPotentialFriends] = useState([])
+
+  function updatePotentialFriend(){
+    setPotentialFriends(potentialFriends)
+  }
 
   useEffect(() => {
   fetchUsers() }, [user])
@@ -16,7 +21,6 @@ function Home() {
       fetch(`/api/filtered_users/${user.id}`)
         .then(res => {
           if (res.ok) {
-            console.log(res)
             return res.json()
           } else if (res.status == 404) {
             return []
@@ -24,19 +28,17 @@ function Home() {
             throw new Error("Error fetching address details");
           }
         })
-        .then(friends => setFriends(friends))
+        .then(potentialFriends => setPotentialFriends(potentialFriends))
     
     }
     }
-
-  
 
   if (!user) {
     return <div>Loading...</div>;
   }
 
-  const filteredUsers = friends.map((friend) => { 
-  return <UserCard key={friend.id} friend={friend}/>})
+  const filteredUsers = potentialFriends.map((friend) => { 
+  return <UserCard updatePotentialFriend={updatePotentialFriend} key={friend.id} friend={friend}/>})
   return (
     <div>Home-this will display the filtered user's route
       {filteredUsers}

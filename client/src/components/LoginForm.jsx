@@ -1,19 +1,21 @@
 import React, { useState, useContext } from 'react';
 import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
+
 import UserContext from './Pages/UserContext';
 import { Formik, Field, ErrorMessage } from "formik";
 
-function LoginForm() {
+function LoginForm({navigate}) {
   const { user, setUser } = useContext(UserContext);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
-
 
   const schema = yup.object().shape({
     username: yup.string().required("*Username is required"),
     password: yup.string().required("*Password is required")
   });
+
+  if (user) {
+    navigate('/home')
+  }
 
   return (
     <section>

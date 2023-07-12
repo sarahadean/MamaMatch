@@ -49,22 +49,6 @@ class Signup(Resource):
         
 api.add_resource(Signup, '/signup')
 
-# class Login(Resource):
-#     def post(self):
-#         data = request.get_json()
-#         user = User.query.filter_by(email = data.get('email')).first()
-#         password = request.get_json()['password']
-    
-#         if user.authenticate(password):
-#             session['user_id'] == user.id
-#             return user.to_dict(), 200
-#             # login_user(user, remember=True)
-#             # return {'message': 'Successfully logged-in'}, 200
-
-#         return {'error': '401 Unauthorized'}, 401
-
-# api.add_resource(Login, '/login')
-
 class Login(Resource):
     def post(self):
         data = request.get_json()
@@ -73,7 +57,7 @@ class Login(Resource):
 
         if user.authenticate(password):
             session['user_id'] = user.id
-            return user.to_dict(), 200
+            return user.serialize, 200
         
         return{'Invalid Username/Password'}, 401
 
@@ -211,7 +195,7 @@ class UserFriendships(Resource):
             new_friendship = Friendship(
             requesting_user_id = data['requesting_user_id'],
             receiving_user_id= data['receiving_user_id'],
-            status ='PENDING')
+            status = data.get('status'))
             db.session.add(new_friendship)
             db.session.commit()
             return make_response(new_friendship.serialize, 201)

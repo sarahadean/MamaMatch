@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import UserContext from './Pages/UserContext';
 
 
-function NavBar({ user, updateUser }) {
-  const navigate = useNavigate()
+function NavBar({navigate}) {
+  const { user, setUser } = useContext(UserContext);
 
   function handleLogout() {
 		fetch("/logout").then((res) => {
 			if (res.ok){
-				updateUser(null);
+				setUser(null);
 				navigate("/");
 			}
 		});
