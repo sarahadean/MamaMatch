@@ -9,7 +9,7 @@ function NavBar({ user, updateUser }) {
 		fetch("/logout").then((res) => {
 			if (res.ok){
 				updateUser(null);
-				navigate("/welcome");
+				navigate("/");
 			}
 		});
 	}
