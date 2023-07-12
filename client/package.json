@@ -3,7 +3,6 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "proxy":"http://127.0.0.1:5555",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -11,12 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "bootstrap": "^5.3.0",
     "formik": "^2.4.2",
     "mdb-react-ui-kit": "^6.1.0",
+    "react": "^18.2.0",
     "react-bootstrap": "^2.8.0",
+    "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
     "react-router-dom": "^6.14.1",
     "yup": "^1.2.0"

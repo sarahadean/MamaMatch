@@ -1,0 +1,258 @@
+import { useState, useEffect, useContext } from 'react'
+import { useFormik } from "formik";
+import * as yup from "yup";
+import {useNavigate} from "react-router-dom"
+import UserContext from './UserContext';
+
+//fetch request to get user's information - fill info forms
+function Profile() {
+  const { user, setUser } = useContext(UserContext)
+  const [error, setError] = useState(null)
+  const [edit, setEdit] = useState(null)
+  const navigate = useNavigate()
+  const toggleEdit = () => setEdit(prev => !prev)
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
+  // useEffect(() => {
+  //   getUser()
+  // }, [user])
+
+  // function getUser(){
+  //   fetch(`/api/users/${user.id}`)
+  //   .then(response => response.json)
+  //   .then(user => (user))
+  // }
+  console.log(user)
+
+  const schema = yup.object().shape({
+  name: yup.string().required("*Name is required"),
+  username: yup.string().required("*Username is required"),
+  email: yup.string().required("*Email is required"),  
+  password: yup.string().required("*Password is required"),
+  phone_number: yup.string().required("*Phone number is required"),
+  dob: yup.string().required("*Date of birth is required"),
+  location: yup.string().required("*Location is required"),
+  profile_image: yup.string(),
+  about: yup.string(),
+  mom_life: yup.string(),
+  interests: yup.string()
+  })
+
+  const formik = useFormik({
+
+    initialValues: {
+      name: "",
+      username: "",
+      email: "",
+      password: "",
+      phone_number: "",
+      dob: "",
+      location: "",
+      profile_image: "",
+      about: "",
+      mom_life: "",
+      interests: ""
+  },
+  validationSchema: schema,
+
+  onSubmit: (values, actions) => {
+    fetch(`/api/users/${user.id}`, {
+        method: "PATCH",
+        headers: {
+            "content-type" : "application/json"
+        },
+        body: JSON.stringify(values)
+    }).then (res => {
+        if(res.ok){
+            res.json().then(user => {
+              console.log(user)
+              updateUser(user)
+              navigate("/profile")
+            });
+
+        } else{
+          res.json().then(data => {
+            if (data && data.message) {
+              setError(data.message);
+            } else {
+              setError("An error occurred during signup.");
+            }
+          });
+        }
+      })
+      .catch(error => {
+        setError("An error occurred during signup.");
+        console.error(error);
+      });
+  }
+
+  })
+  return (
+    <section>
+      {toggleEdit ? 
+      (
+        <div>
+          <ul>
+            <li>Name: {user.name}</li>
+            <li>Username: {user.username}</li>
+            <li>Email: {user.email}</li>
+            {/* <li>password: {user.password}</li> */}
+            <li>Phone Number: {user.phone_number}</li>
+            <li>Birthday: {user.dob}</li>
+            <li>City, State: {user.location}</li>
+            <li>Profile picture: {user.profile_image}</li>
+            <li>About: {user.about}</li>
+            <li>Mom Life: {user.mom_life}</li>
+            <li>Interests: {user.interests}</li>
+          </ul>
+          <button onClick={toggleEdit}>Edit</button>
+        </div>
+      )
+      : (
+        <form onSubmit={formik.handleSubmit}>
+
+        <label> Name:
+        <input 
+        type="text" 
+        name="name" 
+        onChange={formik.handleChange}
+        value={formik.values.name}
+        onBlur={formik.handleBlur}/>
+        {formik.touched.name && formik.errors.name ? (
+        <h3>{formik.errors.name}</h3>
+        ) : ("")}
+        </label>
+
+        <label> Username:
+        <input
+        type="text"
+        name="username" 
+        onChange={formik.handleChange}
+        value={formik.values.username}
+        onBlur={formik.handleBlur}/>
+        {formik.touched.username && formik.errors.username ? (
+        <h3>{formik.errors.username}</h3>
+        ) : ("")}
+        </label>
+
+        <label> Email:
+        <input 
+        type="text"
+        name="email" 
+        onChange={formik.handleChange}
+        value={formik.values.email}
+        onBlur={formik.handleBlur}/>
+        {formik.touched.email && formik.errors.email ? (
+        <h3>{formik.errors.email}</h3>
+        ) : ("")}
+        </label>
+
+        <label> Password:
+        <input 
+        type="password" 
+        name="password" 
+        onChange={formik.handleChange}
+        value={formik.values.password}
+        onBlur={formik.handleBlur}/>
+        {formik.touched.password && formik.errors.password ? (
+        <h3>{formik.errors.password}</h3>
+        ) : ("")}
+        </label>
+
+        <label> Phone Number:
+        <input 
+        type="text" 
+        name="phone_number" 
+        onChange={formik.handleChange}
+        value={formik.values.phone_number}
+        onBlur={formik.handleBlur}/>
+        {formik.touched.phone_number && formik.errors.phone_number ? (
+        <h3>{formik.errors.phone_number}</h3>
+        ) : ("")}
+        </label>
+
+        <label> Date of Birth:
+        <input 
+        type="text" 
+        name="dob" 
+        onChange={formik.handleChange}
+        value={formik.values.dob}
+        onBlur={formik.handleBlur} />
+        {formik.touched.dob && formik.errors.dob ? (
+        <h3>{formik.errors.dob}</h3>
+        ) : ("")}
+        </label>
+
+        <label>Profile Picture:
+          <input
+          type='text'
+          name='profile_image'
+          onChange={formik.handleChange}
+          value={formik.values.profile_image}
+          onBlur={formik.handleBlur}/>
+          {formik.touched.profile_image && formik.errors.profile_image ? (
+        <h3>{formik.errors.profile_image}</h3>
+        ) : ("")}
+        </label>
+
+        <label>Location:
+          <input
+          type='text'
+          name='location'
+          placeholder='City, State'
+          onChange={formik.handleChange}
+          value={formik.values.location}
+          onBlur={formik.handleBlur}/>
+          {formik.touched.location && formik.errors.location ? (
+        <h3>{formik.errors.location}</h3>
+        ) : ("")}
+        </label>
+
+        <label>Tell us a little about yourself, mama:
+          <input
+          type='text'
+          name='about'
+          onChange={formik.handleChange}
+          value={formik.values.about}
+          onBlur={formik.handleBlur}/>
+          {formik.touched.about && formik.errors.about ? (
+        <h3>{formik.errors.about}</h3>
+        ) : ("")}
+        </label>
+
+        <label>Mom life:
+          <input
+          type='text'
+          name='mom_life'
+          onChange={formik.handleChange}
+          value={formik.values.mom_life}
+          onBlur={formik.handleBlur}/>
+          {formik.touched.mom_life && formik.errors.mom_life ? (
+        <h3>{formik.errors.mom_life}</h3>
+        ) : ("")}
+        </label>
+
+        <label>Interests:
+          <input
+          type='text'
+          name='interests'
+          onChange={formik.handleChange}
+          value={formik.values.interests}
+          onBlur={formik.handleBlur}/>
+          {formik.touched.interests && formik.errors.interests ? (
+        <h3>{formik.errors.interests}</h3>
+        ) : ("")}
+        </label>
+
+        <input type="submit" value="Update" />
+        
+        </form> )
+        }
+    </section>
+    // <div>Profile - user will add other contact info and select mom life + interests</div>
+  )
+}
+
+export default Profile

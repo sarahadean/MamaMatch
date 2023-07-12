@@ -2,7 +2,7 @@ import React from 'react'
 
 function PendingList() {
   return (
-    <div>PendingList</div>
+    <div>PendingList - this will display friendships with status= PENDING</div>
   )
 }
 
