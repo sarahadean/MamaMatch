@@ -21,7 +21,7 @@ function App() {
   useEffect(() => {
     authorizeUser()
     // getFriends()
-  }, [])
+  }, [user])
 
   // updates user info
   function updateUser(user){
@@ -40,7 +40,7 @@ function App() {
       })
     }
   }
-
+  
   // function getFriends(){
   //   fetch('/user_friendships')
   //   .then(response => response.json)
