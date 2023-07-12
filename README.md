@@ -1,10 +1,12 @@
 
-# MamaMatch - Find your Village
+# MamaMatch
 
 ## User Stories:
+MamaMatch is an app for mothers at any stage to connect with other moms in their area. Being a mom is hard enough, finding a your village shouldn't be. 
+Find your unicorn mom-friend!
 - Find potential mom-friends in your area
 - Interact with user profiles to find out if you are a mom-match!
-- Message new friends
+- Message new mom-friends!
 
 ## Features
 - Upon opening app, user will be greeted with welcome screen where they can either Signup or Login.
