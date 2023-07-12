@@ -7,7 +7,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from config import db, bcrypt
 from flask_login import UserMixin
 
-class Friendship(db.Model, SerializerMixin, UserMixin):
+class Friendship(db.Model, SerializerMixin):
     __tablename__= "friendships"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     created_at = db.Column(db.DateTime, server_default = db.func.now())
@@ -70,14 +70,12 @@ class User(db.Model, SerializerMixin, UserMixin):
 
     @password_hash.setter
     def password_hash(self, password):
-        password_hash = bcrypt.generate_password_hash(
-            password.encode('utf-8'))
+        password_hash = bcrypt.generate_password_hash(password.encode('utf-8'))
         self._password_hash = password_hash.decode('utf-8')
 
 
     def authenticate(self, password):
-        return bcrypt.check_password_hash(
-            self._password_hash, password.encode('utf-8'))
+        return bcrypt.check_password_hash(self._password_hash, password)
 
     @property
     def serialize(self):
@@ -91,7 +89,7 @@ class User(db.Model, SerializerMixin, UserMixin):
             'dob': self.dob,
             'profile_image': self.profile_image, 
             'location': self.location,
-            'about' : self.about,
+            'about' : self.about
             # 'mom_life':self.mom_life.type,
             # 'interests':self.interests.activity,
             # 'friends_requested':self.friends_requested,

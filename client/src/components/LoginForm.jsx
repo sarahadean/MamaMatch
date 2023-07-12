@@ -15,7 +15,7 @@ function LoginForm() {
   const formik = useFormik({
 
     initialValues: {
-        email: "",
+        username: "",
         password: "",
     },
 
@@ -46,15 +46,15 @@ function LoginForm() {
   return (
     <section>
       <form onSubmit={formik.handleSubmit}>
-      <label> Email:
+      <label> Username:
             <input 
             type="text"
-            name="email" 
+            name="username" 
             onChange={formik.handleChange}
-            value={formik.values.email}
+            value={formik.values.username}
             onBlur={formik.handleBlur}/>
-            {formik.touched.email && formik.errors.email ? (
-            <h3>{formik.errors.email}</h3>
+            {formik.touched.username && formik.errors.username ? (
+            <h3>{formik.errors.username}</h3>
             ) : ("")}
             </label>
 

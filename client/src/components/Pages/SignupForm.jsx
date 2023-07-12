@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import {useNavigate} from "react-router-dom"
 
-function SignupForm({user, updateUser}) {
+function SignupForm({updateUser}) {
 
   const [error, setError] = useState(null)
   const navigate = useNavigate()

@@ -16,19 +16,28 @@ function NavBar({ user, updateUser }) {
 
   return (
     <header>
+      {/* {user ? } */}
       <div className='menu'>
-            {/* {user ?  */}
-            <NavLink className="button" to="/home">Home</NavLink> 
-            <NavLink className="button" to="/interested">Pending</NavLink> 
+      {user ? 
+          (<>
+          <NavLink className="button" to="/home">Home</NavLink>
+          <NavLink className="button" to="/interested">Pending</NavLink> 
             <NavLink className="button" to="/friends">Friends</NavLink> 
             <NavLink className="button" to="/messages">Messages</NavLink>
-            <NavLink className="button" to="/profile">Profile</NavLink>  
-            {/* :  */}
+            <NavLink className="button" to="/profile">Profile</NavLink>
+            <button onClick={handleLogout} className='button'>Logout</button> 
+          </>):
+          (<>
             <NavLink className="button" to="/">Welcome</NavLink>
-            {/* } */}
+          </>) }
+       
+            {/* <NavLink className="button" to="/home">Home</NavLink>  */}
+             
+            {/* <NavLink className="button" to="/">Welcome</NavLink> */}
+            
             {/* <NavLink className="button" to="/login">Login</NavLink> */}
             {/* <NavLink className="button" to="/signup">Signup</NavLink> */}
-            {/* <NavLink exact to="/conversation">Welcome</NavLink> */}
+  
     </div>
     </header>
     

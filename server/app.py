@@ -19,16 +19,16 @@ def index():
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get(user_id)
+    return User.query.filter_by(id=user_id).first()
 
 class Signup(Resource):
     def post(self):
         data = request.get_json()
+
         try: 
             new_user = User(
                 name = data['name'],
                 username = data['username'],
-    
                 email = data['email'],
                 # phone_number = data['phone_number'],
                 # dob = data['dob'],
@@ -38,8 +38,7 @@ class Signup(Resource):
                 # category_mom_id = data.get('category_mom_id'),
                 # interest_id = data.get('interest_id')
             )
-            new_user._password_hash = data['password']
-            
+            new_user.password_hash = data['password']
             db.session.add(new_user)
             db.session.commit()
             session['user_id'] = new_user.id
@@ -50,23 +49,37 @@ class Signup(Resource):
         
 api.add_resource(Signup, '/signup')
 
+# class Login(Resource):
+#     def post(self):
+#         data = request.get_json()
+#         user = User.query.filter_by(email = data.get('email')).first()
+#         password = request.get_json()['password']
+    
+#         if user.authenticate(password):
+#             session['user_id'] == user.id
+#             return user.to_dict(), 200
+#             # login_user(user, remember=True)
+#             # return {'message': 'Successfully logged-in'}, 200
+
+#         return {'error': '401 Unauthorized'}, 401
+
+# api.add_resource(Login, '/login')
+
 class Login(Resource):
     def post(self):
         data = request.get_json()
+        user = User.query.filter_by(username = data.get('username')).first()
+        password = request.get_json()['password']
+
+        if user.authenticate(password):
+            session['user_id'] = user.id
+            return user.to_dict(), 200
         
-        email = data.get('email')
-        password = data.get('password')
-        user = User.query.filter(User.email == email).first()
+        return{'Invalid Username/Password'}, 401
 
-        if user:
-            if user.authenticate(password):
-                session['user_id'] == user.id
-                return user.to_dict(), 200
-                # return {'message': 'Successfully logged-in'}, 200
-
-        return {'error': '401 Unauthorized'}, 401
 
 api.add_resource(Login, '/login')
+
 
 @app.route("/logout", methods=["POST"])
 @login_required
@@ -74,23 +87,32 @@ def logout():
     logout_user()
     return f'Goodbye, Mama! Have a great day!'
 
-
-class CheckSession(Resource):
+class AuthorizedSession(Resource):
     def get(self):
-        try: 
+        try:
             user = User.query.filter_by(
                 id = session.get('user_id')).first()
             return make_response(user.to_dict(), 200)
-        except Exception as e:
-            traceback.print_exc()
-            return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
-        
-        # if current_user.is_authenticated:
-        #     user = current_user
-        #     return make_response(user.serialize, 200)
-        # return {'error': "401 Unauthorized"}, 401
+        except:
+            return make_response({'message': 'Must Log In'}, 401)
 
-api.add_resource(CheckSession, '/check_session')
+api.add_resource(AuthorizedSession, '/authorize_session')
+# class AuthorizeSession(Resource):
+#     def get(self):
+#         try: 
+#             user = User.query.filter_by(
+#                 id = session.get('user_id')).first()
+#             return make_response(user.to_dict(), 200)
+#         except Exception as e:
+#             traceback.print_exc()
+#             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
+        
+#         # if current_user.is_authenticated:
+#         #     user = current_user
+#         #     return make_response(user.serialize, 200)
+#         # return {'error': "401 Unauthorized"}, 401
+
+# api.add_resource(AuthorizeSession, '/authorize_session')
 
 # Display users that are not already in friendship with current user
 class FilteredUsers(Resource):
@@ -118,15 +140,15 @@ api.add_resource(FilteredUsers, '/filtered_users/<int:id>')
 
 #User can update or delete their profile/account
 class Users(Resource):
-    # def get(self, id):
-    #     try: 
-    #         user_info = User.query.filter_by(id=id).first()
-    #         if not user_info:
-    #             return {"User not found"}, 404
-    #         return make_response(user_info.serialize, 200)
-    #     except Exception as e:
-    #         traceback.print_exc()
-    #         return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
+    def get(self, id):
+        try: 
+            user_info = User.query.filter_by(id=id).first()
+            if not user_info:
+                return {"User not found"}, 404
+            return make_response(user_info.serialize, 200)
+        except Exception as e:
+            traceback.print_exc()
+            return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
     
     def patch(self, id):
         data = request.get_json()
@@ -278,8 +300,6 @@ class Messages(Resource):
 
     def post(self):
         pass
-
-
 
 api.add_resource(Messages, '/messages/<int:id>')
 
