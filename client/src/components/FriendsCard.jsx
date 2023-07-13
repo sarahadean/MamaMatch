@@ -3,6 +3,23 @@ import React from 'react'
 function FriendsCard({friend, friendship, updateFriendship}) {
   const {id, name, profile_image, location, about, mom_life, interests} = friend
   
+  function handleSubmit(e){
+    fetch(`/api/friendship/${friendship.id}`, {
+      method: "DELETE",
+      headers: {
+      "content-type": "application/json"
+      },
+      })
+      .then(res => {
+      if (res.ok) {
+      res.json()
+      // .then(friendship => {updateFriendship(friendship)})
+      } else {
+      res.json().then(error => setError(error.message));
+      }
+      })
+      }
+
   return (
     <>
           <div>
@@ -15,8 +32,8 @@ function FriendsCard({friend, friendship, updateFriendship}) {
           <li>{about}</li>
           {/* <li>{pendingFriend.interests}</li> */}
         </ul>
-        <button>Message</button>
-        <button>Delete</button>
+        <button > Message</button>
+        <button onClick={(e) => handleSubmit(e)}>Delete</button>
         </div>
         </>
   )
