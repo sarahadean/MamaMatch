@@ -57,7 +57,7 @@ class Login(Resource):
 
         if user.authenticate(password):
             session['user_id'] = user.id
-            return user.to_dict(), 200
+            return user.serialize, 200
         
         return{'Invalid Username/Password'}, 401
 
@@ -76,7 +76,7 @@ class AuthorizedSession(Resource):
         try:
             user = User.query.filter_by(
                 id = session.get('user_id')).first()
-            return make_response(user.to_dict(), 200)
+            return make_response(user.serialize, 200)
         except:
             return make_response({'message': 'Must Log In'}, 401)
 
@@ -213,19 +213,20 @@ def get_confirmed_friends(id, status):
             return {"User not found"}, 404
         try:
             all_friendships = Friendship.query.filter(
-                    ((Friendship.receiving_user_id == user.id) |
-                    (Friendship.requesting_user_id == user.id)) & (Friendship.status == f'{status}')
+                    ((Friendship.receiving_user_id == user.id) &
+                    # (Friendship.requesting_user_id == user.id)) & 
+                    (Friendship.status == f'{status}'))
                 ).all()
             friend_ids = []
             for friendship in all_friendships:
-                friend_ids.append(friendship.receiving_user_id)
+                # friend_ids.append(friendship.receiving_user_id)
                 friend_ids.append(friendship.requesting_user_id)
             
             friendship_users = User.query.filter(User.id.in_(friend_ids) & (User.id != user.id)).all()
             serialized_users = [friendship_user.serialize for friendship_user in friendship_users]
 
         # Return serialized users as a list
-            return {"users": serialized_users}, 200
+            return serialized_users, 200
         except Exception as e:
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500

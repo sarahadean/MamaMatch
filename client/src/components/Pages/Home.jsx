@@ -6,6 +6,10 @@ import UserCard from '../UserCard';
 function Home({friendship, updateFriendship}) {
   const { user, setUser } = useContext(UserContext);
   const [friends, setFriends] = useState([])
+
+  function updateFriend(){
+    setFriends(friends)
+  }
   
 
   useEffect(() => {
@@ -46,7 +50,13 @@ function Home({friendship, updateFriendship}) {
   return (
     <div>
       {friends.map(friend => {
-        return <UserCard key={friend.id} friend={friend} friendship={friendship} updateFriendship={updateFriendship}/>;
+        return <UserCard 
+        key={friend.id} 
+        friend={friend} 
+        friendship={friendship} 
+        updateFriendship={updateFriendship} 
+        friends={friends} 
+        updateFriend={updateFriend}/>;
       })}
         
     </div>

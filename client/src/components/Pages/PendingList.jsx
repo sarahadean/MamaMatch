@@ -25,17 +25,26 @@ function PendingList({friendship, updateFriendship}) {
         .then(pendingFriends => setPendingFriends(pendingFriends))
     }
     }
+
+
+    console.log(pendingFriends)
+
 //pass down friendship state and do conditional logic to determine buttons
   if (!user) {
     return <div>Loading...</div>;
   }
-    const pendingFriendMap = pendingFriends.map((pendingFriend) => { 
-    return <PendingCard key={pendingFriend.id} pendingFriend={pendingFriend} friendship={friendship} updateFriendship={updateFriendship}/>})
-  return (
-    <div>
-      {pendingFriendMap}
-    </div>
-  )
+  
+
+      return (
+        <>
+        {pendingFriends.length === 0 ? (
+      <h2>Sorry, you don't have friends yet!</h2>
+      ):(
+        <div>
+        {[...pendingFriends].map(friend => <PendingCard key={friend.id} friend={friend}/>)}
+        </div>)}
+      </>
+) 
 }
 
 export default PendingList
