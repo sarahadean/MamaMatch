@@ -6,15 +6,13 @@ import UserContext from './Pages/UserContext';
 //pressing X will create friendship with status "hide", 
 //clicking yes will create friendship with status "pending"
 //add conditional to hide buttons
-function UserCard({ friend, updatePotentialFriend }) {
+function UserCard({ friend, updateFriendship, friendship }) {
   const { user, setUser } = useContext(UserContext);
   const {id, name, profile_image, location, about, mom_life, interests} = friend
 
-  function handleClick(value){
-    handleSubmit(value)
-  }
 
-  function handleSubmit(){
+  function handleSubmit(e, value){
+    console.log(value)
     fetch('/api/user_friendships', {
       method: "POST",
       headers: {
@@ -23,13 +21,13 @@ function UserCard({ friend, updatePotentialFriend }) {
       body: JSON.stringify({
         requesting_user_id: user.id,
         receiving_user_id: id,
-        status: `${value}`
+        status: value
       })
       })
       .then(res => {
       if (res.ok) {
-      res.json().then(friend => {
-        updatePotentialFriend(friend)
+      res.json().then(friendship => {
+        updateFriendship(friendship)
       })
       } else {
       res.json().then(error => setError(error.message));
@@ -39,6 +37,10 @@ function UserCard({ friend, updatePotentialFriend }) {
 
   return (
     <div>UserCard
+      {friendship ? (
+        ""
+        ) : (
+      <>
         <ul>
           <img src={profile_image}></img>
           <li>{name}</li>
@@ -46,9 +48,12 @@ function UserCard({ friend, updatePotentialFriend }) {
           <li>{location}</li>
           <li>{about}</li>
           <li>{interests}</li>
-          <button onClick={() => handleClick} value="Pending">Yes</button>
-          <button onClick={() => handleClick} value="Hidden">No</button>
         </ul>
+        <button onClick={(e) => handleSubmit(e, "PENDING")}>Yes</button>
+        <button onClick={(e) => handleSubmit(e, "HIDDEN")}>No</button>
+      </>
+      )}
+        
     </div>
   )
 }

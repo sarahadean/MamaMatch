@@ -17,7 +17,12 @@ function App() {
   const navigate = useNavigate();
   //state of individual user
   const [user, setUser] = useState(null)
+  const [friendStatus, setFriendStatus] = useState([])
   console.log(user)
+
+  function updateFriend(){
+    setFriendStatus(friendStatus)
+  }
 
   useEffect(() => {
     authorizeUser()
@@ -58,8 +63,8 @@ function App() {
           <Route path="/home" element={<Home />}/>
           <Route path="/signup" element={<SignupForm />} />
           <Route path="/login" element={<LoginForm navigate={navigate}/>} />
-          <Route path="/interested" element={<PendingList />} />
-          <Route path="/friends" element={<FriendsList />} />
+          <Route path="/interested" key="/interested" element={<PendingList friendStatus={friendStatus} updateFriend={updateFriend}/>} />
+          <Route path="/friends" key="/friends"element={<FriendsList friendStatus={friendStatus} updateFriend={updateFriend}/>} />
           <Route path="/messages" element={<MessagesList />} />
           <Route path="/conversation" element={<Conversation />} />
           <Route path="/profile" element={<Profile />} />

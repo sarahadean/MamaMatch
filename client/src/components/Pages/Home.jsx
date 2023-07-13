@@ -1,14 +1,15 @@
 import React, { useEffect, useState, useContext} from 'react'
 import UserContext from './UserContext'
 import UserCard from '../UserCard';
-import { Formik, Field, ErrorMessage } from "formik";
+
 
 function Home() {
   const { user, setUser } = useContext(UserContext);
-  const [potentialFriends, setPotentialFriends] = useState([])
+  const [friends, setFriends] = useState([])
+  const [friendship, setFriendship] = useState(null)
 
-  function updatePotentialFriend(){
-    setPotentialFriends(potentialFriends)
+  function updateFriendship(){
+    setFriendship(friendship)
   }
 
   useEffect(() => {
@@ -28,8 +29,7 @@ function Home() {
             throw new Error("Error fetching address details");
           }
         })
-        .then(potentialFriends => setPotentialFriends(potentialFriends))
-    
+        .then(friends => setFriends(friends))
     }
     }
 
@@ -37,11 +37,22 @@ function Home() {
     return <div>Loading...</div>;
   }
 
-  const filteredUsers = potentialFriends.map((friend) => { 
-  return <UserCard updatePotentialFriend={updatePotentialFriend} key={friend.id} friend={friend}/>})
+  //Creating cards for all user
+  //pass down friendship state and do conditional logic to determine buttons
+  // const filteredUsers = friends.map((friend) => { 
+  // return <UserCard 
+  // friendship={friendship} 
+  // updateFriendship={updateFriendship} 
+  // key={friend.id} 
+  // friend={friend}
+  //  />})
+  
   return (
-    <div>Home-this will display the filtered user's route
-      {filteredUsers}
+    <div>
+      {friends.map(friend => {
+        return <UserCard key={friend.id} friend={friend} friendship={friendship} updateFriendship={updateFriendship}/>;
+      })}
+        
     </div>
   )
 }

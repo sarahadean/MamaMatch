@@ -17,13 +17,13 @@ function Profile() {
   }
 
   const validationSchema = yup.object().shape({
-    name: yup.string().required("*Name is required"),
-    username: yup.string().required("*Username is required"),
-    email: yup.string().required("*Email is required"),
-    password: yup.string().required("*Password is required"),
-    phone_number: yup.string().required("*Phone number is required"),
-    dob: yup.string().required("*Date of birth is required"),
-    location: yup.string().required("*Location is required"),
+    name: yup.string(),
+    username: yup.string(),
+    email: yup.string(),
+    password: yup.string(),
+    phone_number: yup.string(),
+    dob: yup.string(),
+    location: yup.string(),
     profile_image: yup.string(),
     about: yup.string(),
     mom_life: yup.string(),
@@ -42,7 +42,8 @@ function Profile() {
             <li>Phone Number: {user.phone_number}</li>
             <li>Birthday: {user.dob}</li>
             <li>City, State: {user.location}</li>
-            <li>Profile picture: {user.profile_image}</li>
+            <li>Profile picture: </li>
+            <img src={user.profile_image}/>
             <li>About: {user.about}</li>
             <li>Mom Life: {user.mom_life}</li>
             <li>Interests: {user.interests}</li>
@@ -77,6 +78,7 @@ function Profile() {
                 if (res.ok) {
                   res.json().then((user) => {
                     setUser(user);
+                    {toggleEdit};
                     navigate("/profile");
                   });
                 } else {
@@ -95,7 +97,8 @@ function Profile() {
               });
           }}
         >
-          <form>
+          {({ handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
             <label>
               Name:
               <Field type="text" name="name" />
@@ -156,7 +159,7 @@ function Profile() {
 
             <label>
               Mom life:
-              <Field as="select" name="mom_life" />
+              <Field as="select" name="mom_life">
                 <option value="">Select one</option>
                 <option value="1">Pregnant</option>
                 <option value="2">New Mom</option>
@@ -166,6 +169,7 @@ function Profile() {
                 <option value="6">Empty Nester</option>
                 <option value="7">Adoption Journey</option>
                 <option value="8">Fertility Journey</option>
+              </Field>
               <ErrorMessage name="mom_life" component="h3" />
             </label>
 
@@ -176,6 +180,7 @@ function Profile() {
             </label>
             <input type="submit" value="Update" />
           </form>
+          )}
         </Formik>
       )}
     </section>
