@@ -1,15 +1,19 @@
 import React, { useState, useContext } from 'react';
 import UserContext from './Pages/UserContext';
 
-function PendingCard({friendship, updateFriendship, friend}) {
+function PendingCard({friendship, updateFriendship, updatePendingFriendsList, pendingFriends, friend}) {
   const {id, name, profile_image, location, about, mom_life, interests} = friend
   const { user, setUser } = useContext(UserContext);
+
+
   //console log individual friendship
   console.log(friendship)
   function handleSubmit(e, value){
   //console log status from button click
     console.log(value)
     console.log(id)
+
+    
     fetch(`/api/friendship/${user.id}/${id}`, {
       method: "PATCH",
       headers: {
@@ -21,6 +25,7 @@ function PendingCard({friendship, updateFriendship, friend}) {
       if (res.ok) {
       res.json().then(friendship => {
         updateFriendship(friendship)
+        updatePendingFriendsList(pendingFriends)
       })
       } else {
       res.json().then(error => setError(error.message));

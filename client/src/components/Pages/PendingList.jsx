@@ -6,6 +6,10 @@ function PendingList({friendship, updateFriendship}) {
   const { user, setUser } = useContext(UserContext);
   const [pendingFriends, setPendingFriends] = useState([])
 
+  function updatePendingFriendsList(){
+    setPendingFriends(pendingFriends)
+  }
+
   useEffect(() => {
     fetchUsers() }, [user])
 // need fetch route just getting friendship to save in state. 
@@ -43,11 +47,15 @@ function PendingList({friendship, updateFriendship}) {
         </div>
       ):(
         <div>
-        {[...pendingFriends].map(friend => 
+        {pendingFriends.map(friend => 
         <PendingCard key={friend.id} 
         friend={friend}
         friendship={friendship}
-        updateFriendship={updateFriendship}/>)}
+        //updates friendship status state
+        updateFriendship={updateFriendship}
+        //updates List of friends state
+        updatePendingFriendsList={updatePendingFriendsList}
+        pendingFriends={pendingFriends}/>)}
         </div>)}
       </>
 ) 

@@ -5,7 +5,7 @@ function FriendsCard({friend, friendship, updateFriendship}) {
   const {id, name, profile_image, location, about, mom_life, interests} = friend
   const { user, setUser } = useContext(UserContext);
 
-  function handleSubmit(e){
+  function handleSubmit(){
     fetch(`/api/friendship/${user.id}/${id}`, {
       method: "DELETE",
       headers: {
@@ -14,8 +14,9 @@ function FriendsCard({friend, friendship, updateFriendship}) {
       })
       .then(res => {
       if (res.ok) {
-      res.json()
-      // .then(friendship => {updateFriendship(friendship)})
+      res.json().then(friendship => {
+        updateFriendship(friendship)
+      })
       } else {
       res.json().then(error => setError(error.message));
       }
@@ -35,7 +36,7 @@ function FriendsCard({friend, friendship, updateFriendship}) {
           {/* <li>{pendingFriend.interests}</li> */}
         </ul>
         <button > Message</button>
-        <button onClick={(e) => handleSubmit(e)}>Delete</button>
+        <button onClick={() => handleSubmit()}>Delete</button>
         {/* <button> Block </button> */}
         </div>
         </>
