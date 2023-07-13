@@ -15,6 +15,7 @@ function PendingCard({friendship, updateFriendship, pendingFriend}) {
           {/* <li>{pendingFriend.interests}</li> */}
         </ul>
         <button>Confirm?</button>
+        <button>Nah</button>
         </div>
         </>
   )

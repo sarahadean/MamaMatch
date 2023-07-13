@@ -2,15 +2,16 @@ import React, { useState, useEffect, useContext } from 'react';
 import UserContext from './UserContext';
 import UserCard from '../UserCard';
 
-function FriendsList() {
+function FriendsList({friendship, updateFriendship}) {
   const { user, setUser } = useContext(UserContext);
+  const [actualFriends, setActualFriends] = useState([])
 
   useEffect(() => {
-    fetchUsers("CONFIRMED") }, [user])
+    fetchUsers() }, [user])
 
-  function fetchUsers(status){
+  function fetchUsers(){
     if (user){
-      fetch(`/api/user_friendships/${user.id}/${status}`)
+      fetch(`/api/user_friendships/${user.id}/CONFIRMED`)
         .then(res => {
           if (res.ok) {
             console.log(res)
@@ -21,8 +22,8 @@ function FriendsList() {
             throw new Error("Error fetching address details");
           }
         })
-        .then(pendingFriends => setPendingFriends(pendingFriends))
-    }
+        .then(actualFriends => setActualFriends(actualFriends))
+      }
     }
 
   if (!user) {
@@ -30,7 +31,20 @@ function FriendsList() {
   }
 
   return (
-    <div>FriendsList - this will display friendships with status= CONFIRMED</div>
+    <>
+    {actualFriends.length === 0 ? (
+  <h2>Sorry, you don't have friends yet!</h2>
+  ):(
+    <div>
+    {[...actualFriends].map(friend => 
+    <PendingCard 
+    key={friend.id} 
+    friend={friend}
+    friendship={friendship}
+    updateFriendship={updateFriendship}
+    />)}
+    </div>)}
+  </>
   )
 }
 
