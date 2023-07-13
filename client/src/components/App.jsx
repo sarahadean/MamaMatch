@@ -17,12 +17,14 @@ function App() {
   const navigate = useNavigate();
   //state of individual user
   const [user, setUser] = useState(null)
-  const [friendStatus, setFriendStatus] = useState([])
+  const [friendship, setFriendship] = useState(null)
   console.log(user)
 
-  function updateFriend(){
-    setFriendStatus(friendStatus)
+  function updateFriendship(){
+    setFriendship(friendship)
   }
+
+
 
   useEffect(() => {
     authorizeUser()
@@ -60,11 +62,11 @@ function App() {
         <NavBar navigate ={navigate}/>
         <Routes>
           <Route exact path="/" element={<Welcome />} />
-          <Route path="/home" element={<Home />}/>
+          <Route path="/home" element={<Home friendship={friendship} updateFriendship={updateFriendship}/>}/>
           <Route path="/signup" element={<SignupForm />} />
           <Route path="/login" element={<LoginForm navigate={navigate}/>} />
-          <Route path="/interested" key="/interested" element={<PendingList friendStatus={friendStatus} updateFriend={updateFriend}/>} />
-          <Route path="/friends" key="/friends"element={<FriendsList friendStatus={friendStatus} updateFriend={updateFriend}/>} />
+          <Route path="/interested" key="/interested" element={<PendingList friendship={friendship} updateFriendship={updateFriendship}/>} />
+          <Route path="/friends" key="/friends"element={<FriendsList friendship={friendship} updateFriendship={updateFriendship}/>} />
           <Route path="/messages" element={<MessagesList />} />
           <Route path="/conversation" element={<Conversation />} />
           <Route path="/profile" element={<Profile />} />

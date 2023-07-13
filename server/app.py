@@ -42,7 +42,7 @@ class Signup(Resource):
             db.session.add(new_user)
             db.session.commit()
             session['user_id'] = new_user.id
-            return make_response(new_user.serialize, 201)
+            return make_response(new_user.to_dict(), 201)
         except Exception as e:
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
@@ -57,7 +57,7 @@ class Login(Resource):
 
         if user.authenticate(password):
             session['user_id'] = user.id
-            return user.serialize, 200
+            return user.to_dict(), 200
         
         return{'Invalid Username/Password'}, 401
 
@@ -205,7 +205,7 @@ class UserFriendships(Resource):
        
 api.add_resource(UserFriendships, '/user_friendships')
 
-#Retrieve's user's PENDING and CONFIRMED status friendships
+#Retrieve's user's PENDING and CONFIRMED status friendships and users associated 
 @app.route('/user_friendships/<int:id>/<string:status>')
 def get_confirmed_friends(id, status):
         user = User.query.filter_by(id=id).first()
@@ -216,11 +216,19 @@ def get_confirmed_friends(id, status):
                     ((Friendship.receiving_user_id == user.id) |
                     (Friendship.requesting_user_id == user.id)) & (Friendship.status == f'{status}')
                 ).all()
-            serialized_friends = [friend.serialize for friend in all_friendships]
-            #GET CONFIRMED or PENDING friends
-            return make_response(serialized_friends, 200)
-        except:
-            return {"Validation error"}, 400
+            friend_ids = []
+            for friendship in all_friendships:
+                friend_ids.append(friendship.receiving_user_id)
+                friend_ids.append(friendship.requesting_user_id)
+            
+            friendship_users = User.query.filter(User.id.in_(friend_ids) & (User.id != user.id)).all()
+            serialized_users = [friendship_user.serialize for friendship_user in friendship_users]
+
+        # Return serialized users as a list
+            return {"users": serialized_users}, 200
+        except Exception as e:
+            traceback.print_exc()
+            return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
 
 
 #GET can be deleted later

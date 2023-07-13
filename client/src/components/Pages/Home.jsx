@@ -3,14 +3,10 @@ import UserContext from './UserContext'
 import UserCard from '../UserCard';
 
 
-function Home() {
+function Home({friendship, updateFriendship}) {
   const { user, setUser } = useContext(UserContext);
   const [friends, setFriends] = useState([])
-  const [friendship, setFriendship] = useState(null)
-
-  function updateFriendship(){
-    setFriendship(friendship)
-  }
+  
 
   useEffect(() => {
   fetchUsers() }, [user])

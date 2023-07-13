@@ -3,7 +3,6 @@ import UserContext from './UserContext';
 import UserCard from '../UserCard';
 
 function FriendsList() {
-
   const { user, setUser } = useContext(UserContext);
 
   useEffect(() => {

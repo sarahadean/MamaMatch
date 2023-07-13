@@ -6,10 +6,10 @@ import UserContext from './Pages/UserContext';
 //pressing X will create friendship with status "hide", 
 //clicking yes will create friendship with status "pending"
 //add conditional to hide buttons
-function UserCard({ friend, updateFriendship, friendship }) {
-  const { user, setUser } = useContext(UserContext);
+function UserCard({ friend, pendingFriend, updateFriendship, friendship }) {
   const {id, name, profile_image, location, about, mom_life, interests} = friend
-
+  const { user, setUser } = useContext(UserContext);
+  console.log(friendship)
 
   function handleSubmit(e, value){
     console.log(value)
@@ -36,24 +36,28 @@ function UserCard({ friend, updateFriendship, friendship }) {
       }
 
   return (
-    <div>UserCard
+    <div>
+
+
       {friendship ? (
         ""
         ) : (
-      <>
-        <ul>
+      <div>
+        
           <img src={profile_image}></img>
-          <li>{name}</li>
-          <li>{mom_life}</li>
+          <h3>{name}</h3>
+          <ul>
+          {/* <li>{mom_life}</li> */}
           <li>{location}</li>
           <li>{about}</li>
-          <li>{interests}</li>
+          {/* <li>{interests}</li> */}
         </ul>
         <button onClick={(e) => handleSubmit(e, "PENDING")}>Yes</button>
         <button onClick={(e) => handleSubmit(e, "HIDDEN")}>No</button>
-      </>
+      </div>
       )}
-        
+      
+
     </div>
   )
 }
