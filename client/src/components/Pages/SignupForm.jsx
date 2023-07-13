@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useFormik } from "formik";
 import * as yup from "yup";
 import {useNavigate} from "react-router-dom"
+import UserContext from './UserContext';
 
 function SignupForm({updateUser}) {
+  const { user, setUser } = useContext(UserContext);
 
   const [error, setError] = useState(null)
   const navigate = useNavigate()

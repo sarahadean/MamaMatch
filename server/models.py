@@ -53,6 +53,7 @@ class User(db.Model, SerializerMixin, UserMixin):
     #relationships
     mom_life = db.relationship('Category_Mom', backref='users')
     interests = db.relationship('Interest', backref='users')
+    messages = db.relationship('Message', back_populates="author")
 
     #friendship relationships:
     friends_requested = db.relationship('Friendship', foreign_keys=[Friendship.requesting_user_id],  backref='receiving_user')
@@ -104,9 +105,11 @@ class Message(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default = db.func.now())
     updated_at = db.Column(db.DateTime, onupdate = db.func.now())
     friendship_id = db.Column(db.Integer, db.ForeignKey('friendships.id'))
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     content = db.Column(db.String)
 
     #RELATIONSHIP
+    author = db.relationship('User', back_populates="messages")
     # friendship = db.relationship('Friendship', back_populates='message')
     # friendship_status = db.relationship('FriendshipStatus', back_populates='message', cascade="all, delete-orphan" )
     
@@ -115,7 +118,8 @@ class Message(db.Model, SerializerMixin):
         return {
             "id": self.id,
             "friendship_id":self.friendship_id,
-            "content":self.content
+            "content":self.content,
+            "author":self.author_id
         }
 
 class Category_Mom(db.Model):

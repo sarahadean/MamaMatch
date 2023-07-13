@@ -1,12 +1,16 @@
-import React from 'react'
+import React, { useState, useContext } from 'react';
+import UserContext from './Pages/UserContext';
 
-function PendingCard({friendship, updateFriendship, pendingFriend}) {
-  const {id, name, profile_image, location, about, mom_life, interests} = pendingFriend
-  
+function PendingCard({friendship, updateFriendship, friend}) {
+  const {id, name, profile_image, location, about, mom_life, interests} = friend
+  const { user, setUser } = useContext(UserContext);
+  //console log individual friendship
+  console.log(friendship)
   function handleSubmit(e, value){
+  //console log status from button click
     console.log(value)
-    fetch(`/api/friendship/${friendship.id}`, {
-      method: "POST",
+    fetch(`/api/friendship/${user.id}/${id}`, {
+      method: "PATCH",
       headers: {
       "content-type": "application/json"
       },

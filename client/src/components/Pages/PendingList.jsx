@@ -8,13 +8,13 @@ function PendingList({friendship, updateFriendship}) {
 
   useEffect(() => {
     fetchUsers() }, [user])
-
+// need fetch route just getting friendship to save in state. 
   function fetchUsers(){
     if (user){
       fetch(`/api/user_friendships/${user.id}/PENDING`)
         .then(res => {
           if (res.ok) {
-            console.log(res)
+            // console.log(res)
             return res.json()
           } else if (res.status == 404) {
             return []
@@ -26,22 +26,25 @@ function PendingList({friendship, updateFriendship}) {
     }
     }
 
-
-    console.log(pendingFriends)
+    // logging return for user's pending friends
+    // console.log(pendingFriends)
 
 //pass down friendship state and do conditional logic to determine buttons
   if (!user) {
     return <div>Loading...</div>;
   }
   
-
       return (
         <>
         {pendingFriends.length === 0 ? (
       <h2>Sorry, you don't have friends yet!</h2>
       ):(
         <div>
-        {[...pendingFriends].map(friend => <PendingCard key={friend.id} friend={friend}/>)}
+        {[...pendingFriends].map(friend => 
+        <PendingCard key={friend.id} 
+        friend={friend}
+        friendship={friendship}
+        updateFriendship={updateFriendship}/>)}
         </div>)}
       </>
 ) 

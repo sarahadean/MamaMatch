@@ -7,6 +7,7 @@ from config import db, app, api
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_restful import Resource
 import traceback
+import ipdb
 
 
 login_manager = LoginManager()
@@ -19,8 +20,10 @@ def index():
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.filter_by(id=user_id).first()
+    return User.query.get(user_id)
 
+
+#============= SIGNUP ===============#
 class Signup(Resource):
     def post(self):
         data = request.get_json()
@@ -42,13 +45,15 @@ class Signup(Resource):
             db.session.add(new_user)
             db.session.commit()
             session['user_id'] = new_user.id
-            return make_response(new_user.to_dict(), 201)
+            return make_response(new_user.serialize, 201)
         except Exception as e:
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
         
 api.add_resource(Signup, '/signup')
 
+
+#============= LOGIN ===============#
 class Login(Resource):
     def post(self):
         data = request.get_json()
@@ -60,17 +65,21 @@ class Login(Resource):
             return user.serialize, 200
         
         return{'Invalid Username/Password'}, 401
-
-
+    
 api.add_resource(Login, '/login')
 
 
-@app.route("/logout", methods=["POST"])
-@login_required
-def logout():
-    logout_user()
-    return f'Goodbye, Mama! Have a great day!'
 
+#============= LOGOUT ===============#
+class Logout(Resource):
+    def post():
+        session['user_id'] = None
+        # ipdb.set_trace()
+        return make_response('Goodbye, Mama! Have a great day!', 200)
+api.add_resource(Logout, '/logout')
+
+
+#============= AUTHORIZE SESSION ===============#
 class AuthorizedSession(Resource):
     def get(self):
         try:
@@ -98,7 +107,9 @@ api.add_resource(AuthorizedSession, '/authorize_session')
 
 # api.add_resource(AuthorizeSession, '/authorize_session')
 
-# Display users that are not already in friendship with current user
+
+
+#==============GETS LIST OF USERS THAT DO NOT HAVE FRIENDSHIP WITH CURRENT_USER==========#
 class FilteredUsers(Resource):
     def get(self, id):
         try: 
@@ -122,8 +133,9 @@ class FilteredUsers(Resource):
         
 api.add_resource(FilteredUsers, '/filtered_users/<int:id>')     
 
-#User can update or delete their profile/account
-class Users(Resource):
+
+#============GETS, PATCHES, OR DELETE'S CURRENT USER'S INFORMATION================#
+class CurrentUser(Resource):
     def get(self, id):
         try: 
             user_info = User.query.filter_by(id=id).first()
@@ -165,14 +177,11 @@ class Users(Resource):
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
         
-api.add_resource(Users, '/users/<int:id>')
+api.add_resource(CurrentUser, '/current_user/<int:id>')
      
 
 
-#<------------------------FRIENDSHIP ROUTES----------------------->
-
-#Creates new friendship
-# Gets all user's friendships (will comment out this later) 
+#=============== POST - CREATES A NEW FRIENDSHIP ===============# 
 class UserFriendships(Resource):
     # def get(self, id):
     #     user = User.query.filter_by(id=id).first()
@@ -202,10 +211,10 @@ class UserFriendships(Resource):
         except Exception as e:
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
-       
 api.add_resource(UserFriendships, '/user_friendships')
 
-#Retrieve's user's PENDING and CONFIRMED status friendships and users associated 
+#=============GETS LIST OF USERS TIED TO FRIENDSHIP WITH CURRENT USER =============#
+#=============PENDING OR CONFIRMED STATUS==================#
 @app.route('/user_friendships/<int:id>/<string:status>')
 def get_confirmed_friends(id, status):
         user = User.query.filter_by(id=id).first()
@@ -231,14 +240,17 @@ def get_confirmed_friends(id, status):
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
 
-
+#============== PATCH OR DELETE SINGLE FRIENDSHIP =============#
 #GET can be deleted later
 # Change's friendship status or delete's friendship
 class FriendshipById(Resource):
-    def get(self, id):
+    def get(self, user_id, friend_id):
         #filters by id of friendship
         try:
-            selected_friendship = Friendship.query.filter_by(id=id).first()
+            selected_friendship = Friendship.query.filter(
+            (Friendship.requesting_user_id == friend_id) & 
+            (Friendship.receiving_user_id == user_id) ).first()
+            
             if selected_friendship:
                 return make_response(selected_friendship.serialize, 200)  
             else:
@@ -246,24 +258,30 @@ class FriendshipById(Resource):
         except: 
             return {"Error: Not found"}, 404
     
-    def patch(self, friendship_id):
+    def patch(self, user_id, friend_id):
         data = request.get_json()
         try:
-            selected_friendship = Friendship.query.filter_by(id=friendship_id).first().serialize
+            selected_friendship = Friendship.query.filter(
+                (Friendship.requesting_user_id == friend_id) & 
+                (Friendship.receiving_user_id == user_id) ).first()
+            
             if selected_friendship:
                 for attr in data:
                     setattr(selected_friendship, attr, data.get(attr))
                 db.session.add(selected_friendship)
                 db.session.commit()
-                return make_response(selected_friendship, 200)
+
+                return make_response(selected_friendship.serialize, 200)
             return{"Friendship not found"}, 404
         except Exception as e:
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
     
-    def delete(self, id):
+    def delete(self, user_id, friend_id):
         try:
-            selected_friendship = Friendship.query.filter_by(id=id).first()
+            selected_friendship = Friendship.query.filter(
+                (Friendship.requesting_user_id == friend_id) & 
+                (Friendship.receiving_user_id == user_id) ).first()
             if not selected_friendship:
                 return {"Friendship not found"}, 404
             else:
@@ -275,7 +293,7 @@ class FriendshipById(Resource):
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500 
 
 
-api.add_resource(FriendshipById, '/friendship/<int:id>')
+api.add_resource(FriendshipById, '/friendship/<int:user_id>/<int:friend_id>')
 
 #Routes needed:
 # - list of messages for user - GET and POST, DELETE

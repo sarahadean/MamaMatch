@@ -24,17 +24,10 @@ function App() {
     setFriendship(friendship)
   }
 
-
-
   useEffect(() => {
     authorizeUser()
-    // getFriends()
   }, [user])
 
-  // updates user info
-  // function updateUser(user){
-  //   setUser(user)
-  // }
 
   function authorizeUser(){
     if (user == null) {
