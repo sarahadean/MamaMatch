@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import Welcome from './Pages/Welcome'
 import SignupForm from './Pages/SignupForm'
 import LoginForm from './LoginForm'
@@ -14,19 +14,27 @@ import Profile from './Pages/Profile'
 import UserContext from './Pages/UserContext'
 
 function App() {
+  const navigate = useNavigate();
   //state of individual user
   const [user, setUser] = useState(null)
+  const [friendship, setFriendship] = useState(null)
   console.log(user)
+
+  function updateFriendship(){
+    setFriendship(friendship)
+  }
+
+
 
   useEffect(() => {
     authorizeUser()
     // getFriends()
-  }, [])
+  }, [user])
 
   // updates user info
-  function updateUser(user){
-    setUser(user)
-  }
+  // function updateUser(user){
+  //   setUser(user)
+  // }
 
   function authorizeUser(){
     if (user == null) {
@@ -40,7 +48,7 @@ function App() {
       })
     }
   }
-
+  
   // function getFriends(){
   //   fetch('/user_friendships')
   //   .then(response => response.json)
@@ -51,17 +59,17 @@ function App() {
     <UserContext.Provider value={{user, setUser}}>
       <div>
         <Header />
-        <NavBar user={user} updateUser={updateUser}/>
+        <NavBar navigate ={navigate}/>
         <Routes>
           <Route exact path="/" element={<Welcome />} />
-          <Route path="/home" element={<Home />}/>
-          <Route path="/signup" element={<SignupForm user = {user} updateUser={updateUser}/>} />
-          <Route path="/login" element={<LoginForm user = {user} updateUser={updateUser}/>} />
-          <Route path="/interested" element={<PendingList />} />
-          <Route path="/friends" element={<FriendsList />} />
+          <Route path="/home" element={<Home friendship={friendship} updateFriendship={updateFriendship}/>}/>
+          <Route path="/signup" element={<SignupForm />} />
+          <Route path="/login" element={<LoginForm navigate={navigate}/>} />
+          <Route path="/interested" key="/interested" element={<PendingList friendship={friendship} updateFriendship={updateFriendship}/>} />
+          <Route path="/friends" key="/friends"element={<FriendsList friendship={friendship} updateFriendship={updateFriendship}/>} />
           <Route path="/messages" element={<MessagesList />} />
           <Route path="/conversation" element={<Conversation />} />
-          <Route path="/profile" element={<Profile user={user} updateUser={updateUser}/>} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
     </UserContext.Provider>
