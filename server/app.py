@@ -257,19 +257,19 @@ def get_confirmed_friends(id, status):
 #GET can be deleted later
 # Change's friendship status or delete's friendship
 class FriendshipById(Resource):
-    def get(self, user_id, friend_id):
-        #filters by id of friendship
-        try:
-            selected_friendship = Friendship.query.filter(
-            (Friendship.requesting_user_id == friend_id) & 
-            (Friendship.receiving_user_id == user_id) ).first()
+    # def get(self, user_id, friend_id):
+    #     #filters by id of friendship
+    #     try:
+    #         selected_friendship = Friendship.query.filter(
+    #         (Friendship.requesting_user_id == friend_id) & 
+    #         (Friendship.receiving_user_id == user_id) ).first()
             
-            if selected_friendship:
-                return make_response(selected_friendship.serialize, 200)  
-            else:
-                return {"Error: Validation error"}, 400           
-        except: 
-            return {"Error: Not found"}, 404
+    #         if selected_friendship:
+    #             return make_response(selected_friendship.serialize, 200)  
+    #         else:
+    #             return {"Error: Validation error"}, 400           
+    #     except: 
+    #         return {"Error: Not found"}, 404
     
     def patch(self, user_id, friend_id):
         data = request.get_json()
@@ -311,30 +311,61 @@ api.add_resource(FriendshipById, '/friendship/<int:user_id>/<int:friend_id>')
 # - list of messages for user - GET and POST, DELETE
 # - get's messages for individual friendship
 
-#shows list of messages grouped by friendship for user
+
+#================= GET all messages  a friendship ==================#
+# GET and POST working
+
 class Messages(Resource):
-    def get(self, id):
+    def get(self, id, friend_id):
         try: 
-            friendship_messages = [message.serialize for message in Message.query.filter(Message.friendship_id == id).all()]
+            user = User.query.filter_by(id=id).first()
+            #get the friendship
+            selected_friendship = Friendship.query.filter(
+                    ((Friendship.requesting_user_id == user.id) | (Friendship.receiving_user_id == user.id))
+                    & ((Friendship.requesting_user_id == friend_id) | (Friendship.receiving_user_id == friend_id)) ).first()
+
+            friendship_messages = [message.serialize for message in Message.query.filter(Message.friendship_id == selected_friendship.id).all()]
             return make_response(friendship_messages, 200)
+        
         except Exception as e:
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500 
+        
+        
+        #id = user_id
+    def post(self, id, friend_id):
+        data = request.get_json()
+        user = User.query.filter_by(id=id).first()
+        #get friendship
+        try:
+            selected_friendship = Friendship.query.filter(
+                ((Friendship.requesting_user_id == user.id) | (Friendship.receiving_user_id == user.id))
+                & ((Friendship.requesting_user_id == friend_id) | (Friendship.receiving_user_id == friend_id)) ).first()
+            
+            new_message = Message(
+                friendship_id = selected_friendship.id,
+                author = user.id,
+                content = data.get("content")
+            )
+            db.session.add(new_message)
+            db.session.commit()
 
-    def post(self):
-        pass
+            return make_response(new_message.serialize, 201)
+        except Exception as e:
+            traceback.print_exc()
+            return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500     
 
-api.add_resource(Messages, '/messages/<int:id>')
+api.add_resource(Messages, '/messages/<int:id>/<int:friend_id>')
 
 #shows messages for individual friendship
-class FriendshipMessages(Resource):
-    def get(self):
-        pass
+# class FriendshipMessages(Resource):
+#     def get(self):
+#         pass
 
-    def delete(self):
-        pass
+#     def delete(self):
+#         pass
 
-api.add_resource(FriendshipMessages, '/friendshipmessages')
+# api.add_resource(FriendshipMessages, '/friendshipmessages')
 
 if __name__ == '__main__':
     app.run(port=5555)
