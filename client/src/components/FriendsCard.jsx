@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState, useContext } from 'react';
+import UserContext from './Pages/UserContext';
 
 function FriendsCard({friend, friendship, updateFriendship}) {
   const {id, name, profile_image, location, about, mom_life, interests} = friend
-  
+  const { user, setUser } = useContext(UserContext);
+
   function handleSubmit(e){
-    fetch(`/api/friendship/${friendship.id}`, {
+    fetch(`/api/friendship/${user.id}/${id}`, {
       method: "DELETE",
       headers: {
       "content-type": "application/json"
@@ -34,6 +36,7 @@ function FriendsCard({friend, friendship, updateFriendship}) {
         </ul>
         <button > Message</button>
         <button onClick={(e) => handleSubmit(e)}>Delete</button>
+        {/* <button> Block </button> */}
         </div>
         </>
   )

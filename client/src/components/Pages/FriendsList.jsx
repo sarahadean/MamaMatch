@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import UserContext from './UserContext';
-import UserCard from '../UserCard';
+import FriendsCard from '../FriendsCard';
 
 function FriendsList({friendship, updateFriendship}) {
   const { user, setUser } = useContext(UserContext);
@@ -13,6 +13,7 @@ function FriendsList({friendship, updateFriendship}) {
     if (user){
       fetch(`/api/user_friendships/${user.id}/CONFIRMED`)
         .then(res => {
+          console.log(res)
           if (res.ok) {
             console.log(res)
             return res.json()
@@ -25,6 +26,7 @@ function FriendsList({friendship, updateFriendship}) {
         .then(actualFriends => setActualFriends(actualFriends))
       }
     }
+    console.log(actualFriends)
 
   if (!user) {
     return <div>Loading...</div>;
@@ -33,11 +35,14 @@ function FriendsList({friendship, updateFriendship}) {
   return (
     <>
     {actualFriends.length === 0 ? (
-  <h2>Sorry, you don't have friends yet!</h2>
+  <div>
+  <h2>Hello, opulent mama!</h2>
+  <p>No MamaMatch friends yet! Head back to the home to find your perfect mom-match!</p>
+</div>
   ):(
     <div>
     {[...actualFriends].map(friend => 
-    <PendingCard 
+    <FriendsCard
     key={friend.id} 
     friend={friend}
     friendship={friendship}

@@ -162,7 +162,7 @@ if __name__ == '__main__':
         #     fake_messages.append(new_message) 
         #     db.session.add_all(fake_messages)
 
-        # Friendship.query.delete()
+        Friendship.query.delete()
         statuses = ['PENDING', 'CONFIRMED']
         # friends = []
         # for i in range(50):
@@ -186,9 +186,10 @@ if __name__ == '__main__':
         for i in range(1,10):
             new_friend = Friendship(
                     requesting_user_id=randrange(1,27),
-                    receiving_user_id=66,
+                    receiving_user_id=28,
                     status=rc(statuses))
             cb_friendships.append(new_friend)
+
 
         db.session.add_all(cb_friendships)
         db.session.commit()

@@ -37,7 +37,10 @@ function PendingList({friendship, updateFriendship}) {
       return (
         <>
         {pendingFriends.length === 0 ? (
-      <h2>Sorry, you don't have friends yet!</h2>
+          <div>
+            <h2>Hello, beautiful mama!</h2>
+            <p>You don't have any pending requests</p>
+        </div>
       ):(
         <div>
         {[...pendingFriends].map(friend => 

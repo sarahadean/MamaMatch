@@ -213,6 +213,8 @@ class UserFriendships(Resource):
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
 api.add_resource(UserFriendships, '/user_friendships')
 
+
+
 #=============GETS LIST OF USERS TIED TO FRIENDSHIP WITH CURRENT USER =============#
 #=============PENDING OR CONFIRMED STATUS==================#
 @app.route('/user_friendships/<int:id>/<string:status>')
@@ -221,24 +223,35 @@ def get_confirmed_friends(id, status):
         if not user:
             return {"User not found"}, 404
         try:
-            all_friendships = Friendship.query.filter(
-                    ((Friendship.receiving_user_id == user.id) &
-                    # (Friendship.requesting_user_id == user.id)) & 
-                    (Friendship.status == f'{status}'))
-                ).all()
-            friend_ids = []
-            for friendship in all_friendships:
-                # friend_ids.append(friendship.receiving_user_id)
-                friend_ids.append(friendship.requesting_user_id)
+            if status == "PENDING":
+                pending_friendships = Friendship.query.filter(
+                        ((Friendship.receiving_user_id == user.id) &
+        
+                        (Friendship.status == f'{status}'))
+                    ).all()
+                friend_ids = []
+                for friendship in pending_friendships:
+                    friend_ids.append(friendship.requesting_user_id)
             
+            elif status == "CONFIRMED":
+                confirmed_friendships = Friendship.query.filter(
+                        ((Friendship.receiving_user_id == user.id) | (Friendship.requesting_user_id == user.id)) & 
+                        (Friendship.status == f'{status}')).all()
+                friend_ids = []
+                for friendship in confirmed_friendships:
+                    friend_ids.append(friendship.receiving_user_id)
+                    friend_ids.append(friendship.requesting_user_id)
+                
             friendship_users = User.query.filter(User.id.in_(friend_ids) & (User.id != user.id)).all()
             serialized_users = [friendship_user.serialize for friendship_user in friendship_users]
 
         # Return serialized users as a list
-            return serialized_users, 200
+            return make_response(serialized_users, 200)
         except Exception as e:
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
+
+
 
 #============== PATCH OR DELETE SINGLE FRIENDSHIP =============#
 #GET can be deleted later
@@ -266,8 +279,7 @@ class FriendshipById(Resource):
                 (Friendship.receiving_user_id == user_id) ).first()
             
             if selected_friendship:
-                for attr in data:
-                    setattr(selected_friendship, attr, data.get(attr))
+                selected_friendship.status = data.get("status")
                 db.session.add(selected_friendship)
                 db.session.commit()
 
