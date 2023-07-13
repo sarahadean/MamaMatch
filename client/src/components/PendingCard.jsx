@@ -9,14 +9,13 @@ function PendingCard({friendship, updateFriendship, friend}) {
   function handleSubmit(e, value){
   //console log status from button click
     console.log(value)
+    console.log(id)
     fetch(`/api/friendship/${user.id}/${id}`, {
       method: "PATCH",
       headers: {
       "content-type": "application/json"
       },
-      body: JSON.stringify({
-        status: e.target.value
-      })
+      body: JSON.stringify({status: (value)})
       })
       .then(res => {
       if (res.ok) {
