@@ -17,43 +17,58 @@ function App() {
   const navigate = useNavigate();
   //state of individual user
   const [user, setUser] = useState(null)
+  const [allFriendships, setAllFriendships] = useState([])
+
+  //friendship for single friend - pass down to cards with updateFriendship
   const [friendship, setFriendship] = useState(null)
   console.log(user)
+  console.log(friendship)
 
+  useEffect(() => {
+    authorizeUser()
+    getUserFriendships()
+  }, [user])
+
+
+  //updates friendship (if status changes)
   function updateFriendship(){
     setFriendship(friendship)
   }
 
 
+  //adds friendship to all friendships
+  function addToAllFriendships(friendship){
+    setAllFriendships([...allFriendships, friendship])
+  }
 
-  useEffect(() => {
-    authorizeUser()
-    // getFriends()
-  }, [user])
-
-  // updates user info
-  // function updateUser(user){
-  //   setUser(user)
-  // }
-
+  
   function authorizeUser(){
     if (user == null) {
       fetch('/api/authorize_session')
       .then(response => {
         if (response.ok) {
-          response.json().then((user) => setUser(user))
+          return response.json().then((user) => setUser(user))
         } else {
           setUser(null)
+          navigate("/")
         }
       })
     }
   }
-  
-  // function getFriends(){
-  //   fetch('/user_friendships')
-  //   .then(response => response.json)
-  //   .then(data => console.log(data))
-  // }
+
+//gets all user's friendships
+ function getUserFriendships(){
+  if (user != null){
+  fetch(`/api/user_friendships/${user.id}`)
+  .then(response => {
+    if (response.ok) {
+      return response.json()
+    } else {
+      throw new Error("Error fetching address details");
+    }
+  })
+  .then((allFriendships) => setAllFriendships(allFriendships))
+ }}
 
   return (
     <UserContext.Provider value={{user, setUser}}>

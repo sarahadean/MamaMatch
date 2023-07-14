@@ -67,7 +67,7 @@ function Profile() {
           }}
           validationSchema={validationSchema}
           onSubmit={(values, actions) => {
-            fetch(`/api/users/${user.id}`, {
+            fetch(`/api/current_user/${user.id}`, {
               method: "PATCH",
               headers: {
                 "content-type": "application/json",
@@ -78,7 +78,7 @@ function Profile() {
                 if (res.ok) {
                   res.json().then((user) => {
                     setUser(user);
-                    {toggleEdit};
+                    {toggleEdit()};
                     navigate("/profile");
                   });
                 } else {

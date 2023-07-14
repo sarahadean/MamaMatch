@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useFormik } from "formik";
 import * as yup from "yup";
 import {useNavigate} from "react-router-dom"
+import UserContext from './UserContext';
 
 function SignupForm({updateUser}) {
+  const { user, setUser } = useContext(UserContext);
 
   const [error, setError] = useState(null)
   const navigate = useNavigate()
   const toggleSignup = () => setSignup(prev => !prev);
 
   const schema = yup.object().shape({
-    name: yup.string().required("*Name is required"),
-    username: yup.string().required("*Username is required"),
-    email: yup.string().required("*Email is required"),
+    name: yup.string(),
+    username: yup.string(),
+    email: yup.string(),
     // phone_number: yup.string().required("*Phone number is required"),
-    password: yup.string().required("*Password is required"),
+    password: yup.string(),
     // dob: yup.string().required("*Date of birth is required"),
     // location: yup.string().required("*Location is required"),
     // profile_image: yup.string(),

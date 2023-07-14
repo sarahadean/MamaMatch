@@ -3,10 +3,11 @@ import UserContext from './UserContext'
 import UserCard from '../UserCard';
 
 
-function Home({friendship, updateFriendship}) {
+function Home({friendship, updateFriendship, addToAllFriendships}) {
   const { user, setUser } = useContext(UserContext);
   const [friends, setFriends] = useState([])
 
+  //change state of filtered friends
   function updateFriend(){
     setFriends(friends)
   }
@@ -31,7 +32,8 @@ function Home({friendship, updateFriendship}) {
         })
         .then(friends => setFriends(friends))
     }
-    }
+    } 
+    console.log(friends)
 
   if (!user) {
     return <div>Loading...</div>;
@@ -48,15 +50,14 @@ function Home({friendship, updateFriendship}) {
   //  />})
   
   return (
-    <div>
+    <div className='container'>
       {friends.map(friend => {
         return <UserCard 
         key={friend.id} 
         friend={friend} 
         friendship={friendship} 
         updateFriendship={updateFriendship} 
-        friends={friends} 
-        updateFriend={updateFriend}/>;
+        />;
       })}
         
     </div>
