@@ -378,26 +378,26 @@ api.add_resource(Messages, '/messages/<int:id>/<int:friend_id>')
 
 #shows ALL messages for individual friendship
 #GET tested in thunderclient -> SUCCESSFUL
-class FriendshipMessages(Resource):
-    def get(self, id, friend_id):
-        try: 
-            user = User.query.filter_by(id=id).first()
+# class FriendshipMessages(Resource):
+#     def get(self, id, friend_id):
+#         try: 
+#             user = User.query.filter_by(id=id).first()
 
-            selected_friendship = Friendship.query.filter(
-                    ((Friendship.requesting_user_id == user.id) | (Friendship.receiving_user_id == user.id))
-                    & ((Friendship.requesting_user_id == friend_id) | (Friendship.receiving_user_id == friend_id)) ).first()
+#             selected_friendship = Friendship.query.filter(
+#                     ((Friendship.requesting_user_id == user.id) | (Friendship.receiving_user_id == user.id))
+#                     & ((Friendship.requesting_user_id == friend_id) | (Friendship.receiving_user_id == friend_id)) ).first()
             
-            friendship_messages = [message.serialize for message in selected_friendship.messages]
-            return make_response(friendship_messages, 200)
-        except Exception as e:
-            traceback.print_exc()
-            return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
+#             friendship_messages = [message.serialize for message in selected_friendship.messages]
+#             return make_response(friendship_messages, 200)
+#         except Exception as e:
+#             traceback.print_exc()
+#             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
     
     
-    def delete(self):
-        pass
+#     def delete(self):
+#         pass
 
-api.add_resource(FriendshipMessages, '/friendshipmessages/<int:id>/<int:friend_id>')
+# api.add_resource(FriendshipMessages, '/friendshipmessages/<int:id>/<int:friend_id>')
 
 if __name__ == '__main__':
     app.run(port=5555)

@@ -109,7 +109,7 @@ class Message(db.Model, SerializerMixin):
     content = db.Column(db.String)
 
     #RELATIONSHIP
-    author = db.relationship('User', back_populates="messages")
+    author = db.relationship('User', back_populates="messages", lazy="joined")
     # friendship = db.relationship('Friendship', back_populates='message')
     # friendship_status = db.relationship('FriendshipStatus', back_populates='message', cascade="all, delete-orphan" )
     
@@ -118,7 +118,7 @@ class Message(db.Model, SerializerMixin):
         return {
             "id": self.id,
             "content":self.content,
-            "author":self.author_id
+            "author": self.author.name if self.author else None
         }
 
 class Category_Mom(db.Model):
