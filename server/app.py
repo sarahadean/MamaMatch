@@ -183,17 +183,19 @@ api.add_resource(CurrentUser, '/current_user/<int:id>')
 
 #=============== POST - CREATES A NEW FRIENDSHIP ===============# 
 class UserFriendships(Resource):
-    # def get(self, id):
-    #     user = User.query.filter_by(id=id).first()
-    #     if not user:
-    #         return {"User not found"}, 404
+    # def get(self):
     #     try:
-    #         all_friendships = Friendship.query.filter(
-    #             (Friendship.receiving_user_id == user.id) |
-    #             (Friendship.requesting_user_id == user.id)
-    #         ).all()
-    #         serialized_friends = [friend.serialize for friend in all_friendships]
-    #         return make_response(serialized_friends, 200)
+    #         all_friendships = [friendship.serialize for friendship in Friendship.query.all()]
+    #     # user = User.query.filter_by(id=id).first()
+    #     # if not user:
+    #     #     return {"User not found"}, 404
+    #     # try:
+    #     #     all_friendships = Friendship.query.filter(
+    #     #         (Friendship.receiving_user_id == user.id) |
+    #     #         (Friendship.requesting_user_id == user.id)
+    #     #     ).all()
+    #     #     serialized_friends = [friend.serialize for friend in all_friendships]
+    #         return make_response(all_friendships, 200)
     #     except Exception as e:
     #         traceback.print_exc()
     #         return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
@@ -250,6 +252,27 @@ def get_confirmed_friends(id, status):
         except Exception as e:
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
+
+
+
+
+#===============GET ALL USER FRIENDSHIPS=======================#
+@app.route('/user_friendships/<int:id>')
+def get_all_friendships(id):
+    user = User.query.filter_by(id=id).first()
+    if not user:
+        return {"User not found"}, 404
+    try:
+        all_friendships = Friendship.query.filter(
+            (Friendship.receiving_user_id == user.id) |
+            (Friendship.requesting_user_id == user.id)
+        ).all()
+        serialized_friends = [friend.serialize for friend in all_friendships]
+        return make_response(serialized_friends, 200)
+    except Exception as e:
+        traceback.print_exc()
+        return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
+
 
 
 

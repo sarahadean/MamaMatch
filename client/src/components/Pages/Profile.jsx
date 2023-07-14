@@ -78,7 +78,7 @@ function Profile() {
                 if (res.ok) {
                   res.json().then((user) => {
                     setUser(user);
-                    {toggleEdit};
+                    {toggleEdit()};
                     navigate("/profile");
                   });
                 } else {

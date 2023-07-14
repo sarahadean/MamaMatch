@@ -13,9 +13,8 @@ function FriendsList({friendship, updateFriendship}) {
     if (user){
       fetch(`/api/user_friendships/${user.id}/CONFIRMED`)
         .then(res => {
-          console.log(res)
+          // console.log(res)
           if (res.ok) {
-            console.log(res)
             return res.json()
           } else if (res.status == 404) {
             return []
@@ -41,7 +40,7 @@ function FriendsList({friendship, updateFriendship}) {
 </div>
   ):(
     <div>
-    {[...actualFriends].map(friend => 
+    {actualFriends.map(friend => 
     <FriendsCard
     key={friend.id} 
     friend={friend}
