@@ -9,7 +9,9 @@ function FriendsCard({friend, friendship, updateFriendship}) {
   const { user, setUser } = useContext(UserContext);
   const [toggleBox, setToggleBox] = useState(false)
   const [messages, setMessages] = useState([])
-  console.log(friend)
+  // console.log(friend) - successfully getting friend's user info
+
+  //not getting the friendship data:
   console.log(friendship)
 
 //<----------DELETES FRIEND---------------->
@@ -54,11 +56,13 @@ return (
       {/* clicking toggles hidden input box*/}
       <button onClick={updateToggleBox} className='button'> Message</button>
       <button onClick={() => handleDelete()} className='button'>Delete</button>
+      
       {toggleBox ? (
+        <>
         <Formik
           initialValues={{
             // friendship_id: friendship.id,
-            // author: user.id,
+            author: user.id,
             content: "",
           }}
           validationSchema={validationSchema}
@@ -69,9 +73,13 @@ return (
               headers: {
                 "content-type": "application/json",
               },
-              body: JSON.stringify(values)
+              body: JSON.stringify({
+                status: values,
+                author_id: user.id
+              })
             })
               .then((res) => {
+                console.log(res)
                 if (res.ok) {
                   res.json().then((messages) => {
                     setMessages(messages)
@@ -104,10 +112,10 @@ return (
             </form>
           )}
         </Formik>
-        
-      ) : (
-        ""
-      )}
+          <button>Go to Convo</button>
+        </>
+      ) : ("")}
+      
       {/* <button> Block </button> */}
     </div>
   </>

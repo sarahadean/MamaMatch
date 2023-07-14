@@ -134,6 +134,7 @@ class FilteredUsers(Resource):
 api.add_resource(FilteredUsers, '/filtered_users/<int:id>')     
 
 
+
 #============GETS, PATCHES, OR DELETE'S CURRENT USER'S INFORMATION================#
 class CurrentUser(Resource):
     def get(self, id):
@@ -181,6 +182,7 @@ api.add_resource(CurrentUser, '/current_user/<int:id>')
      
 
 
+
 #=============== POST - CREATES A NEW FRIENDSHIP ===============# 
 class UserFriendships(Resource):
     # def get(self):
@@ -214,6 +216,7 @@ class UserFriendships(Resource):
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
 api.add_resource(UserFriendships, '/user_friendships')
+
 
 
 
@@ -255,8 +258,11 @@ def get_confirmed_friends(id, status):
 
 
 
-
-#===============GET ALL USER FRIENDSHIPS=======================#
+#>>>>COULD USE THIS ROUTE TO POPULATE MESSAGES LIST
+#MESSAGES LIST WOULD SHOW MESSAGES[1]
+#CLICK ON MESSAGE WOULD TAKE TO CONVERSATION COMPONENT
+#THIS WILL FURTHER POPULATE ALL THE MESSAGES WITH A MAP
+#===============GET ALL USER CONFIRMED FRIENDSHIPS MESSAGES=======================#
 @app.route('/user_friendships/<int:id>')
 def get_all_friendships(id):
     user = User.query.filter_by(id=id).first()
@@ -264,8 +270,9 @@ def get_all_friendships(id):
         return {"User not found"}, 404
     try:
         all_friendships = Friendship.query.filter(
-            (Friendship.receiving_user_id == user.id) |
-            (Friendship.requesting_user_id == user.id)
+            ((Friendship.receiving_user_id == user.id) |
+            (Friendship.requesting_user_id == user.id)) &
+            (Friendship.status == "CONFIRMED")
         ).all()
         serialized_friends = [friend.serialize for friend in all_friendships]
         return make_response(serialized_friends, 200)
@@ -335,27 +342,10 @@ api.add_resource(FriendshipById, '/friendship/<int:user_id>/<int:friend_id>')
 # - get's messages for individual friendship
 
 
-#================= GET all messages  a friendship ==================#
-# GET and POST working
-
+#================= CREATES A NEW MESSAGE FOR SINGLE friendship ==================#
+# creates new message
 class Messages(Resource):
-    def get(self, id, friend_id):
-        try: 
-            user = User.query.filter_by(id=id).first()
-            #get the friendship
-            selected_friendship = Friendship.query.filter(
-                    ((Friendship.requesting_user_id == user.id) | (Friendship.receiving_user_id == user.id))
-                    & ((Friendship.requesting_user_id == friend_id) | (Friendship.receiving_user_id == friend_id)) ).first()
-
-            friendship_messages = [message.serialize for message in Message.query.filter(Message.friendship_id == selected_friendship.id).all()]
-            return make_response(friendship_messages, 200)
-        
-        except Exception as e:
-            traceback.print_exc()
-            return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500 
-        
-        
-        #id = user_id
+#post tested in postman and is working
     def post(self, id, friend_id):
         data = request.get_json()
         user = User.query.filter_by(id=id).first()
@@ -365,9 +355,11 @@ class Messages(Resource):
                 ((Friendship.requesting_user_id == user.id) | (Friendship.receiving_user_id == user.id))
                 & ((Friendship.requesting_user_id == friend_id) | (Friendship.receiving_user_id == friend_id)) ).first()
             
+
+
             new_message = Message(
                 friendship_id = selected_friendship.id,
-                author = user.id,
+                author_id = id,
                 content = data.get("content")
             )
             db.session.add(new_message)
@@ -380,15 +372,32 @@ class Messages(Resource):
 
 api.add_resource(Messages, '/messages/<int:id>/<int:friend_id>')
 
-#shows messages for individual friendship
-# class FriendshipMessages(Resource):
-#     def get(self):
-#         pass
 
-#     def delete(self):
-#         pass
 
-# api.add_resource(FriendshipMessages, '/friendshipmessages')
+#=============GETS ALL MESSAGES FOR A SINGLE FRIENDSHIP===============#
+
+#shows ALL messages for individual friendship
+#GET tested in thunderclient -> SUCCESSFUL
+class FriendshipMessages(Resource):
+    def get(self, id, friend_id):
+        try: 
+            user = User.query.filter_by(id=id).first()
+
+            selected_friendship = Friendship.query.filter(
+                    ((Friendship.requesting_user_id == user.id) | (Friendship.receiving_user_id == user.id))
+                    & ((Friendship.requesting_user_id == friend_id) | (Friendship.receiving_user_id == friend_id)) ).first()
+            
+            friendship_messages = [message.serialize for message in selected_friendship.messages]
+            return make_response(friendship_messages, 200)
+        except Exception as e:
+            traceback.print_exc()
+            return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
+    
+    
+    def delete(self):
+        pass
+
+api.add_resource(FriendshipMessages, '/friendshipmessages/<int:id>/<int:friend_id>')
 
 if __name__ == '__main__':
     app.run(port=5555)

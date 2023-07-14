@@ -17,7 +17,7 @@ class Friendship(db.Model, SerializerMixin):
     status = db.Column(db.String)
     
     #Relationship - Friendship has many messages. Messages has ONE friendship
-    message = db.relationship('Message', backref='friendships')
+    messages = db.relationship('Message', backref='friendships')
     # friendship_status = db.relationship('FriendshipStatus', back_populates='friendship', cascade="all, delete-orphan"  )
 
     @property
@@ -27,7 +27,7 @@ class Friendship(db.Model, SerializerMixin):
             "requesting_user":self.requesting_user_id,
             "receiving_user":self.receiving_user_id,
             "status":self.status,
-            # "message":self.message.content
+            "messages":[message.serialize for message in self.messages]
         }
 
 
@@ -117,7 +117,6 @@ class Message(db.Model, SerializerMixin):
     def serialize(self):
         return {
             "id": self.id,
-            "friendship_id":self.friendship_id,
             "content":self.content,
             "author":self.author_id
         }
