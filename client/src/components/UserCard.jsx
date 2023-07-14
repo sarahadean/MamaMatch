@@ -6,7 +6,7 @@ import UserContext from './Pages/UserContext';
 //pressing X will create friendship with status "hide", 
 //clicking yes will create friendship with status "pending"
 //add conditional to hide buttons
-function UserCard({ friend, updateFriendship, friendship, updateFriend, addToAllFriendships }) {
+function UserCard({ friend, updateFriendship, friendship}) {
   const {id, name, profile_image, location, about, mom_life, interests} = friend
   const { user, setUser } = useContext(UserContext);
   // console.log(friend)
@@ -29,7 +29,7 @@ function UserCard({ friend, updateFriendship, friendship, updateFriend, addToAll
       if (res.ok) {
       res.json().then(data => {
         updateFriendship(data.friendship)
-        updateFriend(data.friend)
+        // updateFriend(data.friend)
         // updateFriend(data.friends)
 
       })
