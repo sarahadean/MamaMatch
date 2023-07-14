@@ -50,7 +50,7 @@ function Home({friendship, updateFriendship, addToAllFriendships}) {
   //  />})
   
   return (
-    <div>
+    <div className='container'>
       {friends.map(friend => {
         return <UserCard 
         key={friend.id} 

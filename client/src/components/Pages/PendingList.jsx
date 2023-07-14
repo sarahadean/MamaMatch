@@ -41,12 +41,12 @@ function PendingList({friendship, updateFriendship}) {
       return (
         <>
         {pendingFriends.length === 0 ? (
-          <div>
+          <div className='container'>
             <h2>Hello, beautiful mama!</h2>
             <p>You don't have any pending requests</p>
         </div>
       ):(
-        <div>
+        <div className='container'>
         {pendingFriends.map(friend => 
         <PendingCard key={friend.id} 
         friend={friend}

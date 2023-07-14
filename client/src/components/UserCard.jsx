@@ -40,7 +40,7 @@ function UserCard({ friend, updateFriendship, friendship}) {
       }
 
   return (
-    <div>
+    <div className='card'>
 
     
       {friendship ? (

@@ -39,7 +39,7 @@ function FriendsList({friendship, updateFriendship}) {
   <p>No MamaMatch friends yet! Head back to the home to find your perfect mom-match!</p>
 </div>
   ):(
-    <div>
+    <div className='container'>
     {actualFriends.map(friend => 
     <FriendsCard
     key={friend.id} 

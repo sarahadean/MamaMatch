@@ -42,7 +42,7 @@ const validationSchema = yup.object().shape({
 
 return (
   <>
-    <div>
+    <div className='card'>
       <img src={profile_image}></img>
       <ul>
         <h3>{name}</h3>
@@ -52,8 +52,8 @@ return (
         {/* <li>{pendingFriend.interests}</li> */}
       </ul>
       {/* clicking toggles hidden input box*/}
-      <button onClick={updateToggleBox}> Message</button>
-      <button onClick={() => handleDelete()}>Delete</button>
+      <button onClick={updateToggleBox} className='button'> Message</button>
+      <button onClick={() => handleDelete()} className='button'>Delete</button>
       {toggleBox ? (
         <Formik
           initialValues={{

@@ -35,7 +35,7 @@ function PendingCard({friendship, updateFriendship, updatePendingFriendsList, pe
   
   return (
     <>
-          <div>
+          <div className='card'>
         
           <img src={profile_image}></img>
           <ul>
