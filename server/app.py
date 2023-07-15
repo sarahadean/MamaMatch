@@ -79,11 +79,13 @@ api.add_resource(Login, '/login')
 
 
 #============= LOGOUT ===============#
+
 class Logout(Resource):
-    def get(self):
-        session['user_id'] = None
+    def post(self):
+        logout_user()
+        # session['user_id'] = None
         # ipdb.set_trace()
-        return make_response('Goodbye, Mama! Have a great day!', 200)
+        return 'Goodbye, Mama! Have a great day!', 200
 api.add_resource(Logout, '/logout')
 
 

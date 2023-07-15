@@ -7,7 +7,12 @@ function NavBar({navigate}) {
   const { user, setUser } = useContext(UserContext);
 
   function handleLogout() {
-		fetch("/api/logout").then((res) => {
+		fetch("/api/logout", {
+      method: "POST",
+      headers: {
+        "content-type" : "application/json"
+      }
+    }).then((res) => {
 			if (res.ok){
 				setUser(null);
 				navigate("/");
