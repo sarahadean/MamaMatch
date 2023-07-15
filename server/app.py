@@ -152,12 +152,12 @@ class CurrentUser(Resource):
                 for attr in data:
                     setattr(user_info, attr, data.get(attr))
                     
-                    db.session.add(user_info)
-                    db.session.commit()
-                    return make_response(user_info.serialize, 200)
-                else:
-                    return {"Validation error"}, 400
-            return {"User not found"}, 404
+                db.session.add(user_info)
+                db.session.commit()
+                return make_response(user_info.serialize, 200)
+            else:
+                return {"Validation error"}, 400
+            # return {"User not found"}, 404
         except Exception as e:
             traceback.print_exc()
             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500

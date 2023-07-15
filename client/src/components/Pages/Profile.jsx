@@ -106,7 +106,7 @@ function Profile() {
                 console.log(res)
                 if (res.ok) {
                   res.json().then((user) => {
-                    console.log(data)
+                    console.log(user)
                     setUser(user);
                     toggleEdit();
                     navigate("/profile");
