@@ -8,11 +8,11 @@ function FriendsCard({friend, friendship, updateFriendship}) {
   const {id, name, profile_image, location, about, mom_life, interests} = friend
   const { user, setUser } = useContext(UserContext);
   const [toggleBox, setToggleBox] = useState(false)
-  const [messages, setMessages] = useState([])
+  const [message, setMessage] = useState([])
   // console.log(friend) - successfully getting friend's user info
 
   //not getting the friendship data:
-  console.log(friendship)
+  // console.log(friendship)
 
 //<----------DELETES FRIEND---------------->
 function handleDelete(){
@@ -25,7 +25,7 @@ function handleDelete(){
     .then(res => {
     if (res.ok) {
     res.json().then(friendship => {
-      updateFriendship(friendship)
+      updateFriendship(null)
     })
     } else {
     res.json().then(error => setError(error.message));
@@ -54,7 +54,9 @@ return (
         {/* <li>{pendingFriend.interests}</li> */}
       </ul>
       {/* clicking toggles hidden input box*/}
+      <p>Send a message to say hi!</p>
       <button onClick={updateToggleBox} className='button'> Message</button>
+      <p>Not feeling it? Click to remove:</p>
       <button onClick={() => handleDelete()} className='button'>Delete</button>
       
       {toggleBox ? (
@@ -62,7 +64,7 @@ return (
         <Formik
           initialValues={{
             // friendship_id: friendship.id,
-            author: user.id,
+            // author: user.id,
             content: "",
           }}
           validationSchema={validationSchema}
@@ -73,17 +75,15 @@ return (
               headers: {
                 "content-type": "application/json",
               },
-              body: JSON.stringify({
-                status: values,
-                author_id: user.id
-              })
+              body: JSON.stringify(values)
             })
               .then((res) => {
                 console.log(res)
                 if (res.ok) {
-                  res.json().then((messages) => {
-                    setMessages(messages)
-                    updateToggleBox;
+                  res.json().then((message) => {
+                    setMessage(message)
+                    actions.resetForm() 
+                    {updateToggleBox};
                   });
                 } else {
                   res.json().then((data) => {

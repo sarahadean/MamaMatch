@@ -7,7 +7,7 @@ function NavBar({navigate}) {
   const { user, setUser } = useContext(UserContext);
 
   function handleLogout() {
-		fetch("/logout").then((res) => {
+		fetch("/api/logout").then((res) => {
 			if (res.ok){
 				setUser(null);
 				navigate("/");

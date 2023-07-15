@@ -4,10 +4,17 @@ import FriendsCard from '../FriendsCard';
 
 function FriendsList({friendship, updateFriendship}) {
   const { user, setUser } = useContext(UserContext);
+  
   const [actualFriends, setActualFriends] = useState([])
+
+  
 
   useEffect(() => {
     fetchUsers() }, [user])
+
+    if (!user) {
+      return <div>Loading...</div>;
+    }
 
   function fetchUsers(){
     if (user){
@@ -44,8 +51,8 @@ function FriendsList({friendship, updateFriendship}) {
     <FriendsCard
     key={friend.id} 
     friend={friend}
-    friendship={friendship}
     updateFriendship={updateFriendship}
+    friendship={friendship}
     />)}
     </div>)}
   </>

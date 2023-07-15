@@ -24,8 +24,10 @@ class Friendship(db.Model, SerializerMixin):
     def serialize(self):
         return {
             "id":self.id,
-            "requesting_user":self.requesting_user_id,
-            "receiving_user":self.receiving_user_id,
+            "requesting_user_id":self.requesting_user_id,
+            "requesting_user_name": self.requesting_user.name,
+            "receiving_user_id":self.receiving_user_id,
+            "receiving_user_name": self.receiving_user.name,
             "status":self.status,
             "messages":[message.serialize for message in self.messages]
         }

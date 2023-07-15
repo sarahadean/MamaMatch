@@ -3,18 +3,18 @@ import UserContext from './UserContext'
 import UserCard from '../UserCard';
 
 
-function Home({friendship, updateFriendship, addToAllFriendships}) {
+function Home({friendship, updateFriendship,}) {
   const { user, setUser } = useContext(UserContext);
   const [friends, setFriends] = useState([])
 
-  //change state of filtered friends
+  // change state of filtered friends
   function updateFriend(){
     setFriends(friends)
   }
   
 
   useEffect(() => {
-  fetchUsers() }, [user])
+  fetchUsers()}, [user])
   
 
   //fetching users who are not in friendship with current user
@@ -22,6 +22,7 @@ function Home({friendship, updateFriendship, addToAllFriendships}) {
     if (user){
       fetch(`/api/filtered_users/${user.id}`)
         .then(res => {
+          console.log(res)
           if (res.ok) {
             return res.json()
           } else if (res.status == 404) {

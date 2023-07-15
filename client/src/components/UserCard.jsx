@@ -10,7 +10,7 @@ function UserCard({ friend, updateFriendship, friendship}) {
   const {id, name, profile_image, location, about, mom_life, interests} = friend
   const { user, setUser } = useContext(UserContext);
   // console.log(friend)
-  console.log(friendship)
+  // console.log(friendship)
 
   function handleSubmit(e, value){
     console.log(value)
