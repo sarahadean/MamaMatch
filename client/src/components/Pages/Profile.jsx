@@ -109,7 +109,7 @@ function Profile() {
                     console.log(user)
                     setUser(user);
                     toggleEdit();
-                    navigate("/profile");
+                    // navigate("/profile");
                   });
                 } else {
                   res.json().then((data) => {

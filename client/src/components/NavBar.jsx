@@ -1,10 +1,19 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import UserContext from './Pages/UserContext';
+import { CardHeader, Button, Box, useMediaQuery, Grid, Toolbar, Avatar, IconButton, Menu, Fade, MenuItem, AppBar, Typography, Tab, Tabs, Icon} from '@mui/material'
+import HomeIcon from '@mui/icons-material/Home';
 
 
 function NavBar({navigate}) {
   const { user, setUser } = useContext(UserContext);
+  const [value, setValue] = useState()
+
+  const home = <NavLink className="button" to="/home">Home</NavLink>
+  const pending = <NavLink className="button" to="/interested">Requests</NavLink> 
+  const friends = <NavLink className="button" to="/friends">Friends</NavLink> 
+  const profile = <NavLink className="button" to="/profile">Profile</NavLink>
+  const welcome = <NavLink className="button" to="/">Welcome</NavLink>
 
   function handleLogout() {
 		fetch("/api/logout", {
@@ -21,31 +30,60 @@ function NavBar({navigate}) {
 	}
 
   return (
-    <header>
-      {/* {user ? } */}
-      <div className='menu'>
+   <>
+      <AppBar>
+        <Toolbar className="App-header">
+          
       {user ? 
-          (<>
-          <NavLink className="button" to="/home">Home</NavLink>
-          <NavLink className="button" to="/interested">Pending</NavLink> 
-            <NavLink className="button" to="/friends">Friends</NavLink> 
-            {/* <NavLink className="button" to="/messages">Messages</NavLink> */}
-            <NavLink className="button" to="/profile">Profile</NavLink>
-            <button onClick={handleLogout} className='button'>Logout</button> 
-          </>):
-          (<>
-            <NavLink className="button" to="/">Welcome</NavLink>
+          (
+          <>
+          <IconButton>
+          <Avatar alt={user.name} src={user.profile_image}></Avatar>
+        </IconButton>
+            <Grid sx={{placeItems: 'center'}} container>
+
+                <Grid item sx={1}>
+                  <IconButton component={Link} to="/home" value="home">
+                      <HomeIcon />
+                  </IconButton >
+                </Grid>
+
+                <Grid item xs={1}></Grid>
+
+                <Grid item xs={6}>
+                  <Tabs 
+                      indicatorColor="secondary" 
+                      textColor="inherit" 
+                      value={value} onChange={(e, val)=>setValue(val)}>
+                    <Tab value="Requests" label="Requests" component={Link} to="/interested"/>
+                    <Tab value="Friends" label="Friends"component={Link} to="/friends"/>
+                    <Tab value="Profile" label="Profile"component={Link} to="/profile"/>
+                    <Tab value="undefined"/>
+                  </Tabs>
+                </Grid>
+
+                <Grid item xs={2}></Grid>
+
+                <Grid item xs={2}>
+                  <Box display="flex">
+                    <Button sx={{marginLeft: 'auto'}} variant='contained'onClick={handleLogout} >Logout</Button>
+                  </Box>
+                </Grid>
+                </Grid>
+          </>
+          ):(
+          <>
+            <Grid container spacing={1}>
+              <Grid item sx={1}>
+                <Tabs indicatorColor="secondary" textColor="inherit" value={value} onChange={(e, val)=>setValue(val)}>
+                  <Tab label={welcome}/>
+                </Tabs>
+              </Grid>
+            </Grid>
           </>) }
-       
-            {/* <NavLink className="button" to="/home">Home</NavLink>  */}
-             
-            {/* <NavLink className="button" to="/">Welcome</NavLink> */}
-            
-            {/* <NavLink className="button" to="/login">Login</NavLink> */}
-            {/* <NavLink className="button" to="/signup">Signup</NavLink> */}
-  
-    </div>
-    </header>
+        </Toolbar>
+    </AppBar>
+    </>
     
   )
 }

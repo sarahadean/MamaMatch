@@ -19,7 +19,7 @@ function App() {
   const [user, setUser] = useState(null)
 
   // all user friendships
-  const [friendships, setFriendships] = useState([])
+  // const [friendships, setFriendships] = useState([])
 
   //single friendship state - {} or []??
   const [friendship, setFriendship] = useState(null)
@@ -30,9 +30,9 @@ function App() {
   // }
 
   //adds new friendship to user's friendships
-  function updateFriendships(friendship){
-    setFriendships([...friendships, friendship])
-  }
+  // function updateFriendships(friendship){
+  //   setFriendships([...friendships, friendship])
+  // }
 
 //updates SINGLE friendship
   function updateFriendship(){
@@ -47,7 +47,7 @@ function App() {
     // getUserFriendships()
   }, [user])
   console.log(user)
-  console.log(friendships)
+
 
   
 
@@ -73,20 +73,20 @@ function App() {
   }
 
 //gets all user's friendships - giving 404 nessage
- function getUserFriendships(){
-  fetch(`/api/user_friendships/`)
-  .then(res => {
-    console.log(res)
-    if (res.ok) {
-      return res.json()
-    } else if (res.status == 404){
-      return []
-    } else {
-      throw new Error("Error fetching address details")
-    }
-  })
-  .then((friendships) => setFriendships(friendships))
-}
+//  function getUserFriendships(){
+//   fetch(`/api/user_friendships/`)
+//   .then(res => {
+//     console.log(res)
+//     if (res.ok) {
+//       return res.json()
+//     } else if (res.status == 404){
+//       return []
+//     } else {
+//       throw new Error("Error fetching address details")
+//     }
+//   })
+//   .then((friendships) => setFriendships(friendships))
+// }
 
   return (
     <UserContext.Provider value={{user, setUser}}>
@@ -95,11 +95,11 @@ function App() {
         <NavBar navigate ={navigate}/>
         <Routes>
           <Route exact path="/" element={<Welcome />} />
-          <Route path="/home" element={<Home friendship={friendship} updateFriendship={updateFriendship} updateFriendships={updateFriendships}/>}/>
+          <Route path="/home" element={<Home />}/>
           <Route path="/signup" element={<SignupForm />} />
           <Route path="/login" element={<LoginForm navigate={navigate}/>} />
-          <Route path="/interested" key="/interested" element={<PendingList friendship={friendship} updateFriendship={updateFriendship} updateFriendships={updateFriendships}/>} />
-          <Route path="/friends" key="/friends"element={<FriendsList friendship={friendship} updateFriendship={updateFriendship}/>} />
+          <Route path="/interested" key="/interested" element={<PendingList />} />
+          <Route path="/friends" key="/friends"element={<FriendsList />} />
           <Route path="/messages" element={<MessagesList />} />
           <Route path="/conversations/:id" element={<Conversation />} />
           <Route path="/profile" element={<Profile />} />
