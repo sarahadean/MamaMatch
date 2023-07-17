@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import UserContext from './Pages/UserContext';
 import { Formik, Field, ErrorMessage } from "formik";
+import { NavLink, useNavigate } from 'react-router-dom';
 import * as yup from "yup";
 
 
@@ -8,9 +9,13 @@ function FriendsCard({friend, friendship, updateFriendship}) {
   const {id, name, profile_image, location, about, mom_life, interests} = friend
   const { user, setUser } = useContext(UserContext);
   const [toggleBox, setToggleBox] = useState(false)
-  const [messages, setMessages] = useState([])
-  console.log(friend)
-  console.log(friendship)
+  const [message, setMessage] = useState([])
+  // console.log(friend) - successfully getting friend's user info
+
+  const url = `/conversations/${id}`
+
+  //not getting the friendship data:
+  // console.log(friendship)
 
 //<----------DELETES FRIEND---------------->
 function handleDelete(){
@@ -23,13 +28,14 @@ function handleDelete(){
     .then(res => {
     if (res.ok) {
     res.json().then(friendship => {
-      updateFriendship(friendship)
+      updateFriendship(null)
     })
     } else {
     res.json().then(error => setError(error.message));
     }
     })
     }
+
 
 //<-------SENDS MESSAGE--------------->
 const updateToggleBox = () => setToggleBox(prev => !prev);
@@ -52,9 +58,15 @@ return (
         {/* <li>{pendingFriend.interests}</li> */}
       </ul>
       {/* clicking toggles hidden input box*/}
-      <button onClick={updateToggleBox} className='button'> Message</button>
+      <p>Send a message to say hi!</p>
+      {/* <button onClick={updateToggleBox} className='button'> Message</button> */}
+      <NavLink className="button" to={url}
+      >Send Message</NavLink>
+      <p>Vibes off? Click to delete friend:</p>
       <button onClick={() => handleDelete()} className='button'>Delete</button>
-      {toggleBox ? (
+      
+      {/* {toggleBox ? (
+        <>
         <Formik
           initialValues={{
             // friendship_id: friendship.id,
@@ -72,10 +84,12 @@ return (
               body: JSON.stringify(values)
             })
               .then((res) => {
+                console.log(res)
                 if (res.ok) {
-                  res.json().then((messages) => {
-                    setMessages(messages)
-                    updateToggleBox;
+                  res.json().then((message) => {
+                    setMessage(message)
+                    actions.resetForm() 
+                    {updateToggleBox};
                   });
                 } else {
                   res.json().then((data) => {
@@ -96,7 +110,7 @@ return (
           {({ handleSubmit }) => (
             <form onSubmit={handleSubmit}>
               <label>
-                Message:
+                Send Message:
                 <Field type="text" name="content" />
                 <ErrorMessage name="content" component="h3" />
               </label>
@@ -104,10 +118,10 @@ return (
             </form>
           )}
         </Formik>
-        
-      ) : (
-        ""
-      )}
+          
+        </>
+      ) : ("")} */}
+      
       {/* <button> Block </button> */}
     </div>
   </>

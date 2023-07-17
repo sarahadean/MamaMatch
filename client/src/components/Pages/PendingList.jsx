@@ -10,8 +10,11 @@ function PendingList({friendship, updateFriendship}) {
     setPendingFriends(pendingFriends)
   }
 
+  
+
   useEffect(() => {
     fetchUsers() }, [user])
+
 // need fetch route just getting friendship to save in state. 
   function fetchUsers(){
     if (user){

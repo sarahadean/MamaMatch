@@ -17,17 +17,19 @@ class Friendship(db.Model, SerializerMixin):
     status = db.Column(db.String)
     
     #Relationship - Friendship has many messages. Messages has ONE friendship
-    message = db.relationship('Message', backref='friendships')
+    messages = db.relationship('Message', backref='friendships')
     # friendship_status = db.relationship('FriendshipStatus', back_populates='friendship', cascade="all, delete-orphan"  )
 
     @property
     def serialize(self):
         return {
             "id":self.id,
-            "requesting_user":self.requesting_user_id,
-            "receiving_user":self.receiving_user_id,
+            "requesting_user_id":self.requesting_user_id,
+            "requesting_user_name": self.requesting_user.name,
+            "receiving_user_id":self.receiving_user_id,
+            "receiving_user_name": self.receiving_user.name,
             "status":self.status,
-            # "message":self.message.content
+            "messages":[message.serialize for message in self.messages]
         }
 
 
@@ -109,7 +111,7 @@ class Message(db.Model, SerializerMixin):
     content = db.Column(db.String)
 
     #RELATIONSHIP
-    author = db.relationship('User', back_populates="messages")
+    author = db.relationship('User', back_populates="messages", lazy="joined")
     # friendship = db.relationship('Friendship', back_populates='message')
     # friendship_status = db.relationship('FriendshipStatus', back_populates='message', cascade="all, delete-orphan" )
     
@@ -117,9 +119,9 @@ class Message(db.Model, SerializerMixin):
     def serialize(self):
         return {
             "id": self.id,
-            "friendship_id":self.friendship_id,
             "content":self.content,
-            "author":self.author_id
+            "author": self.author.name if self.author else None,
+            "updated_at":self.updated_at
         }
 
 class Category_Mom(db.Model):

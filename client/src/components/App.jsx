@@ -17,58 +17,76 @@ function App() {
   const navigate = useNavigate();
   //state of individual user
   const [user, setUser] = useState(null)
-  const [allFriendships, setAllFriendships] = useState([])
 
-  //friendship for single friend - pass down to cards with updateFriendship
+  // all user friendships
+  const [friendships, setFriendships] = useState([])
+
+  //single friendship state - {} or []??
   const [friendship, setFriendship] = useState(null)
-  console.log(user)
-  console.log(friendship)
 
-  useEffect(() => {
-    authorizeUser()
-    getUserFriendships()
-  }, [user])
+  //updates user
+  // function updateUser(){
+  //   setUser(user)
+  // }
 
+  //adds new friendship to user's friendships
+  function updateFriendships(friendship){
+    setFriendships([...friendships, friendship])
+  }
 
-  //updates friendship (if status changes)
+//updates SINGLE friendship
   function updateFriendship(){
     setFriendship(friendship)
   }
 
+ 
+  // console.log(friendship)
 
-  //adds friendship to all friendships
-  function addToAllFriendships(friendship){
-    setAllFriendships([...allFriendships, friendship])
-  }
+  useEffect(() => {
+    authorizeUser()
+    // getUserFriendships()
+  }, [user])
+  console.log(user)
+  console.log(friendships)
 
   
+
+  //adds friendship to all friendships
+  // function addToAllFriendships(friendship){
+  //   setAllFriendships([...allFriendships, friendship])
+  // }
+
+  //authorize session
   function authorizeUser(){
     if (user == null) {
       fetch('/api/authorize_session')
       .then(response => {
+        console.log(response)
         if (response.ok) {
           return response.json().then((user) => setUser(user))
         } else {
           setUser(null)
-          navigate("/")
+          // navigate("/")
         }
       })
     }
   }
 
-//gets all user's friendships
+//gets all user's friendships - giving 404 nessage
  function getUserFriendships(){
-  if (user != null){
-  fetch(`/api/user_friendships/${user.id}`)
-  .then(response => {
-    if (response.ok) {
-      return response.json()
+  fetch(`/api/user_friendships/`)
+  .then(res => {
+    console.log(res)
+    if (res.ok) {
+      return res.json()
+    } else if (res.status == 404){
+      return []
     } else {
-      throw new Error("Error fetching address details");
+      throw new Error("Error fetching address details")
     }
   })
-  .then((allFriendships) => setAllFriendships(allFriendships))
- }}
+  .then((friendships) => setFriendships(friendships))
+}
 
   return (
     <UserContext.Provider value={{user, setUser}}>
@@ -77,13 +95,13 @@ function App() {
         <NavBar navigate ={navigate}/>
         <Routes>
           <Route exact path="/" element={<Welcome />} />
-          <Route path="/home" element={<Home friendship={friendship} updateFriendship={updateFriendship}/>}/>
+          <Route path="/home" element={<Home friendship={friendship} updateFriendship={updateFriendship} updateFriendships={updateFriendships}/>}/>
           <Route path="/signup" element={<SignupForm />} />
           <Route path="/login" element={<LoginForm navigate={navigate}/>} />
-          <Route path="/interested" key="/interested" element={<PendingList friendship={friendship} updateFriendship={updateFriendship}/>} />
+          <Route path="/interested" key="/interested" element={<PendingList friendship={friendship} updateFriendship={updateFriendship} updateFriendships={updateFriendships}/>} />
           <Route path="/friends" key="/friends"element={<FriendsList friendship={friendship} updateFriendship={updateFriendship}/>} />
           <Route path="/messages" element={<MessagesList />} />
-          <Route path="/conversation" element={<Conversation />} />
+          <Route path="/conversations/:id" element={<Conversation />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>

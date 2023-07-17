@@ -9,7 +9,7 @@ function SignupForm({updateUser}) {
 
   const [error, setError] = useState(null)
   const navigate = useNavigate()
-  const toggleSignup = () => setSignup(prev => !prev);
+  const toggleSignup = () => setSignup((prev) => !prev);
 
   const schema = yup.object().shape({
     name: yup.string(),
@@ -54,7 +54,7 @@ function SignupForm({updateUser}) {
                 if(res.ok){
                     res.json().then(user => {
                       console.log(user)
-                      updateUser(user)
+                      setUser(user)
                       navigate("/profile")
                       actions.resetForm()
                     });

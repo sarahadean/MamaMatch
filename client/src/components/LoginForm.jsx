@@ -13,9 +13,9 @@ function LoginForm({navigate}) {
     password: yup.string().required("*Password is required")
   });
 
-  if (user) {
-    navigate('/home')
-  }
+  // if (user) {
+  //   navigate('/home')
+  // }
 
   return (
     <section>

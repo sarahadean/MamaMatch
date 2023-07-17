@@ -1,14 +1,16 @@
 import React, { useContext } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import UserContext from './UserContext';
 
 function Welcome() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
 
-  if (user) {
-    navigate('/home')
-  }
+  // commented out because session is not setting user_id to none and navigating back to home
+  // automatically
+  // if (user) {
+  //   navigate('/home')
+  // }
 
   return (
     <>

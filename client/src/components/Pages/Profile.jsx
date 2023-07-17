@@ -8,6 +8,22 @@ function Profile() {
   const { user, setUser } = useContext(UserContext);
   const [error, setError] = useState(null);
   const [edit, setEdit] = useState(true);
+  // const [form, setForm] = useState({
+  //   name: "",
+  //   username: "",
+  //   email: "",
+  //   password: "",
+  //   phone_number: "",
+  //   dob: "",
+  //   location: "",
+  //   profile_image: "",
+  //   about: "",
+  //   mom_life: "",
+  //   interests: "",
+  // })
+
+  // console.log(form)
+
   const navigate = useNavigate();
 
   const toggleEdit = () => setEdit((prev) => !prev);
@@ -16,19 +32,19 @@ function Profile() {
     return <div>Loading...</div>;
   }
 
-  const validationSchema = yup.object().shape({
-    name: yup.string(),
-    username: yup.string(),
-    email: yup.string(),
-    password: yup.string(),
-    phone_number: yup.string(),
-    dob: yup.string(),
-    location: yup.string(),
-    profile_image: yup.string(),
-    about: yup.string(),
-    mom_life: yup.string(),
-    interests: yup.string(),
-  });
+  // const validationSchema = yup.object().shape({
+  //   name: yup.string(),
+  //   username: yup.string(),
+  //   email: yup.string(),
+  //   password: yup.string(),
+  //   phone_number: yup.string(),
+  //   dob: yup.string(),
+  //   location: yup.string(),
+  //   profile_image: yup.string(),
+  //   about: yup.string(),
+  //   mom_life: yup.string(),
+  //   interests: yup.string(),
+  // });
 
   return (
     <section>
@@ -65,20 +81,34 @@ function Profile() {
             mom_life: user.mom_life,
             interests: user.interests,
           }}
-          validationSchema={validationSchema}
+          // validationSchema={validationSchema}
           onSubmit={(values, actions) => {
+            console.log(values)
             fetch(`/api/current_user/${user.id}`, {
               method: "PATCH",
               headers: {
                 "content-type": "application/json",
               },
-              body: JSON.stringify(values),
+              body: JSON.stringify({
+                name: values.name,
+                username: values.username,
+                email: values.email,
+                password: values.password,
+                phone_number: values.phone_number,
+                dob: values.dob,
+                location: values.location,
+                profile_image: values.profile_image,
+                about: values.about,
+                mom_life: values.mom_life,
+                interests: values.interests}),
             })
               .then((res) => {
+                console.log(res)
                 if (res.ok) {
                   res.json().then((user) => {
+                    console.log(user)
                     setUser(user);
-                    {toggleEdit()};
+                    toggleEdit();
                     navigate("/profile");
                   });
                 } else {
