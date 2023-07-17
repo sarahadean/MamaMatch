@@ -7,7 +7,7 @@ import HomeIcon from '@mui/icons-material/Home';
 
 function NavBar({navigate}) {
   const { user, setUser } = useContext(UserContext);
-  const [value, setValue] = useState()
+  const [value, setValue] = useState("undefined")
 
   const home = <NavLink className="button" to="/home">Home</NavLink>
   const pending = <NavLink className="button" to="/interested">Requests</NavLink> 
@@ -40,9 +40,10 @@ function NavBar({navigate}) {
           <IconButton>
           <Avatar alt={user.name} src={user.profile_image}></Avatar>
         </IconButton>
+
             <Grid sx={{placeItems: 'center'}} container>
 
-                <Grid item sx={1}>
+                <Grid item xs={1}>
                   <IconButton component={Link} to="/home" value="home">
                       <HomeIcon />
                   </IconButton >
@@ -58,7 +59,6 @@ function NavBar({navigate}) {
                     <Tab value="Requests" label="Requests" component={Link} to="/interested"/>
                     <Tab value="Friends" label="Friends"component={Link} to="/friends"/>
                     <Tab value="Profile" label="Profile"component={Link} to="/profile"/>
-                    <Tab value="undefined"/>
                   </Tabs>
                 </Grid>
 

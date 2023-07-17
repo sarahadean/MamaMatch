@@ -54,12 +54,14 @@ function UserCard({ friend, friends, updateFriend }) {
           <Typography>{about}</Typography>
         </CardContent>
         <CardActions>
+
           <IconButton onClick={(e) => handleSubmit(e, "PENDING")}>
             <FavoriteBorderOutlinedIcon/>
             </IconButton>
           <IconButton onClick={(e) => handleSubmit(e, "HIDDEN")}>
             <ClearOutlinedIcon/>
           </IconButton>
+          
         </CardActions>
       </Card>
 
