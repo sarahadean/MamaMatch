@@ -101,7 +101,7 @@ function App() {
           <Route path="/interested" key="/interested" element={<PendingList friendship={friendship} updateFriendship={updateFriendship} updateFriendships={updateFriendships}/>} />
           <Route path="/friends" key="/friends"element={<FriendsList friendship={friendship} updateFriendship={updateFriendship}/>} />
           <Route path="/messages" element={<MessagesList />} />
-          <Route path="/conversation" element={<Conversation />} />
+          <Route path="/conversations/:id" element={<Conversation />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>

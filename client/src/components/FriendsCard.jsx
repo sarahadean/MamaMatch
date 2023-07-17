@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import UserContext from './Pages/UserContext';
 import { Formik, Field, ErrorMessage } from "formik";
+import { NavLink, useNavigate } from 'react-router-dom';
 import * as yup from "yup";
 
 
@@ -10,6 +11,8 @@ function FriendsCard({friend, friendship, updateFriendship}) {
   const [toggleBox, setToggleBox] = useState(false)
   const [message, setMessage] = useState([])
   // console.log(friend) - successfully getting friend's user info
+
+  const url = `/conversations/${id}`
 
   //not getting the friendship data:
   // console.log(friendship)
@@ -32,6 +35,7 @@ function handleDelete(){
     }
     })
     }
+
 
 //<-------SENDS MESSAGE--------------->
 const updateToggleBox = () => setToggleBox(prev => !prev);
@@ -56,10 +60,12 @@ return (
       {/* clicking toggles hidden input box*/}
       <p>Send a message to say hi!</p>
       <button onClick={updateToggleBox} className='button'> Message</button>
+      <NavLink className="button" to={url}
+      >Send Message</NavLink>
       <p>Not feeling it? Click to remove:</p>
       <button onClick={() => handleDelete()} className='button'>Delete</button>
       
-      {toggleBox ? (
+      {/* {toggleBox ? (
         <>
         <Formik
           initialValues={{
@@ -104,7 +110,7 @@ return (
           {({ handleSubmit }) => (
             <form onSubmit={handleSubmit}>
               <label>
-                Message:
+                Send Message:
                 <Field type="text" name="content" />
                 <ErrorMessage name="content" component="h3" />
               </label>
@@ -112,9 +118,9 @@ return (
             </form>
           )}
         </Formik>
-          <button>Go to Convo</button>
+          
         </>
-      ) : ("")}
+      ) : ("")} */}
       
       {/* <button> Block </button> */}
     </div>

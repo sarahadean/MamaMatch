@@ -29,7 +29,7 @@ function NavBar({navigate}) {
           <NavLink className="button" to="/home">Home</NavLink>
           <NavLink className="button" to="/interested">Pending</NavLink> 
             <NavLink className="button" to="/friends">Friends</NavLink> 
-            <NavLink className="button" to="/messages">Messages</NavLink>
+            {/* <NavLink className="button" to="/messages">Messages</NavLink> */}
             <NavLink className="button" to="/profile">Profile</NavLink>
             <button onClick={handleLogout} className='button'>Logout</button> 
           </>):
