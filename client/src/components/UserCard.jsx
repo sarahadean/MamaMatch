@@ -1,14 +1,18 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import UserContext from './Pages/UserContext';
+import {Card, CardHeader, CardContent, CardActions, IconButton, CardMedia, Typography } from '@mui/material'
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 
 
 //need new status = Not interested??
 //pressing X will create friendship with status "hide", 
 //clicking yes will create friendship with status "pending"
 //add conditional to hide buttons
-function UserCard({ friend, updateFriendship, friendship}) {
+function UserCard({ friend, friends, updateFriend }) {
   const {id, name, profile_image, location, about, mom_life, interests} = friend
   const { user, setUser } = useContext(UserContext);
+  const [error, setError] = useState(null)
   // console.log(friend)
   // console.log(friendship)
 
@@ -27,8 +31,9 @@ function UserCard({ friend, updateFriendship, friendship}) {
       })
       .then(res => {
       if (res.ok) {
-      res.json().then(data => {
-        updateFriendship(data.friendship)
+      res.json().then(newfriend => {
+        console.log(newfriend)
+        updateFriend(newfriend)
         // updateFriend(data.friend)
         // updateFriend(data.friends)
 
@@ -40,7 +45,27 @@ function UserCard({ friend, updateFriendship, friendship}) {
       }
 
   return (
-    <div className='card'>
+    <>
+      <Card variant='outlined'>
+        <CardMedia 
+        component="img"
+        image={profile_image}/>
+        <CardContent>
+          <Typography variant="h5">{name}</Typography>
+          <Typography>{location}</Typography>
+          <Typography>{about}</Typography>
+        </CardContent>
+        <CardActions>
+          <IconButton onClick={(e) => handleSubmit(e, "PENDING")}>
+            <FavoriteBorderOutlinedIcon/>
+            </IconButton>
+          <IconButton onClick={(e) => handleSubmit(e, "HIDDEN")}>
+            <ClearOutlinedIcon/>
+          </IconButton>
+        </CardActions>
+      </Card>
+
+    {/* <div className='card'>
 
     
       {friendship ? (
@@ -51,10 +76,10 @@ function UserCard({ friend, updateFriendship, friendship}) {
           <img src={profile_image}></img>
           <h3>{name}</h3>
           <ul>
-          {/* <li>{mom_life}</li> */}
+          <li>{mom_life}</li>
           <li>{location}</li>
           <li>{about}</li>
-          {/* <li>{interests}</li> */}
+          <li>{interests}</li>
         </ul>
         <button onClick={(e) => handleSubmit(e, "PENDING")}>Yes</button>
         <button onClick={(e) => handleSubmit(e, "HIDDEN")}>No</button>
@@ -62,7 +87,9 @@ function UserCard({ friend, updateFriendship, friendship}) {
       )}
       
 
-    </div>
+    </div> */}
+    
+    </>
   )
 }
 

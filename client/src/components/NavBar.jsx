@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import UserContext from './Pages/UserContext';
-import { Button, Box, useMediaQuery, Grid, Toolbar, Avatar, IconButton, Menu, Fade, MenuItem, AppBar, Typography, Tab, Tabs, Icon} from '@mui/material'
+import { CardHeader, Button, Box, useMediaQuery, Grid, Toolbar, Avatar, IconButton, Menu, Fade, MenuItem, AppBar, Typography, Tab, Tabs, Icon} from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home';
 
 
@@ -37,10 +37,13 @@ function NavBar({navigate}) {
       {user ? 
           (
           <>
+          <IconButton>
+          <Avatar alt={user.name} src={user.profile_image}></Avatar>
+        </IconButton>
             <Grid sx={{placeItems: 'center'}} container>
 
                 <Grid item sx={1}>
-                  <IconButton component={Link} to="/home">
+                  <IconButton component={Link} to="/home" value="home">
                       <HomeIcon />
                   </IconButton >
                 </Grid>
@@ -52,9 +55,10 @@ function NavBar({navigate}) {
                       indicatorColor="secondary" 
                       textColor="inherit" 
                       value={value} onChange={(e, val)=>setValue(val)}>
-                    <Tab label={pending}/>
-                    <Tab label={friends}/>
-                    <Tab label={profile}/>
+                    <Tab value="Requests" label="Requests" component={Link} to="/interested"/>
+                    <Tab value="Friends" label="Friends"component={Link} to="/friends"/>
+                    <Tab value="Profile" label="Profile"component={Link} to="/profile"/>
+                    <Tab value="undefined"/>
                   </Tabs>
                 </Grid>
 
