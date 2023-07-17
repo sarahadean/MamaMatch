@@ -75,8 +75,8 @@ console.log(messages)
               .then((res) => {
                 console.log(res)
                 if (res.ok) {
-                  res.json().then((messages) => {
-                    setMessages(messages)
+                  res.json().then((message) => {
+                    setMessages([...messages, message])
                     actions.resetForm() 
                   });
                 } else {
