@@ -6,6 +6,7 @@ import UserContext from './UserContext'
 function MessagesList() {
   const navigate = useNavigate()
   const { user, setUser } = useContext(UserContext);
+  console.log(user)
 
   //all user’s confirmed friendships with access to messages
   const [friendMessages, setFriendMessages] = useState([])
@@ -35,7 +36,7 @@ function MessagesList() {
   }
 
   return (
-    <div>MessagesList - this should contain a list of conversations user is having with friends 
+    <div> 
       {[...friendMessages].map((convo) => <Conversation key={convo.id} convo={convo}/>)}
     </div>
   )

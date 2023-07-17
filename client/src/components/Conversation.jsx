@@ -9,12 +9,14 @@ function Conversation({convo}) {
   const { user, setUser } = useContext(UserContext);
   const {receiving_user_name, requesting_user_name, messages} = convo
 //successfully getting correct information
-// console.log(convo)
-// console.log(messages[0].content)
+console.log(convo)
+console.log(messages)
+
+//if messages.length() < 0
 
 
   //state of all messages for single friendship
-const [friendshipMessages, setFriendshipMessages] = useState([])
+// const [friendshipMessages, setFriendshipMessages] = useState([])
 
   return (
     <div>
@@ -23,11 +25,12 @@ const [friendshipMessages, setFriendshipMessages] = useState([])
       ) : (
         <h3>{receiving_user_name}</h3>
       )}
-      <p>{messages[0]}</p>
+      {/* <p>{messages[0]}</p> */}
 
-      {/* {messages.map((message) => (
-        <Message key={message.id} content={message.content} author={message.author} />
-      ))} */}
+      {[...messages].map((message) => (
+        <Message key={message.id} 
+        message={message} />
+      ))}
     </div>
   )
 }
