@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext} from 'react'
-import { Formik, Field, ErrorMessage } from "formik";
+import { Formik, Field, ErrorMessage} from "formik";
 import { useParams } from "react-router-dom";
 import UserContext from './Pages/UserContext';
 import Message from './Message';
@@ -13,8 +13,9 @@ function Conversation() {
   // const {receiving_user_name, requesting_user_name, receiving_user_id, requesting_user_id } = convo
 
   const [messages, setMessages] = useState([])
+  const [error, setError] = useState(null);
 //successfully getting correct information
-console.log(id)
+// console.log(id)
 
 //if messages.length() < 0
 
@@ -38,7 +39,7 @@ useEffect(() => {
   .then(messages => setMessages(messages))
 }, [user])
 
-
+console.log(messages)
   return (
     <>
     <div>
@@ -53,6 +54,7 @@ useEffect(() => {
         <Message key={message.id} 
         message={message} />
       ))}
+      
     </div>
     <Formik
           initialValues={{

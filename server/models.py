@@ -120,7 +120,8 @@ class Message(db.Model, SerializerMixin):
         return {
             "id": self.id,
             "content":self.content,
-            "author": self.author.name if self.author else None
+            "author": self.author.name if self.author else None,
+            "updated_at":self.updated_at
         }
 
 class Category_Mom(db.Model):

@@ -59,10 +59,10 @@ return (
       </ul>
       {/* clicking toggles hidden input box*/}
       <p>Send a message to say hi!</p>
-      <button onClick={updateToggleBox} className='button'> Message</button>
+      {/* <button onClick={updateToggleBox} className='button'> Message</button> */}
       <NavLink className="button" to={url}
       >Send Message</NavLink>
-      <p>Not feeling it? Click to remove:</p>
+      <p>Vibes off? Click to delete friend:</p>
       <button onClick={() => handleDelete()} className='button'>Delete</button>
       
       {/* {toggleBox ? (

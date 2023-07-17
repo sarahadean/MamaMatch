@@ -327,7 +327,7 @@ class Messages(Resource):
         #get friendship
         try:
             selected_friendship = Friendship.query.filter(
-                ((Friendship.requesting_user_id == user.id) | (Friendship.receiving_user_id == user.id))
+                ((Friendship.requesting_user_id == id) | (Friendship.receiving_user_id == id))
                 & ((Friendship.requesting_user_id == friend_id) | (Friendship.receiving_user_id == friend_id)) ).first()
 
             new_message = Message(
