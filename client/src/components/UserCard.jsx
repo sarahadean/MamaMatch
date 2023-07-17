@@ -34,8 +34,6 @@ function UserCard({ friend, friends, updateFriend }) {
       res.json().then(newfriend => {
         console.log(newfriend)
         updateFriend(newfriend)
-        // updateFriend(data.friend)
-        // updateFriend(data.friends)
 
       })
       } else {
@@ -46,7 +44,7 @@ function UserCard({ friend, friends, updateFriend }) {
 
   return (
     <>
-      <Card variant='outlined'>
+      <Card variant='outlined' sx={{ maxWidth: 400}}>
         <CardMedia 
         component="img"
         image={profile_image}/>

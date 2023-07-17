@@ -2,14 +2,14 @@ import React, { useState, useEffect, useContext } from 'react';
 import UserContext from './UserContext';
 import PendingCard from '../PendingCard';
 
-function PendingList({friendship, updateFriendship}) {
+function PendingList() {
   const { user, setUser } = useContext(UserContext);
   const [pendingFriends, setPendingFriends] = useState([])
 
-  function updatePendingFriendsList(){
-    setPendingFriends(pendingFriends)
+  function updatePendingFriendsList(newfriendship){
+    setPendingFriends((pendingFriends.filter((friend) => friend.id !== newfriendship.receiving_user_id && friend.id !== newfriendship.requesting_user_id)))
   }
-
+  console.log(pendingFriends)
   
 
   useEffect(() => {
@@ -32,7 +32,7 @@ function PendingList({friendship, updateFriendship}) {
         .then(pendingFriends => setPendingFriends(pendingFriends))
     }
     }
-
+    console.log(pendingFriends)
     // logging return for user's pending friends
     // console.log(pendingFriends)
 
@@ -53,9 +53,6 @@ function PendingList({friendship, updateFriendship}) {
         {pendingFriends.map(friend => 
         <PendingCard key={friend.id} 
         friend={friend}
-        friendship={friendship}
-        //updates friendship status state
-        updateFriendship={updateFriendship}
         //updates List of friends state
         updatePendingFriendsList={updatePendingFriendsList}
         pendingFriends={pendingFriends}/>)}
