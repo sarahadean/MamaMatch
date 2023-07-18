@@ -33,13 +33,6 @@ class Signup(Resource):
                 name = data.get('name'),
                 username = data.get('username'),
                 email = data.get('email'),
-                # phone_number = data['phone_number'],
-                # dob = data['dob'],
-                # profile_image = data['profile_image'],
-                # location = data['location'],
-                # about = data['about'],
-                # category_mom_id = data.get('category_mom_id'),
-                # interest_id = data.get('interest_id')
             )
             new_user.password_hash = data.get('password')
             db.session.add(new_user)
