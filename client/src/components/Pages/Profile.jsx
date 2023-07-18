@@ -100,7 +100,7 @@ function Profile() {
             phone_number: user.phone_number,
             dob: user.dob,
             location: user.location,
-            profile_image: user.profile_image,
+            profile_image: "",
             about: user.about,
             mom_life: user.mom_life,
             interests: user.interests,
@@ -123,8 +123,8 @@ function Profile() {
                 location: values.location,
                 profile_image: values.profile_image,
                 about: values.about,
-                // mom_life: values.mom_life,
-                // interests: values.interests
+                mom_life: values.mom_life,
+                interests: values.interests
               }),
             })
               .then((res) => {
@@ -154,86 +154,68 @@ function Profile() {
         >
           {({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
-            <List>
-              <ListItem>
-                <Typography variant="h6">My login info</Typography>
-              </ListItem>
-              <ListItem> Username:
-                <TextField type="text" name="username" variant="standard" placeholder={user.username}/>
+            <FormControl>
+              <Box marginBottom={2}>
+                <Typography>Name:</Typography>
+                <Field type="text" name="name" />
+                <ErrorMessage name="name" component="h3" />
+              </Box>
+              <Box marginBottom={2}>
+                <Typography>Username:</Typography>
+                <Field type="text" name="username" />
                 <ErrorMessage name="username" component="h3" />
-              </ListItem>
-
-              <ListItem>
-                Email:
-                <TextField fullWidth type="text" name="email" variant="standard" placeholder={user.email}/>
+              </Box>
+              <Box marginBottom={2}>
+                <Typography>Email:</Typography>
+                <Field type="text" name="email" />
                 <ErrorMessage name="email" component="h3" />
-              </ListItem>
-
-              <ListItem>
-                Password:
-                <TextField type="password" name="password" variant="standard" placeholder="Change your password"/>
+              </Box>
+              <Box marginBottom={2}>
+                <Typography>Password:</Typography>
+                <Field type="password" name="password" />
                 <ErrorMessage name="password" component="h3" />
-              </ListItem>
-              <Divider/>
+              </Box>
 
-              <ListItem>
+              <Box marginBottom={2}>
+              <Typography>Phone Number:</Typography>
+                <Field type="text" name="phone_number" />
+                <ErrorMessage name="phone_number" component="h3" />
+                </Box>
+
+                <Box marginBottom={2}>
+                <Typography>Birthday:</Typography>
+                <Field type="text" name="dob" />
+                <ErrorMessage name="dob" component="h3" />
+</Box>
+
+                <Box marginBottom={2}>
+                <Typography>Location:</Typography>
+                <Field type="text" name="location" />
+                <ErrorMessage name="location" component="h3" />
+                </Box>
+              <Divider />
+              <Box marginBottom={2}>
                 <Typography variant="h6">Change my profile picture</Typography>
-              </ListItem>
-              <ListItem>
-                <img src={user.profile_image} width={300}></img>
-              </ListItem>
-              <ListItem>
-                <TextField type="text" name="profile_image" variant="outlined" 
-                placeholder="Upload a different profile picture here"
-                size="small"/>
+                {/* <img src={user.profile_image} width={300} alt="Profile" /> */}
+                <Field type="text" name="profile_image"size="small"/>
                 <ErrorMessage name="profile_image" component="h3" />
-              </ListItem>
-
-              <ListItem>
-                <Typography variant="h6">My Bio</Typography>
-              </ListItem>
-              <ListItem>
-              Say a little about yourself, mama
-              </ListItem>
-              <ListItem>
-              <TextField multiline rows={4} type="text" name="about" variant="outlined" placeholder={user.about}/>
-              <ErrorMessage name="about" component="h3" />
-              </ListItem>
-              <Divider/>
-
-                <ListItem>
-                    <Typography variant="h6">More about me</Typography>
-                </ListItem>
-                <ListItem>Display Name: 
-                  <TextField type="text" name="name" variant="standard" 
-                  placeholder={user.name}/>
-                  <ErrorMessage name="name" component="h3" />
-                </ListItem>
-                <ListItem>Birthday: 
-                  <TextField type="text" name="dob" variant="standard"
-                    placeholder={user.dob}/>
-                  <ErrorMessage name="dob" component="h3" />
-                </ListItem>
-                <ListItem> Location:
-                  <TextField
-                    type="text"
-                    name="location"
-                    variant="standard"
-                    placeholder={user.location}
-                  />
-                  <ErrorMessage name="location" component="h3" />
-                </ListItem>
-
-              <ListItem>
-              Phone Number:
-              <TextField type="text" name="phone_number" variant="standard" placeholder={user.phone_number}/>
-              <ErrorMessage name="phone_number" component="h3" />
-              </ListItem>
-              <Divider/>
-              <ListItem >
+              </Box>
+      
+              <Box marginBottom={2}>
+                <Typography>Say a little about yourself, mama</Typography>
+                <Field type="text" name="about" />
+                <ErrorMessage name="about" component="h3" />
+              </Box>
+              <Divider />
+              <Box marginBottom={2}>
+                
+                
+                
+              </Box>
+              <Divider />
+      
+          
             <Typography variant="h6">My life</Typography>
-            </ListItem>
-
             <RadioGroup
                 row
                 aria-labelledby="demo-row-radio-buttons-group-label"
@@ -255,15 +237,9 @@ function Profile() {
               <FormControlLabel value="9" control={<Radio />} label="Have School-age children" />
               <FormControlLabel value="10" control={<Radio />} label="Have Preteens" /> */}
             </RadioGroup>
-
             <Divider/>
-
-            <ListItem>
             <Typography variant="h6">My Interests</Typography>
-          </ListItem>
-            </List>
-
-
+       
             {/* <label>
               Mom life:
               <Field as="select" name="mom_life">
@@ -285,7 +261,8 @@ function Profile() {
               <Field type="text" name="interests" />
               <ErrorMessage name="interests" component="h3" />
             </label> */}
-            <input type="submit" value="Update" />
+            <Button type="submit" color="primary">Update</Button>
+            </FormControl>
           </form>
           )}
         </Formik>

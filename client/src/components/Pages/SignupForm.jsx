@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import {useNavigate} from "react-router-dom"
 import UserContext from './UserContext';
+import { TextField, Typography, FormControl, Box, Button, ListItem, List, ListItemText, Divider, RadioGroup, Radio, FormControlLabel} from "@mui/material";
 
 function SignupForm({updateUser}) {
   const { user, setUser } = useContext(UserContext);
@@ -76,6 +77,10 @@ function SignupForm({updateUser}) {
             {/* {signup ? ( */}
 
             <form onSubmit={formik.handleSubmit}>
+            <FormControl>
+
+            
+
 
             <label> Name:
             <input 
@@ -89,17 +94,16 @@ function SignupForm({updateUser}) {
             ) : ("")}
             </label>
 
-            <label> Username:
             <input
             type="text"
             name="username" 
             onChange={formik.handleChange}
             value={formik.values.username}
-            onBlur={formik.handleBlur}/>
+            onBlur={formik.handleBlur}/> Username:
             {formik.touched.username && formik.errors.username ? (
             <h3>{formik.errors.username}</h3>
             ) : ("")}
-            </label>
+           
 
             <label> Email:
             <input 
@@ -125,42 +129,9 @@ function SignupForm({updateUser}) {
             ) : ("")}
             </label>
             <input type="submit" value="Signup!" />
-            
+            </FormControl>
             </form>
-        {/* {/* //     ) : (
-        //     <form onSubmit={formik.handleSubmit}>
-        //         <label> Username:
-        //         <input 
-        //         type="text"
-        //         name="username" 
-        //         onChange={formik.handleChange}
-        //         value={formik.values.username}
-        //         onBlur={formik.handleBlur}/>
-        //         {formik.touched.username && formik.errors.username ? (
-        //         <h3>{formik.errors.username}</h3>
-        //         ) : ("")}
-        //         </label>
-        //         <label> Password
-        //         <input 
-        //          type="password" 
-        //          name="password" 
-        //          onChange={formik.handleChange}
-        //          value={formik.values.password}
-        //          onBlur={formik.handleBlur}/>
-        //         {formik.touched.password && formik.errors.password ? (
-        //          <h3>{formik.errors.password}</h3>
-        //          ) : ("")}
-        //         </label>
-        //         <input type="submit" value="Log In" className="button" />
-				// {error ? <label style={{ color: "red" }}>{error}</label> : ""}
-        //     </form>
-        //     )}
-        //     <section>
-        //       <p>{signup ? "Already have an account?" : "Not a member?"}</p>
-        //       <button className="button" onClick={toggleSignup}>
-        //         {signup ? "Login" : "Sign Up"}
-        //       </button>
-			  //     </section> */}
+        
         </section>
     )
 }
