@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import UserContext from './UserContext';
 import PendingCard from '../PendingCard';
+import { Typography } from '@mui/material';
 
 function PendingList() {
   const { user, setUser } = useContext(UserContext);
@@ -44,10 +45,13 @@ function PendingList() {
       return (
         <>
         {pendingFriends.length === 0 ? (
-          <div className='container'>
-            <h2>Hello, beautiful mama!</h2>
-            <p>You don't have any pending requests</p>
-        </div>
+          <Box>
+            <Typography variant='h4'>Hello, beautiful mama! You don't have any pending requests</Typography>
+          </Box>
+        //   <div className='container'>
+        //     <h2>Hello, beautiful mama!</h2>
+        //     <p>You don't have any pending requests</p>
+        // </div>
       ):(
         <div className='container'>
         {pendingFriends.map(friend => 

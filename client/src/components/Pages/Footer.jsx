@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
+import {Box, Paper} from '@mui/material';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import RestoreIcon from '@mui/icons-material/Restore';
@@ -12,9 +12,9 @@ function Footer() {
 
   return (
     <Box >
+      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
       <BottomNavigation
         showLabels
-        position="fixed"
         value={value}
         onChange={(event, newValue) => {
           setValue(newValue);
@@ -23,6 +23,8 @@ function Footer() {
         <BottomNavigationAction label="Requests" component={Link} to='/pending' icon={<RestoreIcon />} />
         <BottomNavigationAction label="Friends" component={Link} to='/friends' icon={<FavoriteIcon />} />
       </BottomNavigation>
+      </Paper>
+      
     </Box>
   );
 }

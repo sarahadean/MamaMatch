@@ -44,10 +44,11 @@ function UserCard({ friend, friends, updateFriend }) {
 
   return (
     <>
-      <Card variant='outlined' sx={{ maxWidth: 600}}>
+      <Card variant='outlined' sx={{ maxHeight: 600}}>
         <CardMedia 
         component="img"
-        image={profile_image}/>
+        image={profile_image}
+        height={400}/>
         <CardContent>
           <Typography variant="h5">{name}</Typography>
           <Typography>{location}</Typography>

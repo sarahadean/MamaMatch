@@ -9,6 +9,7 @@ function Header({ navigate }) {
     <>
 
     <div className='header'>
+      <Box height={100}></Box>
       <NavBar navigate ={navigate}/>
       {user ? (
         <Typography>Hi {user.name}!</Typography>
