@@ -13,7 +13,7 @@ function Welcome() {
   //   navigate('/home')
   // }
 
-  function srcset(image, size, rows = 1, cols = 1) {
+  function srcset(image, size, rows = 1, cols = 5) {
     return {
       src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
       srcSet: `${image}?w=${size * cols}&h=${
@@ -33,7 +33,7 @@ function Welcome() {
     },
     
     {
-      img:"https://images.pexels.com/photos/1755207/pexels-photo-1755207.jpeg?auto=compress&cs=tinysrgb&w=400", 
+      img:"https://images.pexels.com/photos/5907535/pexels-photo-5907535.jpeg?auto=compress&cs=tinysrgb&w=400", 
       alt:"Image of a mother"
     },
     {
@@ -41,7 +41,7 @@ function Welcome() {
       alt:"Image of a mother"
     },
     {
-      img:"https://images.pexels.com/photos/5907535/pexels-photo-5907535.jpeg?auto=compress&cs=tinysrgb&w=400",
+      img:"https://images.pexels.com/photos/1755207/pexels-photo-1755207.jpeg?auto=compress&cs=tinysrgb&w=400",
       alt:"Image of a mother"
     }
     // {
@@ -67,7 +67,7 @@ function Welcome() {
       ))}
     </ImageList>
     {/* <img src={BloomCover} width={900}></img> */}
-    <Box align="center" >
+    <Box align="center">
       <Button component={Link} to="/signup">Signup</Button>
       <Button component={Link} to="/login">Login</Button>
     </Box>

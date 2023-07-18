@@ -44,9 +44,9 @@ function NavBar({navigate}) {
           <Avatar alt={user.name} src={user.profile_image} component={Link} to="/profile"></Avatar>
         </IconButton>
 
-            <Grid sx={{placeItems: 'center'}} container>
+            <Grid sx={{placeItems: 'center'}} container spacing={10}>
 
-                <Grid item sx={1}>
+                <Grid item sx={2}>
                   <IconButton component={Link} to="/home" value="home">
                       <HomeIcon />
                   </IconButton >
@@ -54,17 +54,20 @@ function NavBar({navigate}) {
 
                 <Grid item sx={1}></Grid>
 
-                <Grid item sx={6}>
-                  <Tabs 
+                <Grid item sx={1}>
+                  {/* <Tabs 
                       indicatorColor="secondary" 
                       textColor="inherit" 
                       value={value} onChange={(e, val)=>setValue(val)}>
                     <Tab value="Requests" label="Requests" component={Link} to="/interested"/>
                     <Tab value="Friends" label="Friends"component={Link} to="/friends"/>
-                  </Tabs>
+                  </Tabs> */}
                 </Grid>
+                <Grid item sx={6} >
+                <img src={newlogo} width={350}/>
+              </Grid>
 
-                {/* <Grid item xs={2}></Grid> */}
+                <Grid item xs={2}></Grid>
 
                 <Grid item sx={2}>
                   <Box display="flex">
@@ -84,8 +87,8 @@ function NavBar({navigate}) {
              
               <Grid item></Grid>
               <Grid item></Grid>
-              <Grid item sx={10} align="center">
-                <img src={newlogo} width={300}/>
+              <Grid item sx={10} >
+                <img src={newlogo} width={350}/>
               </Grid>
             </Grid>
           </>) }

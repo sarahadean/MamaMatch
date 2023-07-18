@@ -5,6 +5,7 @@ import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import RestoreIcon from '@mui/icons-material/Restore';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 function Footer() {
   const [value, setValue] = React.useState(0);
@@ -19,9 +20,8 @@ function Footer() {
           setValue(newValue);
         }}
       >
-        <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
-        <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-        <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
+        <BottomNavigationAction label="Requests" component={Link} to='/pending' icon={<RestoreIcon />} />
+        <BottomNavigationAction label="Friends" component={Link} to='/friends' icon={<FavoriteIcon />} />
       </BottomNavigation>
     </Box>
   );
