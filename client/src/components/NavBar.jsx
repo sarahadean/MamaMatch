@@ -42,7 +42,7 @@ function NavBar({navigate}) {
           (
           <>
           <IconButton>
-          <Avatar alt={user.name} src={user.profile_image} component={Link} to="/profile"></Avatar>
+          <Avatar sx={{ width: 56, height: 56 }} alt={user.name} src={user.profile_image} component={Link} to="/profile"></Avatar>
         </IconButton>
 
             <Grid sx={{placeItems: 'center', display: 'flex'}} container spacing={3}>
