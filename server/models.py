@@ -92,9 +92,9 @@ class User(db.Model, SerializerMixin, UserMixin):
             'dob': self.dob,
             'profile_image': self.profile_image, 
             'location': self.location,
-            'about' : self.about
-            # 'mom_life':self.mom_life.type,
-            # 'interests':self.interests.activity,
+            'about' : self.about,
+            'mom_life':self.mom_life.type,
+            'interests':self.interests.activity,
             # 'friends_requested':self.friends_requested,
             # 'requests_received':self.requests_received
         }

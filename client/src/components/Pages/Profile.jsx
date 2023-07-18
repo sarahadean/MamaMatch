@@ -3,26 +3,13 @@ import { useState, useContext } from "react";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import UserContext from "./UserContext";
+import { TextField, Typography, FormControl, Box, Button, ListItem, List, ListItemText, Divider, RadioGroup, Radio, FormControlLabel} from "@mui/material";
+import { Image } from "@material-ui/icons";
 
 function Profile() {
   const { user, setUser } = useContext(UserContext);
   const [error, setError] = useState(null);
   const [edit, setEdit] = useState(true);
-  // const [form, setForm] = useState({
-  //   name: "",
-  //   username: "",
-  //   email: "",
-  //   password: "",
-  //   phone_number: "",
-  //   dob: "",
-  //   location: "",
-  //   profile_image: "",
-  //   about: "",
-  //   mom_life: "",
-  //   interests: "",
-  // })
-
-  // console.log(form)
 
   const navigate = useNavigate();
 
@@ -47,27 +34,64 @@ function Profile() {
   // });
 
   return (
-    <section>
-      {edit  ? (
-        <div>
-          <ul>
-            <li>Name: {user.name}</li>
-            <li>Username: {user.username}</li>
-            <li>Email: {user.email}</li>
-            {/* <li>password: {user.password}</li> */}
-            <li>Phone Number: {user.phone_number}</li>
-            <li>Birthday: {user.dob}</li>
-            <li>City, State: {user.location}</li>
-            <li>Profile picture: </li>
-            <img src={user.profile_image}/>
-            <li>About: {user.about}</li>
-            <li>Mom Life: {user.mom_life}</li>
-            <li>Interests: {user.interests}</li>
-          </ul>
-          <button onClick={toggleEdit}>Edit</button>
-        </div>
-      ) : (
-        <Formik
+    <>
+    {edit ? 
+    (
+    <Box>
+        <List>
+          <ListItem>
+            <Typography variant="h6">My login info</Typography>
+          </ListItem>
+          <ListItem> 
+            <ListItemText>Username: {user.username} </ListItemText>
+            </ListItem>
+          <ListItem> Email: {user.email}</ListItem>
+          <Divider/>
+
+          <ListItem>
+            <Typography variant="h6">My profile picture</Typography>
+          </ListItem>
+          <ListItem>
+            <img src={user.profile_image} width={300}></img>
+          </ListItem>
+          
+          <Divider/>
+
+          <ListItem>
+            <Typography variant="h6">My Bio</Typography>
+          </ListItem>
+          <ListItem>{user.about}</ListItem>
+          <Divider/>
+
+          <ListItem>
+            <Typography variant="h6">More about me</Typography>
+          </ListItem>
+          <ListItem>Display Name: {user.name} </ListItem>
+          <ListItem>Birthday: {user.dob}</ListItem>
+          <ListItem>Location: {user.location}</ListItem>
+          <ListItem>Phone Number: {user.phone_number}</ListItem>
+
+          <ListItem >
+            <Typography variant="h6">My life</Typography>
+          </ListItem>
+          <ListItem>{user.mom_life}</ListItem>
+          <Divider/>
+
+          <ListItem>
+            <Typography variant="h6">My Interests</Typography>
+          </ListItem>
+          <ListItem>{user.interests}</ListItem>
+        </List>
+        <Button onClick={toggleEdit}>Edit</Button>
+        <Button>Delete Profile</Button>
+      </Box>
+    ) : 
+    (
+    <Box
+    sx={{
+      '& .MuiTextField-root': { m: 1, width: '50ch' },
+    }}>
+      <Formik
           initialValues={{
             name: user.name,
             username: user.username,
@@ -99,8 +123,9 @@ function Profile() {
                 location: values.location,
                 profile_image: values.profile_image,
                 about: values.about,
-                mom_life: values.mom_life,
-                interests: values.interests}),
+                // mom_life: values.mom_life,
+                // interests: values.interests
+              }),
             })
               .then((res) => {
                 console.log(res)
@@ -129,65 +154,117 @@ function Profile() {
         >
           {({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
-            <label>
-              Name:
-              <Field type="text" name="name" />
-              <ErrorMessage name="name" component="h3" />
-            </label>
+            <List>
+              <ListItem>
+                <Typography variant="h6">My login info</Typography>
+              </ListItem>
+              <ListItem> Username:
+                <TextField type="text" name="username" variant="standard" placeholder={user.username}/>
+                <ErrorMessage name="username" component="h3" />
+              </ListItem>
 
-            <label>
-              Username:
-              <Field type="text" name="username" />
-              <ErrorMessage name="username" component="h3" />
-            </label>
+              <ListItem>
+                Email:
+                <TextField fullWidth type="text" name="email" variant="standard" placeholder={user.email}/>
+                <ErrorMessage name="email" component="h3" />
+              </ListItem>
 
-            <label>
-              Email:
-              <Field type="text" name="email" />
-              <ErrorMessage name="email" component="h3" />
-            </label>
+              <ListItem>
+                Password:
+                <TextField type="password" name="password" variant="standard" placeholder="Change your password"/>
+                <ErrorMessage name="password" component="h3" />
+              </ListItem>
+              <Divider/>
 
-            <label>
-              Password:
-              <Field type="password" name="password" />
-              <ErrorMessage name="password" component="h3" />
-            </label>
+              <ListItem>
+                <Typography variant="h6">Change my profile picture</Typography>
+              </ListItem>
+              <ListItem>
+                <img src={user.profile_image} width={300}></img>
+              </ListItem>
+              <ListItem>
+                <TextField type="text" name="profile_image" variant="outlined" 
+                placeholder="Upload a different profile picture here"
+                size="small"/>
+                <ErrorMessage name="profile_image" component="h3" />
+              </ListItem>
 
-            <label>
-              Phone Number:
-              <Field type="text" name="phone_number" />
-              <ErrorMessage name="phone_number" component="h3" />
-            </label>
-
-            <label>
-              Date of Birth:
-              <Field type="text" name="dob" />
-              <ErrorMessage name="dob" component="h3" />
-            </label>
-
-            <label>
-              Profile Picture:
-              <Field type="text" name="profile_image" />
-              <ErrorMessage name="profile_image" component="h3" />
-            </label>
-
-            <label>
-              Location:
-              <Field
-                type="text"
-                name="location"
-                placeholder="City, State"
-              />
-              <ErrorMessage name="location" component="h3" />
-            </label>
-
-            <label>
-              Tell us a little about yourself, mama:
-              <Field type="text" name="about" />
+              <ListItem>
+                <Typography variant="h6">My Bio</Typography>
+              </ListItem>
+              <ListItem>
+              Say a little about yourself, mama
+              </ListItem>
+              <ListItem>
+              <TextField multiline rows={4} type="text" name="about" variant="outlined" placeholder={user.about}/>
               <ErrorMessage name="about" component="h3" />
-            </label>
+              </ListItem>
+              <Divider/>
 
-            <label>
+                <ListItem>
+                    <Typography variant="h6">More about me</Typography>
+                </ListItem>
+                <ListItem>Display Name: 
+                  <TextField type="text" name="name" variant="standard" 
+                  placeholder={user.name}/>
+                  <ErrorMessage name="name" component="h3" />
+                </ListItem>
+                <ListItem>Birthday: 
+                  <TextField type="text" name="dob" variant="standard"
+                    placeholder={user.dob}/>
+                  <ErrorMessage name="dob" component="h3" />
+                </ListItem>
+                <ListItem> Location:
+                  <TextField
+                    type="text"
+                    name="location"
+                    variant="standard"
+                    placeholder={user.location}
+                  />
+                  <ErrorMessage name="location" component="h3" />
+                </ListItem>
+
+              <ListItem>
+              Phone Number:
+              <TextField type="text" name="phone_number" variant="standard" placeholder={user.phone_number}/>
+              <ErrorMessage name="phone_number" component="h3" />
+              </ListItem>
+              <Divider/>
+              <ListItem >
+            <Typography variant="h6">My life</Typography>
+            </ListItem>
+
+            <RadioGroup
+                row
+                aria-labelledby="demo-row-radio-buttons-group-label"
+                name="row-radio-buttons-group"
+              >
+              {/* <Button value={1} control={<Radio />} label="Pregnant" >Pregnant</Button>
+              <Button value={2} control={<Radio />} label="New Mom" >New Mom</Button>
+              <Button value="3" control={<Radio />} label="Toddler Mom" >Toddler Mom</Button>
+              <Button value="4" control={<Radio />} label="Have Teenagers" >Have Teens</Button>
+              <Button value="5" control={<Radio />} label="Empty Nester" >Empty Nester</Button> */}
+              {/* <FormControlLabel value="2" control={<Radio />} label="New Mom" />
+              <FormControlLabel value="3" control={<Radio />} label="Toddler Mom" />
+              <FormControlLabel value="4" control={<Radio />} label="Have Teenagers" />
+              <FormControlLabel value="5" control={<Radio />} label="Planning for a family" /> */}
+    
+              {/* <FormControlLabel value="6" control={<Radio />} label="Empty Nester" />
+              <FormControlLabel value="7" control={<Radio />} label="Adoption Journey" />
+              <FormControlLabel value="8" control={<Radio />} label="Fertility Journey" />
+              <FormControlLabel value="9" control={<Radio />} label="Have School-age children" />
+              <FormControlLabel value="10" control={<Radio />} label="Have Preteens" /> */}
+            </RadioGroup>
+
+            <Divider/>
+
+            <ListItem>
+            <Typography variant="h6">My Interests</Typography>
+          </ListItem>
+            </List>
+
+
+            {/* <label>
               Mom life:
               <Field as="select" name="mom_life">
                 <option value="">Select one</option>
@@ -201,19 +278,189 @@ function Profile() {
                 <option value="8">Fertility Journey</option>
               </Field>
               <ErrorMessage name="mom_life" component="h3" />
-            </label>
+            </label> */}
 
-            <label>
+            {/* <label>
               Interests:
               <Field type="text" name="interests" />
               <ErrorMessage name="interests" component="h3" />
-            </label>
+            </label> */}
             <input type="submit" value="Update" />
           </form>
           )}
         </Formik>
-      )}
-    </section>
+        <Button onClick={toggleEdit}>Discard changes</Button>
+      </Box>
+    )}
+      
+    </>
+    // <section>
+    //   {edit  ? (
+    //     <div>
+    //       <ul>
+    //         <li>Name: {user.name}</li>
+    //         <li>Username: {user.username}</li>
+    //         <li>Email: {user.email}</li>
+    //         {/* <li>password: {user.password}</li> */}
+    //         <li>Phone Number: {user.phone_number}</li>
+    //         <li>Birthday: {user.dob}</li>
+    //         <li>City, State: {user.location}</li>
+    //         <li>Profile picture: </li>
+    //         <img src={user.profile_image}/>
+    //         <li>About: {user.about}</li>
+    //         <li>Mom Life: {user.mom_life}</li>
+    //         <li>Interests: {user.interests}</li>
+    //       </ul>
+    //       <button onClick={toggleEdit}>Edit</button>
+    //     </div>
+    //   ) : (
+    //     <Formik
+    //       initialValues={{
+    //         name: user.name,
+    //         username: user.username,
+    //         email: user.email,
+    //         password: "",
+    //         phone_number: user.phone_number,
+    //         dob: user.dob,
+    //         location: user.location,
+    //         profile_image: user.profile_image,
+    //         about: user.about,
+    //         mom_life: user.mom_life,
+    //         interests: user.interests,
+    //       }}
+    //       // validationSchema={validationSchema}
+    //       onSubmit={(values, actions) => {
+    //         console.log(values)
+    //         fetch(`/api/current_user/${user.id}`, {
+    //           method: "PATCH",
+    //           headers: {
+    //             "content-type": "application/json",
+    //           },
+    //           body: JSON.stringify({
+    //             name: values.name,
+    //             username: values.username,
+    //             email: values.email,
+    //             password: values.password,
+    //             phone_number: values.phone_number,
+    //             dob: values.dob,
+    //             location: values.location,
+    //             profile_image: values.profile_image,
+    //             about: values.about,
+    //             mom_life: values.mom_life,
+    //             interests: values.interests}),
+    //         })
+    //           .then((res) => {
+    //             console.log(res)
+    //             if (res.ok) {
+    //               res.json().then((user) => {
+    //                 console.log(user)
+    //                 setUser(user);
+    //                 toggleEdit();
+    //                 // navigate("/profile");
+    //               });
+    //             } else {
+    //               res.json().then((data) => {
+    //                 if (data && data.message) {
+    //                   setError(data.message);
+    //                 } else {
+    //                   setError("An error occurred during signup.");
+    //                 }
+    //               });
+    //             }
+    //           })
+    //           .catch((error) => {
+    //             setError("An error occurred during signup.");
+    //             console.error(error);
+    //           });
+    //       }}
+    //     >
+    //       {({ handleSubmit }) => (
+    //       <form onSubmit={handleSubmit}>
+    //         <label>
+    //           Name:
+    //           <Field type="text" name="name" />
+    //           <ErrorMessage name="name" component="h3" />
+    //         </label>
+
+    //         <label>
+    //           Username:
+    //           <Field type="text" name="username" />
+    //           <ErrorMessage name="username" component="h3" />
+    //         </label>
+
+    //         <label>
+    //           Email:
+    //           <Field type="text" name="email" />
+    //           <ErrorMessage name="email" component="h3" />
+    //         </label>
+
+    //         <label>
+    //           Password:
+    //           <Field type="password" name="password" />
+    //           <ErrorMessage name="password" component="h3" />
+    //         </label>
+
+    //         <label>
+    //           Phone Number:
+    //           <Field type="text" name="phone_number" />
+    //           <ErrorMessage name="phone_number" component="h3" />
+    //         </label>
+
+    //         <label>
+    //           Date of Birth:
+    //           <Field type="text" name="dob" />
+    //           <ErrorMessage name="dob" component="h3" />
+    //         </label>
+
+    //         <label>
+    //           Profile Picture:
+    //           <Field type="text" name="profile_image" />
+    //           <ErrorMessage name="profile_image" component="h3" />
+    //         </label>
+
+    //         <label>
+    //           Location:
+    //           <Field
+    //             type="text"
+    //             name="location"
+    //             placeholder="City, State"
+    //           />
+    //           <ErrorMessage name="location" component="h3" />
+    //         </label>
+
+    //         <label>
+    //           Tell us a little about yourself, mama:
+    //           <Field type="text" name="about" />
+    //           <ErrorMessage name="about" component="h3" />
+    //         </label>
+
+    //         <label>
+    //           Mom life:
+    //           <Field as="select" name="mom_life">
+    //             <option value="">Select one</option>
+    //             <option value="1">Pregnant</option>
+    //             <option value="2">New Mom</option>
+    //             <option value="3">Have Toddlers</option>
+    //             <option value="4">Have Teenagers</option>
+    //             <option value="5">Planning for a family</option>
+    //             <option value="6">Empty Nester</option>
+    //             <option value="7">Adoption Journey</option>
+    //             <option value="8">Fertility Journey</option>
+    //           </Field>
+    //           <ErrorMessage name="mom_life" component="h3" />
+    //         </label>
+
+    //         <label>
+    //           Interests:
+    //           <Field type="text" name="interests" />
+    //           <ErrorMessage name="interests" component="h3" />
+    //         </label>
+    //         <input type="submit" value="Update" />
+    //       </form>
+    //       )}
+    //     </Formik>
+    //   )}
+    // </section>
   );
 }
 
