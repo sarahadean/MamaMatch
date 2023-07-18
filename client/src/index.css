@@ -14,7 +14,11 @@
   -webkit-text-size-adjust: 100%;
 }
 
-.header {
+.content-container {
+  margin-top: 100px;
+}
+
+/* .header {
   background-color: var(--palette-b);
   height: 200px;
   background: url('./logos/BloomCover.png');
@@ -23,7 +27,7 @@
   background-color: #fbc0ba;
   background-size: 500px;
   margin: auto;
-}
+} */
 .header {
   
   color: #f6f4f1

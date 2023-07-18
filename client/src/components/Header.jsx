@@ -1,33 +1,29 @@
 import React,{useContext} from 'react'
 import UserContext from './Pages/UserContext'
-import { Avatar, Card, CardHeader, IconButton } from '@mui/material';
+import NavBar from './NavBar';
+import { Box, Avatar, Card, CardHeader, IconButton, Typography } from '@mui/material';
 
-function Header() {
+function Header({ navigate }) {
   const { user, setUser } = useContext(UserContext);
   return (
     <>
-    <CardHeader
+    <Typography></Typography>
+    {/* <CardHeader
       action={
         <IconButton>
           <Avatar></Avatar>
         </IconButton>
       }>
 
-    </CardHeader>
+    </ CardHeader> */}
     <div className='header'>
-      {user ? (
-        <img src={user.profile_image} className='profile_image' />
-      ) : (
-        ''
-      )}
-      <h4>
+      
         {user ? (
           <span className='welcome_message'>Hi {user.name}!</span>
         ) : (
           ''
         )}
-      </h4>
-      
+      <NavBar navigate ={navigate}/>
     </div>
 
     </>

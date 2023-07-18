@@ -44,7 +44,7 @@ function UserCard({ friend, friends, updateFriend }) {
 
   return (
     <>
-      <Card variant='outlined' sx={{ maxWidth: 400}}>
+      <Card variant='outlined' sx={{ maxWidth: 600}}>
         <CardMedia 
         component="img"
         image={profile_image}/>
@@ -53,6 +53,7 @@ function UserCard({ friend, friends, updateFriend }) {
           <Typography>{location}</Typography>
           <Typography>{about}</Typography>
         </CardContent>
+        <hr></hr>
         <CardActions>
 
           <IconButton onClick={(e) => handleSubmit(e, "PENDING")}>
@@ -61,7 +62,7 @@ function UserCard({ friend, friends, updateFriend }) {
           <IconButton onClick={(e) => handleSubmit(e, "HIDDEN")}>
             <ClearOutlinedIcon/>
           </IconButton>
-          
+
         </CardActions>
       </Card>
 

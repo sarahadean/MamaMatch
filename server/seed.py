@@ -124,7 +124,7 @@ if __name__ == '__main__':
             "Spring Branch, TX",
             "New Braunfels, TX",
             "Temple, TX",
-            "Ottine, TX"
+            "Ottine, TX",
             "Madisonville, TX",
             "Bastrop, TX"
         ]

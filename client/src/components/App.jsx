@@ -12,6 +12,7 @@ import NavBar from './NavBar'
 import Header from './Header'
 import Profile from './Pages/Profile'
 import UserContext from './Pages/UserContext'
+import Footer from './Pages/Footer'
 
 function App() {
   const navigate = useNavigate();
@@ -46,9 +47,8 @@ function App() {
 
   return (
     <UserContext.Provider value={{user, setUser}}>
-      <div>
-        <Header />
-        <NavBar navigate ={navigate}/>
+      <Header navigate ={navigate}/>
+      <div className='content-container'>
         <Routes>
           <Route exact path="/" element={<Welcome />} />
           <Route path="/home" element={<Home />}/>
@@ -57,10 +57,11 @@ function App() {
           <Route path="/interested" key="/interested" element={<PendingList />} />
           <Route path="/friends" key="/friends"element={<FriendsList />} />
           <Route path="/messages" element={<MessagesList />} />
-          <Route path="/conversations/:id" element={<Conversation />} />
+          <Route path="/conversations/:id/:name" element={<Conversation />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
+      <Footer/>
     </UserContext.Provider>
   )
 }

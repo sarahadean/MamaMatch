@@ -18,7 +18,8 @@ function FriendsCard({friend, friendship, updateFriendship}) {
 
   // console.log(friend) - successfully getting friend's user info
 
-  const url = `/conversations/${id}`
+  const url = `/conversations/${id}/${name}`
+  console.log(url)
 
   //not getting the friendship data:
   // console.log(friendship)

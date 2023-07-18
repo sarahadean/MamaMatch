@@ -38,7 +38,7 @@ function NavBar({navigate}) {
           (
           <>
           <IconButton>
-          <Avatar alt={user.name} src={user.profile_image}></Avatar>
+          <Avatar alt={user.name} src={user.profile_image} component={Link} to="/profile"></Avatar>
         </IconButton>
 
             <Grid sx={{placeItems: 'center'}} container>
@@ -58,11 +58,10 @@ function NavBar({navigate}) {
                       value={value} onChange={(e, val)=>setValue(val)}>
                     <Tab value="Requests" label="Requests" component={Link} to="/interested"/>
                     <Tab value="Friends" label="Friends"component={Link} to="/friends"/>
-                    <Tab value="Profile" label="Profile"component={Link} to="/profile"/>
                   </Tabs>
                 </Grid>
 
-                <Grid item xs={2}></Grid>
+                {/* <Grid item xs={2}></Grid> */}
 
                 <Grid item xs={2}>
                   <Box display="flex">
