@@ -3,6 +3,9 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import UserContext from './Pages/UserContext';
 import { CardHeader, Button, Box, useMediaQuery, Grid, Toolbar, Avatar, IconButton, Menu, Fade, MenuItem, AppBar, Typography, Tab, Tabs, Icon} from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home';
+import logo from './../logos/BloomCover.png'
+import newlogo from './../logos/UpdatedCover.png'
+
 
 
 function NavBar({navigate}) {
@@ -32,8 +35,8 @@ function NavBar({navigate}) {
   return (
    <>
       <AppBar>
-        <Toolbar className="App-header">
-          
+        <Toolbar>
+
       {user ? 
           (
           <>
@@ -43,15 +46,15 @@ function NavBar({navigate}) {
 
             <Grid sx={{placeItems: 'center'}} container>
 
-                <Grid item xs={1}>
+                <Grid item sx={1}>
                   <IconButton component={Link} to="/home" value="home">
                       <HomeIcon />
                   </IconButton >
                 </Grid>
 
-                <Grid item xs={1}></Grid>
+                <Grid item sx={1}></Grid>
 
-                <Grid item xs={6}>
+                <Grid item sx={6}>
                   <Tabs 
                       indicatorColor="secondary" 
                       textColor="inherit" 
@@ -63,7 +66,7 @@ function NavBar({navigate}) {
 
                 {/* <Grid item xs={2}></Grid> */}
 
-                <Grid item xs={2}>
+                <Grid item sx={2}>
                   <Box display="flex">
                     <Button sx={{marginLeft: 'auto'}} variant='contained'onClick={handleLogout} >Logout</Button>
                   </Box>
@@ -72,11 +75,17 @@ function NavBar({navigate}) {
           </>
           ):(
           <>
-            <Grid container spacing={1}>
-              <Grid item sx={1}>
+            <Grid container sx={{placeItems: 'center'}} spacing={10}>
+              <Grid item sx={2}>
                 <Tabs indicatorColor="secondary" textColor="inherit" value={value} onChange={(e, val)=>setValue(val)}>
                   <Tab label={welcome}/>
                 </Tabs>
+              </Grid>
+             
+              <Grid item></Grid>
+              <Grid item></Grid>
+              <Grid item sx={10} align="center">
+                <img src={newlogo} width={300}/>
               </Grid>
             </Grid>
           </>) }

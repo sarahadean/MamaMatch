@@ -10,9 +10,10 @@ function Footer() {
   const [value, setValue] = React.useState(0);
 
   return (
-    <Box sx={{ width: 500 }}>
+    <Box >
       <BottomNavigation
         showLabels
+        position="fixed"
         value={value}
         onChange={(event, newValue) => {
           setValue(newValue);

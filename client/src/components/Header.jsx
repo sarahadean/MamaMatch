@@ -7,23 +7,14 @@ function Header({ navigate }) {
   const { user, setUser } = useContext(UserContext);
   return (
     <>
-    <Typography></Typography>
-    {/* <CardHeader
-      action={
-        <IconButton>
-          <Avatar></Avatar>
-        </IconButton>
-      }>
 
-    </ CardHeader> */}
     <div className='header'>
-      
-        {user ? (
-          <span className='welcome_message'>Hi {user.name}!</span>
+      <NavBar navigate ={navigate}/>
+      {user ? (
+        <Typography>Hi {user.name}!</Typography>
         ) : (
           ''
         )}
-      <NavBar navigate ={navigate}/>
     </div>
 
     </>
