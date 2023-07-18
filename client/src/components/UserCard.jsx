@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react'
 import UserContext from './Pages/UserContext';
-import {Card, CardHeader, CardContent, CardActions, IconButton, CardMedia, Typography } from '@mui/material'
+import {Card, Grid, CardContent, CardActions, IconButton, CardMedia, Typography } from '@mui/material'
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 
@@ -44,25 +44,40 @@ function UserCard({ friend, friends, updateFriend }) {
 
   return (
     <>
-      <Card variant='outlined' sx={{ maxHeight: 600}}>
+      <Card variant='outlined' sx={{ maxHeight: 800}}>
         <CardMedia 
         component="img"
         image={profile_image}
-        height={400}/>
-        <CardContent>
+        height={350}/>
+        <CardContent sx={{height:150}}>
           <Typography variant="h5">{name}</Typography>
-          <Typography>{location}</Typography>
-          <Typography>{about}</Typography>
+          <Typography variant='overline'>{location}</Typography>
+          <Typography variant="body1">{about}</Typography>
         </CardContent>
         <hr></hr>
         <CardActions>
-
-          <IconButton onClick={(e) => handleSubmit(e, "PENDING")}>
+          <Grid container
+          justifyContent="center"
+          alignItems="center" 
+          spacing={20}>
+            <Grid item sx={6}>
+            <IconButton onClick={(e) => handleSubmit(e, "PENDING")} sx={{background:"#81c784"}} >
             <FavoriteBorderOutlinedIcon/>
-            </IconButton>
-          <IconButton onClick={(e) => handleSubmit(e, "HIDDEN")}>
+          </IconButton>
+            </Grid>
+            <Grid item sx={6}>
+            <IconButton onClick={(e) => handleSubmit(e, "HIDDEN")}sx={{background:"#e57373"}}>
             <ClearOutlinedIcon/>
           </IconButton>
+            </Grid>
+          </Grid>
+      
+          
+         
+          
+    
+
+          
 
         </CardActions>
       </Card>

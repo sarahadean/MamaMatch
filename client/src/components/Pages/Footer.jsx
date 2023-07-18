@@ -12,7 +12,10 @@ function Footer() {
 
   return (
     <Box >
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}
+      justifyContent="center"
+      alignItems="center" 
+      >
       <BottomNavigation
         showLabels
         value={value}
@@ -20,7 +23,7 @@ function Footer() {
           setValue(newValue);
         }}
       >
-        <BottomNavigationAction label="Requests" component={Link} to='/pending' icon={<RestoreIcon />} />
+        <BottomNavigationAction label="Requests" component={Link} to='/interested' icon={<RestoreIcon />} />
         <BottomNavigationAction label="Friends" component={Link} to='/friends' icon={<FavoriteIcon />} />
       </BottomNavigation>
       </Paper>
