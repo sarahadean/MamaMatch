@@ -1,24 +1,24 @@
 
 # MamaMatch
 
-## User Stories:
 MamaMatch is an app for mothers at any stage to connect with other moms in their area. Being a mom is hard enough, finding a your village shouldn't be. 
 Find your unicorn mom-friend!
 - Find potential mom-friends in your area
-- Interact with user profiles to find out if you are a mom-match!
-- Message new mom-friends!
+- 'Favorite' or 'Dislike' other user profiles to create a potential friendship. Users will receive 'requests' from other Users who favorite their profile.
+- Confirm or Decline friend requests 
+- Once a friendship is confirmed, User can chat with their new mom friend!
 
 ## Features
-- Upon opening app, user will be greeted with welcome screen where they can either Signup or Login.
-- User can customize profile with their own interests and update their profile later
-- User can search through profiles of other users and select either 'thumbs up' or 'thumbs down'
-- User can view list of potential friends who have positively interacted with user's profile but have not 'matched'
-- User can view list of 'matches' (friend's list) as well as delete friend. 
-- User can send messages to friends.
+- Customizable profile. When logged in - user's profile picture displays in top corner. 
+- Returning Users will be directed to home page with Users they have not interacted with. 
+- User can view list of potential friends who have positively interacted with user's profile. User can then 'confirm' friendship or decline
+- User can view list of confirmed friends. 
+- User can send and receive messages.
+- Material UI styling
 
 Tech Stack:
 
-[![My Skills](https://skillicons.dev/icons?i=js,py,flask,react,vite)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=js,py,flask,react,vite,materialui)](https://skillicons.dev)
 
 ## Schema:
 https://dbdiagram.io/d/64a2f12702bd1c4a5e6ce584
@@ -68,15 +68,16 @@ https://www.figma.com/file/MbtQ6o1dWaNJ3pyvm4vRBV/MomFriendFinder?type=whiteboar
 
 ## Client-side Routes:
 
-| Route          | Component       | Description                                                                                                             |
-|----------------|-----------------|-------------------------------------------------------------------------------------------------------------------------|
-| /welcome       | WelcomePage.js  | Welcome page for users to signup or login                                                                               |
-| /signup        | SignupForm.js   | Contains form to signup and gain access to app                                                                          |
-| /login         | LoginForm.js    | Login page                                                                                                              |
-| /home          | Home.js         | Shows list of potential friend matches for user to view, filter                                                         |
-| /interested    | PendingList.js  | Shows list of users who are interested in being user's friend (User has not matched with them yet) - filtered by status |
-| /friends       | FriendsList.js  | Shows list of user's friends they have been matched with - filtered by status                                           |
-| /messages/user | Conversation.js | Shows conversation between user and another user                                                                        |
+| Route          | Component        | Description                                                                                                             |
+|----------------|------------------|-------------------------------------------------------------------------------------------------------------------------|
+| /              | WelcomePage.jsx  | Welcome page for users to signup or login                                                                               |
+| /signup        | SignupForm.jsx   | Contains form to signup and gain access to app                                                                          |
+| /login         | LoginForm.jsx    | Login page                                                                                                              |
+| /home          | Home.jsx         | Shows list of potential friend matches for user to view, filter                                                         |
+| /interested    | PendingList.jsx  | Shows list of users who are interested in being user's friend (User has not matched with them yet) - filtered by status |
+| /friends       | FriendsList.jsx  | Shows list of user's friends they have been matched with - filtered by status                                           |
+| /messages/user | Conversation.jsx | Shows conversation between user and another user                                                                        |
+| /profile       | Profile.jsx      | Shows user's profile information.                                                                                       |
 
 ## Trello Board
 ![Screenshot 2023-07-04 at 10 26 47 PM](https://github.com/sarahadean/capstone/assets/128323898/fcb6b404-43e4-455c-ae48-5f11f3384993)
