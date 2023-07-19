@@ -58,7 +58,7 @@ https://www.figma.com/file/MbtQ6o1dWaNJ3pyvm4vRBV/MomFriendFinder?type=whiteboar
 | /user_friendships/<int:id>           | GET    | form or json | [{Friendship Schema},], 200 | Retrieves user's friendships with messages attached                                                      |
 | /friendship/<int:id>/<int:friend_id> | PATCH  | form or json | {Friendship Schema}, 200    | Updates friendship status to CONFIRMED or HIDDEN                                                         |
 |                                      | DELETE | form or json | {}, 204                     | Delete's friendship                                                                                      |
-| /messages/<int:id>/<int:friend>      | GET    | form or json | [{Messages schema}], 200    | Get's all messages for one friendship                                                                    |
+| /messages/<int:id>/<int:friend_id>      | GET    | form or json | [{Messages schema}], 200    | Get's all messages for one friendship                                                                    |
 |                                      | POST   | form or json | {Messages schema}, 201      | Creates new message                                                                                      |
 |                                      | DELETE | none         | {}, 204                     | Delete's message                                                                                         |
 
@@ -76,7 +76,7 @@ https://www.figma.com/file/MbtQ6o1dWaNJ3pyvm4vRBV/MomFriendFinder?type=whiteboar
 | /home          | Home.js         | Shows list of potential friend matches for user to view, filter                                                         |
 | /interested    | PendingList.js  | Shows list of users who are interested in being user's friend (User has not matched with them yet) - filtered by status |
 | /friends       | FriendsList.js  | Shows list of user's friends they have been matched with - filtered by status                                           |
-| /messages/user.id/id | Conversation.js | Shows conversation between user and another user                                                                        |
+| /messages/user | Conversation.js | Shows conversation between user and another user                                                                        |
 
 ## Trello Board
 ![Screenshot 2023-07-04 at 10 26 47 PM](https://github.com/sarahadean/capstone/assets/128323898/fcb6b404-43e4-455c-ae48-5f11f3384993)
