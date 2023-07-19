@@ -3,13 +3,13 @@ import UserContext from './UserContext'
 import UserCard from '../UserCard';
 
 
-function Home({friendship, updateFriendship,}) {
+function Home() {
   const { user, setUser } = useContext(UserContext);
   const [friends, setFriends] = useState([])
 
   // change state of filtered friends
-  function updateFriend(){
-    setFriends(friends)
+  function updateFriend(newfriend){
+    setFriends((friends.filter((friend) => friend.id !== newfriend.receiving_user_id)))
   }
   
 
@@ -56,8 +56,8 @@ function Home({friendship, updateFriendship,}) {
         return <UserCard 
         key={friend.id} 
         friend={friend} 
-        friendship={friendship} 
-        updateFriendship={updateFriendship} 
+        friends={friends} 
+        updateFriend={updateFriend}
         />;
       })}
         
