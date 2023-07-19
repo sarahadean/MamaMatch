@@ -13,7 +13,7 @@ function Welcome() {
   //   navigate('/home')
   // }
 
-  function srcset(image, size, rows = 1, cols = 5) {
+  function srcset(image, size, rows = 2, cols = 3) {
     return {
       src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
       srcSet: `${image}?w=${size * cols}&h=${
@@ -56,11 +56,11 @@ function Welcome() {
 
   return (
     <>
-    <ImageList sx={{ height: 250 }} cols={5} rowHeight={250} variant='quilted' >
+    <ImageList sx={{ height: 450 }} cols={5} rowHeight={400} variant='quilted' >
       {imageList.map((picture, index) => (
         <ImageListItem key={index} cols={picture.cols || 1} rows={picture.rows || 1}>
         <img
-          {...srcset(picture.img, 121, picture.rows, picture.cols)}
+          {...srcset(picture.img, 300, picture.rows, picture.cols)}
           alt={picture.title}
           loading="lazy"
         /> </ImageListItem>

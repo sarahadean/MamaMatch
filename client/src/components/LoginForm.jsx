@@ -53,7 +53,8 @@ function LoginForm({navigate}) {
         {({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
             <FormControl>
-            <Box marginBottom={2}>
+            <Box marginBottom={1}
+            padding={2}>
               <Typography>Username:</Typography>
               <Field 
               type="text" 
@@ -61,7 +62,8 @@ function LoginForm({navigate}) {
               size='small'/> 
               <ErrorMessage name="username" />
             </Box>
-            <Box marginBottom={2}>
+            <Box marginBottom={2}
+            padding={2}>
               <Typography>Password:</Typography>
               <Field size='small' 
               type="password" 
@@ -71,7 +73,11 @@ function LoginForm({navigate}) {
               />
               <ErrorMessage name="password"  />
            </Box>
-        <Button type="submit"  variant="contained" color="primary"> Get Matchin'!</Button>
+
+           <Box padding={2}>
+           <Button type="submit"  variant="contained" color="primary"> Get Matchin'!</Button>
+           </Box>
+        
         </FormControl>
         </form>
         )}
