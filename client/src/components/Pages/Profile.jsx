@@ -15,6 +15,24 @@ function Profile() {
 
   const toggleEdit = () => setEdit((prev) => !prev);
 
+  function handleDelete(){
+    fetch(`/api/current_user/${user.id}`, {
+    method: "DELETE",
+    headers:{
+    "content-type": "application/json"
+    },
+    }).then(res => {
+    if (res.ok) {
+    res.json().then(data =>{
+    setUser(null)
+    navigate('/welcome')
+    })
+    } else {
+    res.json().then(error => setError(error.message));
+    }
+    })
+    }
+
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -83,7 +101,7 @@ function Profile() {
           <ListItem>{user.interests}</ListItem>
         </List>
         <Button onClick={toggleEdit}>Edit</Button>
-        <Button>Delete Profile</Button>
+        <Button onClick={() => handleDelete()}>Delete Profile</Button>
       </Box>
     ) : 
     (
