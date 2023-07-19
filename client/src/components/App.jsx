@@ -12,35 +12,14 @@ import NavBar from './NavBar'
 import Header from './Header'
 import Profile from './Pages/Profile'
 import UserContext from './Pages/UserContext'
+import Footer from './Pages/Footer'
+import {Box} from '@mui/material'
 
 function App() {
   const navigate = useNavigate();
   //state of individual user
   const [user, setUser] = useState(null)
 
-  // all user friendships
-  // const [friendships, setFriendships] = useState([])
-
-  //single friendship state - {} or []??
-  const [friendship, setFriendship] = useState(null)
-
-  //updates user
-  // function updateUser(){
-  //   setUser(user)
-  // }
-
-  //adds new friendship to user's friendships
-  // function updateFriendships(friendship){
-  //   setFriendships([...friendships, friendship])
-  // }
-
-//updates SINGLE friendship
-  function updateFriendship(){
-    setFriendship(friendship)
-  }
-
- 
-  // console.log(friendship)
 
   useEffect(() => {
     authorizeUser()
@@ -48,20 +27,11 @@ function App() {
   }, [user])
   console.log(user)
 
-
-  
-
-  //adds friendship to all friendships
-  // function addToAllFriendships(friendship){
-  //   setAllFriendships([...allFriendships, friendship])
-  // }
-
   //authorize session
   function authorizeUser(){
     if (user == null) {
       fetch('/api/authorize_session')
       .then(response => {
-        console.log(response)
         if (response.ok) {
           return response.json().then((user) => setUser(user))
         } else {
@@ -72,27 +42,11 @@ function App() {
     }
   }
 
-//gets all user's friendships - giving 404 nessage
-//  function getUserFriendships(){
-//   fetch(`/api/user_friendships/`)
-//   .then(res => {
-//     console.log(res)
-//     if (res.ok) {
-//       return res.json()
-//     } else if (res.status == 404){
-//       return []
-//     } else {
-//       throw new Error("Error fetching address details")
-//     }
-//   })
-//   .then((friendships) => setFriendships(friendships))
-// }
 
   return (
     <UserContext.Provider value={{user, setUser}}>
-      <div>
-        <Header />
-        <NavBar navigate ={navigate}/>
+      <Header navigate ={navigate}/>
+      <div className='content-container'>
         <Routes>
           <Route exact path="/" element={<Welcome />} />
           <Route path="/home" element={<Home />}/>
@@ -101,10 +55,12 @@ function App() {
           <Route path="/interested" key="/interested" element={<PendingList />} />
           <Route path="/friends" key="/friends"element={<FriendsList />} />
           <Route path="/messages" element={<MessagesList />} />
-          <Route path="/conversations/:id" element={<Conversation />} />
+          <Route path="/conversations/:id/:name" element={<Conversation />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
+      <Footer/>
+      <Box height={100}></Box>
     </UserContext.Provider>
   )
 }

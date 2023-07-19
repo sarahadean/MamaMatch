@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import UserContext from './UserContext';
 import FriendsCard from '../FriendsCard';
+import { Typography, Box, Grid } from '@mui/material';
 
 function FriendsList({friendship, updateFriendship}) {
   const { user, setUser } = useContext(UserContext);
@@ -41,20 +42,28 @@ function FriendsList({friendship, updateFriendship}) {
   return (
     <>
     {actualFriends.length === 0 ? (
-  <div>
-  <h2>Hello, opulent mama!</h2>
-  <p>No MamaMatch friends yet! Head back to the home to find your perfect mom-match!</p>
-</div>
+      <Box height={400}>
+      <Typography variant='h4'>Hello, opulent mama!No MamaMatch friends yet! Head back to the home to find your perfect mom-match!</Typography>
+    </Box>
   ):(
-    <div className='container'>
-    {actualFriends.map(friend => 
-    <FriendsCard
-    key={friend.id} 
-    friend={friend}
-    updateFriendship={updateFriendship}
-    friendship={friendship}
-    />)}
-    </div>)}
+
+    <Box padding={4}>
+      <Grid container spacing={7}>
+    {actualFriends.map(friend =>(
+      <Grid item xs={4}>
+        <FriendsCard
+          key={friend.id} 
+          friend={friend}
+          updateFriendship={updateFriendship}
+          friendship={friendship}/>    
+      </Grid>
+      ))}
+      </Grid>
+    </Box>
+    
+    )}
+
+
   </>
   )
 }

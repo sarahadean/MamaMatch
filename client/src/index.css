@@ -14,7 +14,11 @@
   -webkit-text-size-adjust: 100%;
 }
 
-.header {
+/* .content-container {
+  margin-top: 100px;
+} */
+
+/* .header {
   background-color: var(--palette-b);
   height: 200px;
   background: url('./logos/BloomCover.png');
@@ -23,7 +27,7 @@
   background-color: #fbc0ba;
   background-size: 500px;
   margin: auto;
-}
+} */
 .header {
   
   color: #f6f4f1
@@ -70,7 +74,7 @@ h1 {
   line-height: 1.1;
 }
 
-button {
+/* button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -80,7 +84,8 @@ button {
   background-color:#fbc0ba;
   cursor: pointer;
   transition: border-color 0.25s;
-}
+} */
+
 button:hover {
   border-color: #AF8682;
 }

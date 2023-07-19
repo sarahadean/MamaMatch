@@ -3,11 +3,15 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import UserContext from './Pages/UserContext';
 import { CardHeader, Button, Box, useMediaQuery, Grid, Toolbar, Avatar, IconButton, Menu, Fade, MenuItem, AppBar, Typography, Tab, Tabs, Icon} from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home';
+import logo from './../logos/BloomCover.png'
+import newlogo from './../logos/UpdatedCover.png'
+import { CenterFocusStrong } from '@material-ui/icons';
+
 
 
 function NavBar({navigate}) {
   const { user, setUser } = useContext(UserContext);
-  const [value, setValue] = useState()
+  const [value, setValue] = useState("undefined")
 
   const home = <NavLink className="button" to="/home">Home</NavLink>
   const pending = <NavLink className="button" to="/interested">Requests</NavLink> 
@@ -32,15 +36,16 @@ function NavBar({navigate}) {
   return (
    <>
       <AppBar>
-        <Toolbar className="App-header">
-          
+        <Toolbar>
+
       {user ? 
           (
           <>
           <IconButton>
-          <Avatar alt={user.name} src={user.profile_image}></Avatar>
+          <Avatar sx={{ width: 56, height: 56 }} alt={user.name} src={user.profile_image} component={Link} to="/profile"></Avatar>
         </IconButton>
-            <Grid sx={{placeItems: 'center'}} container>
+
+            <Grid sx={{placeItems: 'center', display: 'flex'}} container spacing={3}>
 
                 <Grid item sx={1}>
                   <IconButton component={Link} to="/home" value="home">
@@ -48,36 +53,52 @@ function NavBar({navigate}) {
                   </IconButton >
                 </Grid>
 
-                <Grid item xs={1}></Grid>
+                <Grid item sx={1}></Grid>
 
-                <Grid item xs={6}>
-                  <Tabs 
+                <Grid item sx={1}>
+                  {/* <Tabs 
                       indicatorColor="secondary" 
                       textColor="inherit" 
                       value={value} onChange={(e, val)=>setValue(val)}>
                     <Tab value="Requests" label="Requests" component={Link} to="/interested"/>
                     <Tab value="Friends" label="Friends"component={Link} to="/friends"/>
-                    <Tab value="Profile" label="Profile"component={Link} to="/profile"/>
-                    <Tab value="undefined"/>
-                  </Tabs>
+                  </Tabs> */}
                 </Grid>
+                <Grid item sx={6} align="center">
+                  <Box width={700}>
+                  <img src={newlogo} width={350}/>
+                  </Box>
+                  
+              </Grid>
 
-                <Grid item xs={2}></Grid>
+                <Grid item sx={1}></Grid>
+                <Grid item>
+                {/* <Typography>Hi {user.name}!</Typography> */}
+                <Typography></Typography>
+                </Grid>
+                
 
-                <Grid item xs={2}>
+                <Grid item sx={1}>
                   <Box display="flex">
-                    <Button sx={{marginLeft: 'auto'}} variant='contained'onClick={handleLogout} >Logout</Button>
+                    
+                    <Button sx={{marginLeft: 'auto'}} align="right" variant='contained'onClick={handleLogout} >Logout</Button>
                   </Box>
                 </Grid>
                 </Grid>
           </>
           ):(
           <>
-            <Grid container spacing={1}>
-              <Grid item sx={1}>
+            <Grid container sx={{placeItems: 'center'}} spacing={10}>
+              <Grid item sx={2}>
                 <Tabs indicatorColor="secondary" textColor="inherit" value={value} onChange={(e, val)=>setValue(val)}>
                   <Tab label={welcome}/>
                 </Tabs>
+              </Grid>
+             
+              <Grid item></Grid>
+              <Grid item></Grid>
+              <Grid item sx={10} >
+                <img src={newlogo} width={350}/>
               </Grid>
             </Grid>
           </>) }

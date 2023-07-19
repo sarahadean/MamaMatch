@@ -1,17 +1,19 @@
 import React, { useState, useContext } from 'react';
 import * as yup from "yup";
-
 import UserContext from './Pages/UserContext';
 import { Formik, Field, ErrorMessage } from "formik";
+import { TextField, Typography, FormControl, Box, Button, ListItem, List, ListItemText, Divider, RadioGroup, Radio, FormControlLabel} from "@mui/material";
 
 function LoginForm({navigate}) {
   const { user, setUser } = useContext(UserContext);
   const [error, setError] = useState(null);
 
   const schema = yup.object().shape({
-    username: yup.string().required("*Username is required"),
-    password: yup.string().required("*Password is required")
+    username: yup.string(),
+    password: yup.string()
   });
+
+
 
   // if (user) {
   //   navigate('/home')
@@ -26,6 +28,7 @@ function LoginForm({navigate}) {
         }}
         validationSchema={schema}
         onSubmit={(values, actions) => {
+          console.log(values)
           fetch('/api/login', {
             method: "POST",
             headers: {
@@ -36,6 +39,7 @@ function LoginForm({navigate}) {
             .then(res => {
               if (res.ok) {
                 res.json().then(user => {
+                  console.log(user)
                   setUser(user);
                   navigate("/home");
                 });
@@ -48,22 +52,40 @@ function LoginForm({navigate}) {
         
         {({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
-          <label>
-            Username:
-            <Field type="text" name="username" />
-            <ErrorMessage name="username" component="h3" />
-          </label>
-
-          <label>
-            Password:
-            <Field type="password" name="password" />
-            <ErrorMessage name="password" component="h3" />
-          </label>
-
-          <input type="submit" value="Get Matchin'!" />
+            <FormControl>
+            <Box marginBottom={2}>
+              <Typography>Username:</Typography>
+              <Field 
+              type="text" 
+              name="username" 
+              size='small'/> 
+              <ErrorMessage name="username" />
+            </Box>
+            <Box marginBottom={2}>
+              <Typography>Password:</Typography>
+              <Field size='small' 
+              type="password" 
+              name="password" 
+              placeholder='password'
+    
+              />
+              <ErrorMessage name="password"  />
+           </Box>
+        <Button type="submit"  variant="contained" color="primary"> Get Matchin'!</Button>
+        </FormControl>
         </form>
         )}
       </Formik>
+      {error && (
+        <Box marginTop={2}>
+          <Divider />
+          <List>
+            <ListItem>
+              <ListItemText primary={error} />
+            </ListItem>
+          </List>
+        </Box>
+      )}
     </section>
   );
 }

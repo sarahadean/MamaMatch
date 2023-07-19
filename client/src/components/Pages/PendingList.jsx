@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react';
 import UserContext from './UserContext';
 import PendingCard from '../PendingCard';
+import { Typography, Box, Grid } from '@mui/material';
 
-function PendingList({friendship, updateFriendship}) {
+function PendingList() {
   const { user, setUser } = useContext(UserContext);
   const [pendingFriends, setPendingFriends] = useState([])
 
-  function updatePendingFriendsList(){
-    setPendingFriends(pendingFriends)
+  function updatePendingFriendsList(newfriendship){
+    setPendingFriends((pendingFriends.filter((friend) => friend.id !== newfriendship.receiving_user_id && friend.id !== newfriendship.requesting_user_id)))
   }
-
+  console.log(pendingFriends)
   
 
   useEffect(() => {
@@ -32,7 +33,7 @@ function PendingList({friendship, updateFriendship}) {
         .then(pendingFriends => setPendingFriends(pendingFriends))
     }
     }
-
+    console.log(pendingFriends)
     // logging return for user's pending friends
     // console.log(pendingFriends)
 
@@ -43,24 +44,35 @@ function PendingList({friendship, updateFriendship}) {
   
       return (
         <>
+        
         {pendingFriends.length === 0 ? (
-          <div className='container'>
-            <h2>Hello, beautiful mama!</h2>
-            <p>You don't have any pending requests</p>
-        </div>
+          
+          <Box height={400}>
+            <Typography variant='h4'>Hello, beautiful mama! You don't have any pending requests</Typography>
+          </Box>
       ):(
-        <div className='container'>
-        {pendingFriends.map(friend => 
-        <PendingCard key={friend.id} 
-        friend={friend}
-        friendship={friendship}
-        //updates friendship status state
-        updateFriendship={updateFriendship}
-        //updates List of friends state
-        updatePendingFriendsList={updatePendingFriendsList}
-        pendingFriends={pendingFriends}/>)}
-        </div>)}
-      </>
+        <Box padding={4}>
+          <Grid container spacing={4}>
+          {pendingFriends.map(friend => (
+            <Grid item xs={4} >
+            <PendingCard 
+            key={friend.id} 
+            friend={friend}
+            updatePendingFriendsList={updatePendingFriendsList}
+            pendingFriends={pendingFriends}/>
+            </Grid>))}
+          </Grid>
+        </Box>)}
+        </>
+        // <div className='container'>
+        // {pendingFriends.map(friend => 
+        // <PendingCard key={friend.id} 
+        // friend={friend}
+        // //updates List of friends state
+        // updatePendingFriendsList={updatePendingFriendsList}
+        // pendingFriends={pendingFriends}/>)}
+        // </div>)}
+      
 ) 
 }
 

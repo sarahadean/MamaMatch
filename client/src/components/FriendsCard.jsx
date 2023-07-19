@@ -1,18 +1,25 @@
 import React, { useState, useContext } from 'react';
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import UserContext from './Pages/UserContext';
+import {Card, Button, Grid, Box, CardHeader, CardContent, CardActions, IconButton, CardMedia, Typography } from '@mui/material'
 import { Formik, Field, ErrorMessage } from "formik";
-import { NavLink, useNavigate } from 'react-router-dom';
+import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
+import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import * as yup from "yup";
 
 
 function FriendsCard({friend, friendship, updateFriendship}) {
   const {id, name, profile_image, location, about, mom_life, interests} = friend
   const { user, setUser } = useContext(UserContext);
-  const [toggleBox, setToggleBox] = useState(false)
-  const [message, setMessage] = useState([])
+  const [toggle, setToggle] = useState(true)
+
+  const updateToggle = () => setToggle((prev) => !prev)
+
+
   // console.log(friend) - successfully getting friend's user info
 
-  const url = `/conversations/${id}`
+  const url = `/conversations/${id}/${name}`
+  console.log(url)
 
   //not getting the friendship data:
   // console.log(friendship)
@@ -36,34 +43,71 @@ function handleDelete(){
     })
     }
 
-
-//<-------SENDS MESSAGE--------------->
-const updateToggleBox = () => setToggleBox(prev => !prev);
-
-const validationSchema = yup.object().shape({
-  // friendship_id: yup.string(),
-  // author: yup.string(),
-  content: yup.string()
-});
+// const validationSchema = yup.object().shape({
+//   // friendship_id: yup.string(),
+//   // author: yup.string(),
+//   content: yup.string()
+// });
 
 return (
   <>
-    <div className='card'>
+  <Card variant='outlined' sx={{ maxHeight: 800}}>
+        <CardMedia 
+        component="img"
+        image={profile_image}
+        height={350}/>
+        <CardContent sx={{height:100}}>
+          <Typography variant="h5">{name}</Typography>
+          <Typography>{location}</Typography>
+          {/* <Typography>{about}</Typography> */}
+        </CardContent>
+
+        <CardActions>
+          <Grid container sx={{placeItems: 'center'}} spacing={2}>
+            <Grid item xs={6}>
+              <IconButton sx={{ display: 'flex', flexDirection: 'column'}} component={Link} to={url}>
+                <ForumOutlinedIcon/>
+                <Typography variant="caption">Send Message</Typography>
+              </IconButton>
+            </Grid>
+
+            <Grid item xs={6}>
+              <IconButton sx={{ display: 'flex', flexDirection: 'column'}} onClick={() => updateToggle()}>
+                <ClearOutlinedIcon />
+                <Typography variant="caption">Vibes off?</Typography>
+              </IconButton>
+            </Grid>
+
+          </Grid>
+        </CardActions>
+        {toggle ? 
+        ("") :
+        (<CardContent>
+          <Typography>Click to delete friend or go back:</Typography>
+          <Button onClick={() => handleDelete()}>Delete</Button>
+          <Typography></Typography>
+          <Button onClick={() => updateToggle()}>Nevermined</Button>
+        </CardContent>)
+        }
+      </Card>
+
+
+    {/* <div className='card'>
       <img src={profile_image}></img>
       <ul>
         <h3>{name}</h3>
-        {/* <li>{pendingFriend.mom_life}</li> */}
+        <li>{pendingFriend.mom_life}</li>
         <li>{location}</li>
         <li>{about}</li>
-        {/* <li>{pendingFriend.interests}</li> */}
+        <li>{pendingFriend.interests}</li>
       </ul>
-      {/* clicking toggles hidden input box*/}
+      clicking toggles hidden input box
       <p>Send a message to say hi!</p>
-      {/* <button onClick={updateToggleBox} className='button'> Message</button> */}
+      <button onClick={updateToggleBox} className='button'> Message</button>
       <NavLink className="button" to={url}
       >Send Message</NavLink>
       <p>Vibes off? Click to delete friend:</p>
-      <button onClick={() => handleDelete()} className='button'>Delete</button>
+      <button onClick={() => handleDelete()} className='button'>Delete</button> */}
       
       {/* {toggleBox ? (
         <>
@@ -123,7 +167,7 @@ return (
       ) : ("")} */}
       
       {/* <button> Block </button> */}
-    </div>
+    {/* </div> */}
   </>
 );
 }

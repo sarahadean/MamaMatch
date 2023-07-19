@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext} from 'react'
 import UserContext from './UserContext'
 import UserCard from '../UserCard';
+import {Grid, Container, Box } from '@mui/material'
 
 
 function Home() {
@@ -52,17 +53,30 @@ function Home() {
   //  />})
   
   return (
-    <div className='container'>
-      {friends.map(friend => {
-        return <UserCard 
+    <Box padding={2}>
+      <Grid container spacing={4}>
+      {friends.map(friend => (
+        <Grid item xs={4} >
+        <UserCard 
         key={friend.id} 
         friend={friend}
         friends={friends} 
-        updateFriend={updateFriend}
-        />;
-      })}
+        updateFriend={updateFriend}/>
+        </Grid>
+      ))}
+      </Grid>
+    </Box>
+    // <div className='container'>
+    //   {friends.map(friend => {
+    //     return <UserCard 
+    //     key={friend.id} 
+    //     friend={friend}
+    //     friends={friends} 
+    //     updateFriend={updateFriend}
+    //     />;
+    //   })}
         
-    </div>
+    // </div>
   )
 }
 
