@@ -5,6 +5,7 @@ import UserCard from '../UserCard';
 
 function Home() {
   const { user, setUser } = useContext(UserContext);
+  const [error, setError] = useState(null)
   const [friends, setFriends] = useState([])
 
   // change state of filtered friends

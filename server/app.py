@@ -178,8 +178,8 @@ class UserFriendships(Resource):
         data = request.get_json()
         try: 
             new_friendship = Friendship(
-            requesting_user_id = data['requesting_user_id'],
-            receiving_user_id= data['receiving_user_id'],
+            requesting_user_id = data.get('requesting_user_id'),
+            receiving_user_id= data.get('receiving_user_id'),
             status = data.get('status'))
             db.session.add(new_friendship)
             db.session.commit()

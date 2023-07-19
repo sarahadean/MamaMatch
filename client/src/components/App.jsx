@@ -18,6 +18,7 @@ function App() {
   //state of individual user
   const [user, setUser] = useState(null)
 
+
   //single friendship state - {} or []??
   const [friendship, setFriendship] = useState(null)
 
@@ -40,7 +41,7 @@ function App() {
     // getUserFriendships()
   }, [user])
   console.log(user)
-  console.log(friendships)
+
 
   
 
@@ -73,11 +74,11 @@ function App() {
         <NavBar navigate ={navigate}/>
         <Routes>
           <Route exact path="/" element={<Welcome />} />
-          <Route path="/home" element={<Home friendship={friendship} updateFriendship={updateFriendship} updateFriendships={updateFriendships}/>}/>
+          <Route path="/home" element={<Home />}/>
           <Route path="/signup" element={<SignupForm />} />
           <Route path="/login" element={<LoginForm navigate={navigate}/>} />
-          <Route path="/interested" key="/interested" element={<PendingList friendship={friendship} updateFriendship={updateFriendship} updateFriendships={updateFriendships}/>} />
-          <Route path="/friends" key="/friends"element={<FriendsList friendship={friendship} updateFriendship={updateFriendship}/>} />
+          <Route path="/interested" key="/interested" element={<PendingList />} />
+          <Route path="/friends" key="/friends"element={<FriendsList />} />
           <Route path="/messages" element={<MessagesList />} />
           <Route path="/conversations/:id" element={<Conversation />} />
           <Route path="/profile" element={<Profile />} />
