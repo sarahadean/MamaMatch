@@ -23,10 +23,8 @@ function Profile() {
     },
     }).then(res => {
     if (res.ok) {
-    res.json().then(data =>{
     setUser(null)
-    navigate('/welcome')
-    })
+    navigate('/')
     } else {
     res.json().then(error => setError(error.message));
     }
