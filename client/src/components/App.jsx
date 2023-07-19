@@ -13,6 +13,7 @@ import Header from './Header'
 import Profile from './Pages/Profile'
 import UserContext from './Pages/UserContext'
 import Footer from './Pages/Footer'
+import {Box} from '@mui/material'
 
 function App() {
   const navigate = useNavigate();
@@ -59,6 +60,7 @@ function App() {
         </Routes>
       </div>
       <Footer/>
+      <Box height={100}></Box>
     </UserContext.Provider>
   )
 }
