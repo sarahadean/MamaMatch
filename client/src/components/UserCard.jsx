@@ -30,10 +30,11 @@ function UserCard({ friend, friends, updateFriend }) {
       })
       })
       .then(res => {
+        console.log(res)
       if (res.ok) {
-      res.json().then(newfriend => {
-        console.log(newfriend)
-        updateFriend(newfriend)
+      res.json().then(data=> {
+        console.log(data)
+        updateFriend(data)
 
       })
       } else {

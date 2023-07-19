@@ -20,8 +20,6 @@ function App() {
   const [user, setUser] = useState(null)
 
 
-  // console.log(friendship)
-
   useEffect(() => {
     authorizeUser()
     // getUserFriendships()
@@ -33,7 +31,6 @@ function App() {
     if (user == null) {
       fetch('/api/authorize_session')
       .then(response => {
-        console.log(response)
         if (response.ok) {
           return response.json().then((user) => setUser(user))
         } else {
