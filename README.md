@@ -53,7 +53,7 @@ https://www.figma.com/file/MbtQ6o1dWaNJ3pyvm4vRBV/MomFriendFinder?type=whiteboar
 | /current_user/<int:id>               | GET    |              | {User schema}, 200          | Retrieve's current user's information                                                                    |
 |                                      | PATCH  |              | {User schema}, 200          | Updates current user's information                                                                       |
 |                                      | DELETE | none         | {}, 204                     | Deletes user's account                                                                                   |
-| /user_friendships/                   | POST   | form or json | {Friendship Schema}, 201    | User adds friend/creates friendship  Default status = PENDING until potential friend responds            |
+| /user_friendships                   | POST   | form or json | {Friendship Schema}, 201    | User adds friend/creates friendship  Default status = PENDING until potential friend responds            |
 | /user_friendships/<id>/<status>      | GET    | none         | [{User Schema},], 200       | Displays user info for friendships with status = 'matched' and 'pending'                                 |
 | /user_friendships/<int:id>           | GET    | form or json | [{Friendship Schema},], 200 | Retrieves user's friendships with messages attached                                                      |
 | /friendship/<int:id>/<int:friend_id> | PATCH  | form or json | {Friendship Schema}, 200    | Updates friendship status to CONFIRMED or HIDDEN                                                         |
