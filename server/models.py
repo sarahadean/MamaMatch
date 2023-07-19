@@ -17,7 +17,7 @@ class Friendship(db.Model, SerializerMixin):
     status = db.Column(db.String)
     
     #Relationship - Friendship has many messages. Messages has ONE friendship
-    messages = db.relationship('Message', backref='friendships')
+    messages = db.relationship('Message', backref='friendships', cascade="all, delete-orphan")
     # friendship_status = db.relationship('FriendshipStatus', back_populates='friendship', cascade="all, delete-orphan"  )
 
     @property
@@ -58,8 +58,8 @@ class User(db.Model, SerializerMixin, UserMixin):
     messages = db.relationship('Message', back_populates="author")
 
     #friendship relationships:
-    friends_requested = db.relationship('Friendship', foreign_keys=[Friendship.requesting_user_id],  backref='receiving_user')
-    requests_received = db.relationship('Friendship', foreign_keys=[Friendship.receiving_user_id], backref='requesting_user')
+    friends_requested = db.relationship('Friendship', foreign_keys=[Friendship.requesting_user_id],  backref='receiving_user', cascade="all, delete-orphan")
+    requests_received = db.relationship('Friendship', foreign_keys=[Friendship.receiving_user_id], backref='requesting_user', cascade="all, delete-orphan")
 
     #association proxies
     pending_friend = association_proxy('friends_requested', 'receiving_user')
