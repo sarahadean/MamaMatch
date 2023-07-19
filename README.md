@@ -23,8 +23,7 @@ Tech Stack:
 ## Schema:
 https://dbdiagram.io/d/64a2f12702bd1c4a5e6ce584
 
-<image src="https://github.com/sarahadean/capstone/assets/128323898/d11cb429-e33c-4b5c-b22e-ccec7c9751f2" width="600">
-
+<image src="https://github.com/sarahadean/capstone/assets/128323898/9d4b89b7-bbd3-4e1b-a48e-db270e1f94c6" width="600">
 
 ## Wireframe:
 https://www.figma.com/file/MbtQ6o1dWaNJ3pyvm4vRBV/MomFriendFinder?type=whiteboard&node-id=0%3A1&t=4OYjARU12DIrnJ0k-1
@@ -44,21 +43,24 @@ https://www.figma.com/file/MbtQ6o1dWaNJ3pyvm4vRBV/MomFriendFinder?type=whiteboar
 
 ## API Routes:
 
-| Route              | Method | Body         | Response                 | Explanation                                        |
-|--------------------|--------|--------------|--------------------------|----------------------------------------------------|
-| /signup            | POST   | form or json |  [{user schema}], 200    | Creates a new user when  they signup.              |
-| /login             | POST   | form or json | {User schema}, 200       | Logs user into app.                                |
-| /users             | GET    | none         | [{User schema}], 200     | Displays all users + "mom life" and "interests" tables |
-| /users/id          | PATCH  | form or json | {User schema},200        | Allows user to update/change their  information    |
-|                    | DELETE | none         | {}, 204                  | Allows user to delete their profile                |
-| /friendship_status | GET    | none         | [{friendship_status schema}], 200 | Displays friends with 'matched' status             |
-|                    | PATCH  | form or json | {friendship_status schema} | Changes friends status from 'pending' to 'matched' |
-|                    | DELETE | none         |                          | Deletes friend                                     |
-| /friendship        | POST   | form or json | {friendship_status schema} | Connection to new user                           |
-| /messages/id       | GET    | none         | [{Messages schema}], 200 | Retrieves all of user's messages                   |
-|                    | DELETE | none         | {}, 204                  |                                                    |
-| /messages/user     | GET    | none         | [{Messages schema}], 200 | Retrieves messages for specific recipient user     |
-| /messages          | POST   | form or json | {Messages schema}, 200   | New message is created                             |
+| Route                                | Method | Body         | Response                    | Explanation                                                                                              |
+|--------------------------------------|--------|--------------|-----------------------------|----------------------------------------------------------------------------------------------------------|
+| /signup                              | POST   | form or json | {User schema}, 201          | Creates a new user when  they signup.                                                                    |
+| /login                               | POST   | form or json | {User schema}, 200          | Logs user into app.                                                                                      |
+| /logout                              | GET    |              |                             | Logs user out                                                                                            |
+| /authorize_session                   | GET    |              |                             | Keeps user logged in                                                                                     |
+| /FilteredUsers/<int:id>              | GET    | none         | [{User schema}], 200        | Displays all potential friends.  Filters out users that are already in a friendship  with current user.  |
+| /current_user/<int:id>               | GET    |              | {User schema}, 200          | Retrieve's current user's information                                                                    |
+|                                      | PATCH  |              | {User schema}, 200          | Updates current user's information                                                                       |
+|                                      | DELETE | none         | {}, 204                     | Deletes user's account                                                                                   |
+| /user_friendships/                   | POST   | form or json | {Friendship Schema}, 201    | User adds friend/creates friendship  Default status = PENDING until potential friend responds            |
+| /user_friendships/<id>/<status>      | GET    | none         | [{User Schema},], 200       | Displays user info for friendships with status = 'matched' and 'pending'                                 |
+| /user_friendships/<int:id>           | GET    | form or json | [{Friendship Schema},], 200 | Retrieves user's friendships with messages attached                                                      |
+| /friendship/<int:id>/<int:friend_id> | PATCH  | form or json | {Friendship Schema}, 200    | Updates friendship status to CONFIRMED or HIDDEN                                                         |
+|                                      | DELETE | form or json | {}, 204                     | Delete's friendship                                                                                      |
+| /messages/<int:id>/<int:friend>      | GET    | form or json | [{Messages schema}], 200    | Get's all messages for one friendship                                                                    |
+|                                      | POST   | form or json | {Messages schema}, 201      | Creates new message                                                                                      |
+|                                      | DELETE | none         | {}, 204                     | Delete's message                                                                                         |
 
 ## Component Tree:
 
@@ -74,8 +76,7 @@ https://www.figma.com/file/MbtQ6o1dWaNJ3pyvm4vRBV/MomFriendFinder?type=whiteboar
 | /home          | Home.js         | Shows list of potential friend matches for user to view, filter                                                         |
 | /interested    | PendingList.js  | Shows list of users who are interested in being user's friend (User has not matched with them yet) - filtered by status |
 | /friends       | FriendsList.js  | Shows list of user's friends they have been matched with - filtered by status                                           |
-| /messages      | MessagesList.js | Shows list of all conversations user has with other users/friends                                                       |
-| /messages/user | Conversation.js | Shows conversation between user and another user                                                                        |
+| /messages/user.id/id | Conversation.js | Shows conversation between user and another user                                                                        |
 
 ## Trello Board
 ![Screenshot 2023-07-04 at 10 26 47 PM](https://github.com/sarahadean/capstone/assets/128323898/fcb6b404-43e4-455c-ae48-5f11f3384993)
