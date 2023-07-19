@@ -54,7 +54,7 @@ function Home() {
   
   return (
     <Box padding={2}>
-      <Grid container spacing={2}>
+      <Grid container spacing={4}>
       {friends.map(friend => (
         <Grid item xs={4} >
         <UserCard 

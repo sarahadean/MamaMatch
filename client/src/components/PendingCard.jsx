@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import UserContext from './Pages/UserContext';
-import {Card, CardHeader, CardContent, CardActions, IconButton, CardMedia, Typography } from '@mui/material'
+import {Card, Grid, CardHeader, CardContent, CardActions, IconButton, CardMedia, Typography } from '@mui/material'
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 
@@ -38,22 +38,33 @@ function PendingCard({updatePendingFriendsList, pendingFriends, friend}) {
   
   return (
     <>
-    <Card variant='outlined' sx={{ maxWidth: 400}}>
+    <Card variant='outlined' sx={{ maxHeight: 800}}>
         <CardMedia 
         component="img"
-        image={profile_image}/>
-        <CardContent>
+        image={profile_image}
+        height={350}/>
+        <CardContent sx={{height:150}}>
           <Typography variant="h5">{name}</Typography>
           <Typography>{location}</Typography>
           <Typography>{about}</Typography>
         </CardContent>
+
         <CardActions>
-          <IconButton onClick={(e) => handleSubmit(e, "CONFIRMED")}>
-            <FavoriteBorderOutlinedIcon/>
-            </IconButton>
-          <IconButton onClick={(e) => handleSubmit(e, "HIDDEN")}>
-            <ClearOutlinedIcon/>
-          </IconButton>
+        <Grid container sx={{placeItems: 'center'}} spacing={2}>
+            <Grid item xs={6}>
+              <IconButton sx={{ display: 'flex', flexDirection: 'column'}} onClick={(e) => handleSubmit(e, "CONFIRMED")}>
+                <FavoriteBorderOutlinedIcon/>
+                <Typography variant="caption">Confirm Friend</Typography>
+              </IconButton>
+            </Grid>
+
+            <Grid item xs={6}>
+              <IconButton sx={{ display: 'flex', flexDirection: 'column'}} onClick={(e) => handleSubmit(e, "HIDDEN")}>
+                <ClearOutlinedIcon/>
+                <Typography variant="caption">Decline</Typography>
+              </IconButton>
+            </Grid>
+        </Grid>
         </CardActions>
       </Card>
           {/* <div className='card'>

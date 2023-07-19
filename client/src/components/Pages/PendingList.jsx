@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import UserContext from './UserContext';
 import PendingCard from '../PendingCard';
-import { Typography, Box, Paper } from '@mui/material';
+import { Typography, Box, Grid } from '@mui/material';
 
 function PendingList() {
   const { user, setUser } = useContext(UserContext);
@@ -44,24 +44,35 @@ function PendingList() {
   
       return (
         <>
+        
         {pendingFriends.length === 0 ? (
+          
           <Box height={400}>
             <Typography variant='h4'>Hello, beautiful mama! You don't have any pending requests</Typography>
           </Box>
-        //   <div className='container'>
-        //     <h2>Hello, beautiful mama!</h2>
-        //     <p>You don't have any pending requests</p>
-        // </div>
       ):(
-        <div className='container'>
-        {pendingFriends.map(friend => 
-        <PendingCard key={friend.id} 
-        friend={friend}
-        //updates List of friends state
-        updatePendingFriendsList={updatePendingFriendsList}
-        pendingFriends={pendingFriends}/>)}
-        </div>)}
-      </>
+        <Box padding={4}>
+          <Grid container spacing={4}>
+          {pendingFriends.map(friend => (
+            <Grid item xs={4} >
+            <PendingCard 
+            key={friend.id} 
+            friend={friend}
+            updatePendingFriendsList={updatePendingFriendsList}
+            pendingFriends={pendingFriends}/>
+            </Grid>))}
+          </Grid>
+        </Box>)}
+        </>
+        // <div className='container'>
+        // {pendingFriends.map(friend => 
+        // <PendingCard key={friend.id} 
+        // friend={friend}
+        // //updates List of friends state
+        // updatePendingFriendsList={updatePendingFriendsList}
+        // pendingFriends={pendingFriends}/>)}
+        // </div>)}
+      
 ) 
 }
 

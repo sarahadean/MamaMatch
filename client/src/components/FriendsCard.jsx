@@ -51,14 +51,15 @@ function handleDelete(){
 
 return (
   <>
-  <Card variant='outlined' sx={{ maxWidth: 400}}>
+  <Card variant='outlined' sx={{ maxHeight: 800}}>
         <CardMedia 
         component="img"
-        image={profile_image}/>
-        <CardContent>
+        image={profile_image}
+        height={350}/>
+        <CardContent sx={{height:100}}>
           <Typography variant="h5">{name}</Typography>
           <Typography>{location}</Typography>
-          <Typography>{about}</Typography>
+          {/* <Typography>{about}</Typography> */}
         </CardContent>
 
         <CardActions>

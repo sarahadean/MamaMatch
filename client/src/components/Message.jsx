@@ -14,7 +14,7 @@ function Message({message}) {
       {message.author === user.name ? 
       (<Grid container>
       <Grid item lg={6}></Grid>
-      <Grid item lg={6} component={Paper}>
+      <Grid item lg={6} component={Paper} backgroundColor="#fbc0ba" >
         <ListItemText align="right" primary={message.content}></ListItemText>
       </Grid>
       <Grid item lg={6}></Grid>
@@ -24,7 +24,7 @@ function Message({message}) {
       </Grid>
       ) : (
         <Grid container>
-        <Grid item lg={6} component={Paper}>
+        <Grid item lg={6} component={Paper} backgroundColor="#ECECEC">
           <ListItemText align="left" primary={message.content}></ListItemText>
         </Grid>
         <Grid item lg={6}></Grid>
