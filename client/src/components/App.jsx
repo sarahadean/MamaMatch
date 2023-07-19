@@ -18,16 +18,10 @@ function App() {
   //state of individual user
   const [user, setUser] = useState(null)
 
-  // all user friendships
-  // const [friendships, setFriendships] = useState([])
 
   //single friendship state - {} or []??
   const [friendship, setFriendship] = useState(null)
 
-  //updates user
-  // function updateUser(){
-  //   setUser(user)
-  // }
 
   //adds new friendship to user's friendships
   // function updateFriendships(friendship){
@@ -72,21 +66,6 @@ function App() {
     }
   }
 
-//gets all user's friendships - giving 404 nessage
-//  function getUserFriendships(){
-//   fetch(`/api/user_friendships/`)
-//   .then(res => {
-//     console.log(res)
-//     if (res.ok) {
-//       return res.json()
-//     } else if (res.status == 404){
-//       return []
-//     } else {
-//       throw new Error("Error fetching address details")
-//     }
-//   })
-//   .then((friendships) => setFriendships(friendships))
-// }
 
   return (
     <UserContext.Provider value={{user, setUser}}>

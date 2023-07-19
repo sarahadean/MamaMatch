@@ -56,7 +56,7 @@ function Home() {
       {friends.map(friend => {
         return <UserCard 
         key={friend.id} 
-        friend={friend}
+        friend={friend} 
         friends={friends} 
         updateFriend={updateFriend}
         />;
