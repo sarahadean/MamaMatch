@@ -16,6 +16,7 @@ Find your unicorn mom-friend!
 - User can send and receive messages.
 - Material UI styling
 - Self-Referential many-to-many relationship
+- Full CRUD capabilities
 
 Tech Stack:
 
