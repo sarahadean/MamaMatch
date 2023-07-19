@@ -100,7 +100,7 @@ function Profile() {
             phone_number: user.phone_number,
             dob: user.dob,
             location: user.location,
-            profile_image: "",
+            profile_image: user.profile_image,
             about: user.about,
             mom_life: user.mom_life,
             interests: user.interests,
