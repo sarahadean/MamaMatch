@@ -109,11 +109,11 @@ api.add_resource(AuthorizedSession, '/authorize_session')
 class FilteredUsers(Resource):
     def get(self, id):
         try: 
-            user = User.query.filter_by(id=id).first()
+            # user = User.query.filter_by(id=id).first()
             #all friendships for user
             all_user_friendships = Friendship.query.filter(
-                (Friendship.receiving_user_id == user.id) |
-                (Friendship.requesting_user_id == user.id)
+                (Friendship.receiving_user_id == id) |
+                (Friendship.requesting_user_id == id)
             ).all()
             #list of only ids
             friend_ids = []
@@ -211,7 +211,7 @@ def get_confirmed_friends(id, status):
                 pending_friendships = Friendship.query.filter(
                         ((Friendship.receiving_user_id == user.id) &
         
-                        (Friendship.status == f'{status}'))
+                        (Friendship.status == "PENDING"))
                     ).all()
                 friend_ids = []
                 for friendship in pending_friendships:
@@ -351,30 +351,19 @@ api.add_resource(Messages, '/messages/<int:id>/<int:friend_id>')
 
 
 
-#=============GETS ALL MESSAGES FOR A SINGLE FRIENDSHIP===============#
+#=============GETS SINGLE FRIENDSHIP BY FRIENDSHIP ID===============#
 
-#shows ALL messages for individual friendship
-#GET tested in thunderclient -> SUCCESSFUL
-# class FriendshipMessages(Resource):
-#     def get(self, id, friend_id):
-#         try: 
-#             user = User.query.filter_by(id=id).first()
-
-#             selected_friendship = Friendship.query.filter(
-#                     ((Friendship.requesting_user_id == user.id) | (Friendship.receiving_user_id == user.id))
-#                     & ((Friendship.requesting_user_id == friend_id) | (Friendship.receiving_user_id == friend_id)) ).first()
-            
-#             friendship_messages = [message.serialize for message in selected_friendship.messages]
-#             return make_response(friendship_messages, 200)
-#         except Exception as e:
-#             traceback.print_exc()
-#             return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
+@app.route('/single_friendship/<int:friendship_id>')
+def get_single_friendship(friendship_id):
+    try: 
+        friendship = Friendship.query.filter_by(id=friendship_id).first().serialize
+        return make_response(friendship, 200)
+    except Exception as e:
+        traceback.print_exc()
+        return {"error": "An error occurred while fetching the order history", "message": str(e)}, 500
     
-    
-#     def delete(self):
-#         pass
 
-# api.add_resource(FriendshipMessages, '/friendshipmessages/<int:id>/<int:friend_id>')
+
 
 if __name__ == '__main__':
     app.run(port=5555)
