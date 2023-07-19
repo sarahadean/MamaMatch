@@ -9,7 +9,7 @@ import Message from './Message';
 //map through fetch for message component
 function Conversation() {
   const { user, setUser } = useContext(UserContext);
-  const {id} = useParams()
+  const {id, name} = useParams()
   // const {receiving_user_name, requesting_user_name, receiving_user_id, requesting_user_id } = convo
 
   const [messages, setMessages] = useState([])

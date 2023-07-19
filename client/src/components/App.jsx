@@ -80,7 +80,7 @@ function App() {
           <Route path="/interested" key="/interested" element={<PendingList />} />
           <Route path="/friends" key="/friends"element={<FriendsList />} />
           <Route path="/messages" element={<MessagesList />} />
-          <Route path="/conversations/:id" element={<Conversation />} />
+          <Route path="/conversations/:id/:name" element={<Conversation />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
