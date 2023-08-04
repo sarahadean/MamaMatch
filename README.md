@@ -81,11 +81,30 @@ https://www.figma.com/file/MbtQ6o1dWaNJ3pyvm4vRBV/MomFriendFinder?type=whiteboar
 | /messages/user | Conversation.jsx | Shows conversation between user and another user                                                                        |
 | /profile       | Profile.jsx      | Shows user's profile information.                                                                                       |
 
+## Instructions
+Open two terminals and input commands below:
+```
+#for backend
+$ cd server
+$ pipenv install
+$ pipenv shell
+```
+
+```
+# for frontend
+$ cd client
+$ npm install
+$ npm run dev
+```
+
 ## Trello Board
 ![Screenshot 2023-07-04 at 10 26 47 PM](https://github.com/sarahadean/capstone/assets/128323898/fcb6b404-43e4-455c-ae48-5f11f3384993)
 
 ## Future Updates:
 - Google login integration
+- Social media integration
+
+
 - Location services
 - Filterable and searchable tags
 
