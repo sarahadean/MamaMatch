@@ -3,9 +3,8 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import UserContext from './Pages/UserContext';
 import { CardHeader, Button, Box, useMediaQuery, Grid, Toolbar, Avatar, IconButton, Menu, Fade, MenuItem, AppBar, Typography, Tab, Tabs, Icon} from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home';
-import logo from './../logos/BloomCover.png'
+import logo from './../logos/BloomCover.png';
 import newlogo from './../logos/UpdatedCover.png'
-import { CenterFocusStrong } from '@material-ui/icons';
 
 
 
@@ -97,7 +96,7 @@ function NavBar({navigate}) {
           <>
             <Grid container sx={{placeItems: 'center'}} spacing={10}>
               <Grid item sx={1}>
-                <Typography indicatorcolor="secondary" textcolor="inherit" value={value} onChange={(e, val)=>setValue(val)}>
+                <Typography component={Link} to='/' indicatorColor="secondary" textColor="inherit" value={value} onChange={(e, val)=>setValue(val)}>
                   WELCOME
                 </Typography>
               </Grid>

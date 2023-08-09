@@ -12,7 +12,7 @@ import NavBar from './NavBar'
 import Header from './Header'
 import Profile from './Pages/Profile'
 import UserContext from './Pages/UserContext'
-import Footer from './Pages/Footer'
+import Footer from './Footer'
 import {Box} from '@mui/material'
 
 function App() {

@@ -1,9 +1,10 @@
-import { Formik, Field, ErrorMessage } from "formik";
+import { Formik, Field, ErrorMessage, Form } from "formik";
 import { useState, useContext } from "react";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import UserContext from "./UserContext";
-import { TextField, Typography, FormControl, Box, Button, ListItem, List, ListItemText, Divider, RadioGroup, Radio, FormControlLabel} from "@mui/material";
+import { TextField } from "formik-mui";
+import {Typography, FormControl, Box, Button, ListItem, List, ListItemText, Divider, RadioGroup, Radio, FormControlLabel} from "@mui/material";
 import { Image } from "@material-ui/icons";
 
 function Profile() {
@@ -169,7 +170,7 @@ function Profile() {
           }}
         >
           {({ handleSubmit }) => (
-          <form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit}>
             <FormControl>
               <Box marginBottom={2}>
                 <Typography>Name:</Typography>
@@ -183,43 +184,43 @@ function Profile() {
               </Box>
               <Box marginBottom={2}>
                 <Typography>Email:</Typography>
-                <Field type="text" name="email" />
+                <Field type="text" name="email" component={TextField} />
                 <ErrorMessage name="email" component="h3" />
               </Box>
               <Box marginBottom={2}>
                 <Typography>Password:</Typography>
-                <Field type="password" name="password" />
+                <Field type="password" name="password" component={TextField}/>
                 <ErrorMessage name="password" component="h3" />
               </Box>
 
               <Box marginBottom={2}>
               <Typography>Phone Number:</Typography>
-                <Field type="text" name="phone_number" />
+                <Field type="text" name="phone_number" component={TextField} />
                 <ErrorMessage name="phone_number" component="h3" />
                 </Box>
 
                 <Box marginBottom={2}>
                 <Typography>Birthday:</Typography>
-                <Field type="text" name="dob" />
+                <Field type="text" name="dob" component={TextField}/>
                 <ErrorMessage name="dob" component="h3" />
 </Box>
 
                 <Box marginBottom={2}>
                 <Typography>Location:</Typography>
-                <Field type="text" name="location" />
+                <Field type="text" name="location" component={TextField}/>
                 <ErrorMessage name="location" component="h3" />
                 </Box>
               <Divider />
               <Box marginBottom={2}>
                 <Typography variant="h6">Change my profile picture</Typography>
                 {/* <img src={user.profile_image} width={300} alt="Profile" /> */}
-                <Field type="text" name="profile_image"size="small"/>
+                <Field type="text" name="profile_image"size="small" component={TextField}/>
                 <ErrorMessage name="profile_image" component="h3" />
               </Box>
       
               <Box marginBottom={2}>
                 <Typography>Say a little about yourself, mama</Typography>
-                <Field type="text" name="about" />
+                <Field type="text" name="about" component={TextField}/>
                 <ErrorMessage name="about" component="h3" />
               </Box>
               <Divider />
@@ -279,7 +280,7 @@ function Profile() {
             </label> */}
             <Button type="submit" color="primary">Update</Button>
             </FormControl>
-          </form>
+          </Form>
           )}
         </Formik>
         <Button onClick={toggleEdit}>Discard changes</Button>
