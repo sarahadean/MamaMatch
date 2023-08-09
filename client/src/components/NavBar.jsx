@@ -3,9 +3,8 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import UserContext from './Pages/UserContext';
 import { CardHeader, Button, Box, useMediaQuery, Grid, Toolbar, Avatar, IconButton, Menu, Fade, MenuItem, AppBar, Typography, Tab, Tabs, Icon} from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home';
-import logo from './../logos/BloomCover.png'
+import logo from './../logos/BloomCover.png';
 import newlogo from './../logos/UpdatedCover.png'
-import { CenterFocusStrong } from '@material-ui/icons';
 
 
 
@@ -33,9 +32,15 @@ function NavBar({navigate}) {
 		});
 	}
 
+  // const styles = {
+  //   customizeToolbar: {
+  //     height: 100
+  //   }
+  // };  
+
   return (
    <>
-      <AppBar>
+      <AppBar >
         <Toolbar>
 
       {user ? 
@@ -45,7 +50,7 @@ function NavBar({navigate}) {
           <Avatar sx={{ width: 56, height: 56 }} alt={user.name} src={user.profile_image} component={Link} to="/profile"></Avatar>
         </IconButton>
 
-            <Grid sx={{placeItems: 'center', display: 'flex'}} container spacing={3}>
+            <Grid sx={{placeItems: 'center', display: 'flex'}} container spacing={5}>
 
                 <Grid item sx={1}>
                   <IconButton component={Link} to="/home" value="home">
@@ -53,7 +58,9 @@ function NavBar({navigate}) {
                   </IconButton >
                 </Grid>
 
-                <Grid item sx={1}></Grid>
+                <Grid item>
+                <Box width={390}></Box>
+                </Grid>
 
                 <Grid item sx={1}>
                   {/* <Tabs 
@@ -65,7 +72,7 @@ function NavBar({navigate}) {
                   </Tabs> */}
                 </Grid>
                 <Grid item sx={6} align="center">
-                  <Box width={700}>
+                  <Box width={800}>
                   <img src={newlogo} width={350}/>
                   </Box>
                   
@@ -74,14 +81,13 @@ function NavBar({navigate}) {
                 <Grid item sx={1}></Grid>
                 <Grid item>
                 {/* <Typography>Hi {user.name}!</Typography> */}
-                <Typography></Typography>
+                <Box width={300}></Box>
                 </Grid>
                 
 
                 <Grid item sx={1}>
                   <Box display="flex">
-                    
-                    <Button sx={{marginLeft: 'auto'}} align="right" variant='contained'onClick={handleLogout} >Logout</Button>
+                    <Button sx={{marginLeft: 'auto'}} align="right" variant='contained'onClick={handleLogout}>Logout</Button>
                   </Box>
                 </Grid>
                 </Grid>
@@ -89,15 +95,17 @@ function NavBar({navigate}) {
           ):(
           <>
             <Grid container sx={{placeItems: 'center'}} spacing={10}>
-              <Grid item sx={2}>
-                <Tabs indicatorColor="secondary" textColor="inherit" value={value} onChange={(e, val)=>setValue(val)}>
-                  <Tab label={welcome}/>
-                </Tabs>
+              <Grid item sx={1}>
+                <Typography component={Link} to='/' indicatorColor="secondary" textColor="inherit" value={value} onChange={(e, val)=>setValue(val)}>
+                  WELCOME
+                </Typography>
               </Grid>
              
+              <Grid item>
+                <Box width={500}></Box>
+              </Grid>
               <Grid item></Grid>
-              <Grid item></Grid>
-              <Grid item sx={10} >
+              <Grid item sx={1} >
                 <img src={newlogo} width={350}/>
               </Grid>
             </Grid>

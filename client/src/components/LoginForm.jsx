@@ -1,18 +1,21 @@
 import React, { useState, useContext } from 'react';
 import * as yup from "yup";
 import UserContext from './Pages/UserContext';
-import { Formik, Field, ErrorMessage } from "formik";
-import { TextField, Typography, FormControl, Box, Button, ListItem, List, ListItemText, Divider, RadioGroup, Radio, FormControlLabel} from "@mui/material";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { TextField } from 'formik-mui'
+import { Typography, FormControl, Box, Button, ListItem, List, ListItemText, Divider, RadioGroup, Radio, FormControlLabel} from "@mui/material";
+import { FiberPin } from '@material-ui/icons';
 
 function LoginForm({navigate}) {
   const { user, setUser } = useContext(UserContext);
   const [error, setError] = useState(null);
 
-  const schema = yup.object().shape({
-    username: yup.string(),
-    password: yup.string()
+  const validationSchema = yup.object().shape({
+    username: yup.string('Please enter your username'),
+    password: yup.string('Please enter your password')
   });
 
+    
 
 
   // if (user) {
@@ -20,13 +23,19 @@ function LoginForm({navigate}) {
   // }
 
   return (
-    <section>
+    <section style={{display: "flex", justifyContent: "center"}}>
+      <Box
+      display="flex" 
+      alignItems="center"
+      justifyContent="center"
+      sx={{width: "100vw"}}>
+
       <Formik
         initialValues={{
           username: "",
           password: "",
         }}
-        validationSchema={schema}
+        validationSchema={validationSchema}
         onSubmit={(values, actions) => {
           console.log(values)
           fetch('/api/login', {
@@ -51,25 +60,35 @@ function LoginForm({navigate}) {
       >
         
         {({ handleSubmit }) => (
-          <form onSubmit={handleSubmit}>
-            <FormControl>
-            <Box marginBottom={1}
+          <Form onSubmit={handleSubmit}>
+            <Box 
+            marginBottom={1}
             padding={2}>
+
               <Typography>Username:</Typography>
-              <Field 
+              <Field
+              sx={{backgroundColor: "white"}}
+              component={TextField}
               type="text" 
-              name="username" 
-              size='small'/> 
+              name="username"
+              placeholder="Username" 
+              variant='outlined'
+              size="small"
+              /> 
               <ErrorMessage name="username" />
             </Box>
-            <Box marginBottom={2}
+
+            <Box 
+            marginBottom={2}
             padding={2}>
               <Typography>Password:</Typography>
-              <Field size='small' 
+              <Field
+              size='small' 
               type="password" 
-              name="password" 
-              placeholder='password'
-    
+              name="password"
+              variant="outlined" 
+              label='Password'
+              component={TextField}
               />
               <ErrorMessage name="password"  />
            </Box>
@@ -77,9 +96,7 @@ function LoginForm({navigate}) {
            <Box padding={2}>
            <Button type="submit"  variant="contained" color="primary"> Get Matchin'!</Button>
            </Box>
-        
-        </FormControl>
-        </form>
+        </Form>
         )}
       </Formik>
       {error && (
@@ -92,6 +109,7 @@ function LoginForm({navigate}) {
           </List>
         </Box>
       )}
+      </Box>
     </section>
   );
 }

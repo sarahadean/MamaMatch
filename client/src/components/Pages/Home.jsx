@@ -11,7 +11,7 @@ function Home() {
 
   // change state of filtered friends
   function updateFriend(newfriend){
-    setFriends((friends.filter((friend) => friend.id !== newfriend.receiving_user_id)))
+    setFriends((friends.filter((friend) => friend.id !== newfriend.receiving_user_id )))
   }
   
 
@@ -38,6 +38,8 @@ function Home() {
     } 
     console.log(friends)
 
+    const newfilter = friends.filter(friend => friend.id !== user.id)
+
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -55,7 +57,7 @@ function Home() {
   return (
     <Box padding={2}>
       <Grid container spacing={4}>
-      {friends.map(friend => (
+      {newfilter.map(friend => (
         <Grid item xs={4} >
         <UserCard 
         key={friend.id} 

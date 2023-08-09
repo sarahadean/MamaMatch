@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import UserContext from './UserContext';
-import { Box, Button, ImageList, ImageListItem } from '@mui/material';
+import { Grid, List, Paper, Box, Button, ImageList, ImageListItem, Typography, ListItem, ListItemText, IconButton } from '@mui/material';
+import { FaGithub, FaLinkedinIn } from "react-icons/fa"
 
 function Welcome() {
   // const navigate = useNavigate();
@@ -56,6 +57,7 @@ function Welcome() {
 
   return (
     <>
+    <Box height={100}></Box>
     <ImageList sx={{ height: 450 }} cols={5} rowHeight={400} variant='quilted' >
       {imageList.map((picture, index) => (
         <ImageListItem key={index} cols={picture.cols || 1} rows={picture.rows || 1}>
@@ -67,17 +69,79 @@ function Welcome() {
       ))}
     </ImageList>
     {/* <img src={BloomCover} width={900}></img> */}
-    <Box align="center">
-      <Button component={Link} to="/signup">Signup</Button>
-      <Button component={Link} to="/login">Login</Button>
+    <Box
+    display="flex" 
+    alignItems="center"
+    justifyContent="center"
+    sx={{width: "100vw"}}>
+
+    <Box align="center" marginRight={10}>
+      <Button component={Link} to="/signup" >Signup</Button>
     </Box>
 
-    <div className='menu'>
-      {/* <button>Sign Up! </button>
-      <button>Login</button> */}
-      {/* <NavLink className="button" to="/login">Login</NavLink>
-      <NavLink className="button" to="/signup">Signup</NavLink> */}
-    </div>
+    <Box align="center" marginLeft={10}>
+      <Button component={Link} to="/login" >Login</Button>
+    </Box>
+    </Box>
+
+    {/* Contact section */}
+    
+      <Paper
+      sx={{ width: '100%', position: "fixed", bottom: 0, left: 0, right: 0, height: 215, backgroundColor: '#e8e8e8'}}
+      elevation={2}>
+        <Box 
+        display="flex" 
+        alignItems="center"
+        justifyContent="center"
+        sx={{width: "100vw"}}
+      
+        paddingTop={6}>
+        <Grid container>
+
+          <Grid container item xs={4} justifyContent="center">
+          <List>
+        <ListItemText>CONTACT US</ListItemText>
+        <ListItemText>Ph: 800-867-5309</ListItemText>
+        <ListItemText>1 Roadrunner Blvd </ListItemText>
+        <ListItemText>San Antonio, TX 78257</ListItemText>
+    </List>
+          </Grid>
+
+          <Grid container item xs={4} justifyContent="center">
+          <List>
+      <ListItemText>SOCIAL MEDIA:</ListItemText>
+      <ListItemText> 
+      <IconButton component={Link} to='http://linkedin.com/in/sarah-a-dean/'>
+        <FaLinkedinIn/>
+        </IconButton>
+        LinkedIn
+      </ListItemText>
+      <ListItemText>
+      <IconButton component={Link} to='http://github.com/sarahadean'>
+        <FaGithub/>
+        </IconButton>
+        GitHub
+      </ListItemText>
+    </List>
+          </Grid>
+
+          <Grid item container xs={4} justifyContent="center">
+            <List>
+              <ListItemText>
+                ABOUT:
+              </ListItemText>
+              <ListItemText>
+              MamaMatch is dedicated to helping foster connections within 
+              their community.
+              </ListItemText>
+            </List>
+          </Grid>
+        </Grid>
+      
+  
+    </Box>
+      </Paper>
+    
     </>
     
   )
