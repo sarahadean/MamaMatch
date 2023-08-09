@@ -56,6 +56,8 @@ function Welcome() {
 
   return (
     <>
+    <Box height={100}>
+    </Box>
     <ImageList sx={{ height: 450 }} cols={5} rowHeight={400} variant='quilted' >
       {imageList.map((picture, index) => (
         <ImageListItem key={index} cols={picture.cols || 1} rows={picture.rows || 1}>

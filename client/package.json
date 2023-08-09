@@ -18,6 +18,7 @@
     "@mui/styled-engine-sc": "^5.12.0",
     "bootstrap": "^5.3.0",
     "formik": "^2.4.2",
+    "formik-mui": "^5.0.0-alpha.0",
     "mdb-react-ui-kit": "^6.1.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.8.0",
