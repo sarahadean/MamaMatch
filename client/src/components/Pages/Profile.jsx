@@ -174,12 +174,12 @@ function Profile() {
             <FormControl>
               <Box marginBottom={2}>
                 <Typography>Name:</Typography>
-                <Field type="text" name="name" />
+                <Field type="text" name="name" component={TextField}/>
                 <ErrorMessage name="name" component="h3" />
               </Box>
               <Box marginBottom={2}>
                 <Typography>Username:</Typography>
-                <Field type="text" name="username" />
+                <Field type="text" name="username" component={TextField}/>
                 <ErrorMessage name="username" component="h3" />
               </Box>
               <Box marginBottom={2}>

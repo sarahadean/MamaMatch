@@ -42,15 +42,21 @@ function FriendsList({friendship, updateFriendship}) {
   return (
     <>
     {actualFriends.length === 0 ? (
-      <Box height={400}>
+      <Box height={400}
+      justifyContent="center"
+      alignItems="center">
       <Typography variant='h4'>Hello, opulent mama!No MamaMatch friends yet! Head back to the home to find your perfect mom-match!</Typography>
     </Box>
   ):(
 
-    <Box padding={4}>
+    <Box padding={4}
+    display="flex" 
+      alignItems="center"
+      justifyContent="center"
+      sx={{width: "100vw"}}>
       <Grid container spacing={7}>
     {actualFriends.map(friend =>(
-      <Grid item xs={4}>
+      <Grid item >
         <FriendsCard
           key={friend.id} 
           friend={friend}

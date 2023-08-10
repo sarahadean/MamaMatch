@@ -51,7 +51,7 @@ function handleDelete(){
 
 return (
   <>
-  <Card variant='outlined' sx={{ maxHeight: 800}}>
+  <Card variant='outlined' sx={{ maxHeight: 800, width: 300}}>
         <CardMedia 
         component="img"
         image={profile_image}
@@ -67,7 +67,7 @@ return (
             <Grid item xs={6}>
               <IconButton sx={{ display: 'flex', flexDirection: 'column'}} component={Link} to={url}>
                 <ForumOutlinedIcon/>
-                <Typography variant="caption">Send Message</Typography>
+                <Typography variant="caption">Chat</Typography>
               </IconButton>
             </Grid>
 
