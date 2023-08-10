@@ -95,7 +95,7 @@ function Welcome() {
         justifyContent="center"
         sx={{width: "100vw"}}
       
-        paddingTop={6}>
+        paddingTop={4}>
         <Grid container>
 
           <Grid container item xs={4} justifyContent="center">
@@ -131,8 +131,16 @@ function Welcome() {
                 ABOUT:
               </ListItemText>
               <ListItemText>
-              MamaMatch is dedicated to helping foster connections within 
-              their community.
+              MamaMatch is dedicated and catered toward mothers 
+              </ListItemText>
+              <ListItemText>
+              to foster meaningful connections within their 
+              </ListItemText>
+              <ListItemText>
+              community. Engage with other moms IRL or use 
+              </ListItemText>
+              <ListItemText>
+              the in-app chat feature! 
               </ListItemText>
             </List>
           </Grid>
