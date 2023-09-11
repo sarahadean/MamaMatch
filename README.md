@@ -22,6 +22,12 @@ Tech Stack:
 
 [![My Skills](https://skillicons.dev/icons?i=js,py,flask,react,vite,materialui)](https://skillicons.dev)
 
+
+<image src="https://github.com/sarahadean/MamaMatch/assets/128323898/0312c099-2fcb-453d-b7df-d16985c24c27">
+<image src="https://github.com/sarahadean/MamaMatch/assets/128323898/1bcc3bb5-0aeb-4bc5-aa6e-b482f14927bf">
+<image src="https://github.com/sarahadean/MamaMatch/assets/128323898/bf3737c0-9109-486a-8aad-a428cb1b7e5e">
+
+
 ## Schema:
 https://dbdiagram.io/d/64a2f12702bd1c4a5e6ce584
 
@@ -30,16 +36,15 @@ https://dbdiagram.io/d/64a2f12702bd1c4a5e6ce584
 ## Wireframe:
 https://www.figma.com/file/MbtQ6o1dWaNJ3pyvm4vRBV/MomFriendFinder?type=whiteboard&node-id=0%3A1&t=4OYjARU12DIrnJ0k-1
 
-
-<image src="https://github.com/sarahadean/capstone/assets/128323898/cbe668a0-eef4-4e32-8193-897146abdf97" width="300"> 
-<image src="https://github.com/sarahadean/capstone/assets/128323898/860909a4-9b53-4e62-8b57-69208bb0649e" width="300">
-<image src="https://github.com/sarahadean/capstone/assets/128323898/0c377b6c-a502-4f3a-9cd2-11fd53fa580e" width="300">
-<image src="https://github.com/sarahadean/capstone/assets/128323898/c2426630-181f-432a-85ca-cbc02ecd0194" width="300">
-<image src="https://github.com/sarahadean/capstone/assets/128323898/a4e7a231-d989-43b2-85f4-cac2aa11e35c" width="300">
-<image src="https://github.com/sarahadean/capstone/assets/128323898/dcd82c75-8efa-4d83-801a-acb741046a36" width="300">
-<image src="https://github.com/sarahadean/capstone/assets/128323898/e539a532-553e-4d00-b9dd-e9f9f42f77bc" width="300">
-<image src="https://github.com/sarahadean/capstone/assets/128323898/67556049-7096-42a0-a3e3-08ee536d3b8d" width="300">
-<image src="https://github.com/sarahadean/capstone/assets/128323898/664b5f13-60e6-49a4-b8d9-4682c209d4f8" width="300">
+<image src="https://github.com/sarahadean/capstone/assets/128323898/cbe668a0-eef4-4e32-8193-897146abdf97" width="100"> 
+<image src="https://github.com/sarahadean/capstone/assets/128323898/860909a4-9b53-4e62-8b57-69208bb0649e" width="100">
+<image src="https://github.com/sarahadean/capstone/assets/128323898/0c377b6c-a502-4f3a-9cd2-11fd53fa580e" width="100">
+<image src="https://github.com/sarahadean/capstone/assets/128323898/c2426630-181f-432a-85ca-cbc02ecd0194" width="100">
+<image src="https://github.com/sarahadean/capstone/assets/128323898/a4e7a231-d989-43b2-85f4-cac2aa11e35c" width="100">
+<image src="https://github.com/sarahadean/capstone/assets/128323898/dcd82c75-8efa-4d83-801a-acb741046a36" width="100">
+<image src="https://github.com/sarahadean/capstone/assets/128323898/e539a532-553e-4d00-b9dd-e9f9f42f77bc" width="100">
+<image src="https://github.com/sarahadean/capstone/assets/128323898/67556049-7096-42a0-a3e3-08ee536d3b8d" width="100">
+<image src="https://github.com/sarahadean/capstone/assets/128323898/664b5f13-60e6-49a4-b8d9-4682c209d4f8" width="100">
 
 
 
